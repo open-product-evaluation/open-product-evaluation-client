@@ -22,6 +22,7 @@ const mutations = {
 
 const actions = {
   updateDevice(context, payload) {
+    console.log("asdfg");
     Device.updateDevice(payload.id, payload.contextId)
     .then((data) => {
       context.commit('createDevice', data.data !== undefined ? data.data.updateDevice : null);
