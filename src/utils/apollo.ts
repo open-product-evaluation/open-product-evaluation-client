@@ -42,18 +42,16 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
 });
 
 const request = async (operation) => {
-    let token = null;
     let headers = {
         headers: {},
     };
 
-    // TODO change currentUser to token
-    token = await JSON.parse(localStorage.getItem('currentUser') || '{}').token;
+    const token = localStorage.getItem('currentToken');
 
-    if (token) {
+    if (token !== null) {
         headers = {
             headers: {
-                authorization: token ? `Bearer ${token}` : null,
+                authorization: `Bearer ${token}`,
             },
         };
     }
@@ -78,7 +76,7 @@ const requestLink = new ApolloLink((operation, forward) => new Observable((obser
     };
 }));
 
-export const client = new ApolloClient({
+export default new ApolloClient({
     cache: new InMemoryCache({ fragmentMatcher }),
     link: ApolloLink.from([
         requestLink,

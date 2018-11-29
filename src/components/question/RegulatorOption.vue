@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{msg}}</h2>
+    <h2>Regulator</h2>
   </div>
 </template>
 
@@ -9,7 +9,6 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class RegulatorOption extends Vue {
-  @Prop() private msg = 'RegulatorOption';
 }
 </script>
 

@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>Question</h1>
-    <h2>{{msg}}</h2>
     <questionItem></questionItem>
   </div>
 </template>
@@ -17,7 +16,6 @@ import QuestionItem from '@/components/question/QuestionItem.vue';
 })
 
 export default class Question extends Vue {
-  @Prop() private msg = 'Question Component';
 }
 </script>
 

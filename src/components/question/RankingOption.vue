@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{msg}}</h2>
+    <h2>RankingOption</h2>
   </div>
 </template>
 
@@ -8,9 +8,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
-export default class RankingOption extends Vue {
-  @Prop() private msg = 'RankingOption';
-}
+export default class RankingOption extends Vue {}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

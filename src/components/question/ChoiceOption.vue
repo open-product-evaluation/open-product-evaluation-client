@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{msg}}</h2>
+    <h2>Choice</h2>
   </div>
 </template>
 
@@ -9,7 +9,6 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class ChoiceOption extends Vue {
-  @Prop() private msg = 'ChoiceOption';
 }
 </script>
 

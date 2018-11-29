@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{msg}}</h2>
+    <h2>QuestionItem</h2>
     <div>
       <choice></choice>
       <ranking></ranking>
@@ -33,7 +33,6 @@ import LikeDislikeOptions from '@/components/question/LikeDislikeOption.vue';
 })
 
 export default class QuestionItem extends Vue {
-  @Prop() private msg = 'QuestionItem';
 }
 </script>
 
