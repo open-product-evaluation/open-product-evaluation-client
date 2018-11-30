@@ -6,8 +6,8 @@ import apiClient from '@/utils/apollo';
 const createDevice = (deviceName: string) => apiClient.mutate(
     {
         mutation : gql`
-        mutation addNewDevice{
-            createDevice(data: { name: "${deviceName}"})
+        mutation addNewDevice ($name: String!){
+            createDevice(data: { name: $name})
             {
             device{
                 id
@@ -17,6 +17,9 @@ const createDevice = (deviceName: string) => apiClient.mutate(
             token
         }
     }`,
+    variables: {
+        name: deviceName,
+      },
 });
 
 /**
@@ -26,11 +29,14 @@ const createDevice = (deviceName: string) => apiClient.mutate(
 const deleteDevice = (deviceId: string) => apiClient.mutate(
     {
         mutation : gql`
-        mutation deleteDeviceMutation{
-        deleteDevice(deviceID: "${deviceId}"){
+        mutation deleteDeviceMutation ($id: ID!){
+        deleteDevice(deviceID: $id){
             status
         }
         }`,
+        variables: {
+            id: deviceId,
+        },
     },
 );
 
@@ -41,18 +47,23 @@ const deleteDevice = (deviceId: string) => apiClient.mutate(
  */
 const updateDevice = (deviceId: string, context: string) => apiClient.mutate(
     { mutation : gql`
-        mutation updateDeviceMutation{
+        mutation updateDeviceMutation ($deviceID: ID!, $contextID: ID){
         updateDevice(data:
             {
-            context: "${context}"
-            }, deviceID: "${deviceId}"){
+            context: $contextID
+            }, deviceID: $deviceID){
             device {
+            creationDate
             name
             id
-            creationDate
             }
             }
         }`,
+        // TODO Variable ändern
+        variables: {
+            deviceID: deviceId,
+            contextID: context,
+          },
     },
 );
 
