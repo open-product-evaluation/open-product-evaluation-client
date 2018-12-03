@@ -21,14 +21,21 @@ export default {
   },
   methods: {
     updateContext() {
-      // TODO exchange contextID
       
-      /*const device = this[store].getters.getDevice;
+      
+      //Update Device 
+      // TODO exchange contextID
+      const device = this[store].getters.getDevice;
       this[store].dispatch('updateDevice', {
         id: device.device.id,
         contextId: '7df600774ceaa14488143c9d7877fd71662f4750c7c1c77aede7aa684d7c16f1',
-      });*/
-      this[store].dispatch('getSurveys', {});
+      });
+
+      //Get Specific Device
+      // TODO exchange context
+      this[store].dispatch('getSurvey', {
+        context: '7df600774ceaa14488143c9d7877fd71662f4750c7c1c77aede7aa684d7c16f1',
+        });
     },
   },
 };

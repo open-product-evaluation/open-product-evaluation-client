@@ -55,12 +55,12 @@ const actions = {
         context.commit('setSurveys', data.data !== undefined ? data.data["surveys"] : null);
       });
   },
-  /*getSurvey({ commit }, payload) {
-    Survey.getSurvey(payload.surveyID)
+  getSurvey(context, payload) {
+    Survey.getSurvey(payload.context)
       .then((data) => {
-        commit('currentSurvey', data.data.survey);
+        context.commit('currentSurvey', data.data !== undefined ? data.data["survey"] : null);
       });
-  },*/
+  },
 };
 
 export default new Vuex.Store({
