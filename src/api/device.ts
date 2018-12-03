@@ -59,7 +59,7 @@ const updateDevice = (deviceId: string, context: string) => apiClient.mutate(
             }
             }
         }`,
-        // TODO Variable ändern
+
         variables: {
             deviceID: deviceId,
             contextID: context,
