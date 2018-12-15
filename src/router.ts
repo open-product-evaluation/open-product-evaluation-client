@@ -15,7 +15,7 @@ export default new Router({
       component: SurveyList,
     },
     {
-      path: '/question',
+      path: '/survey/:cID',
       name: 'question',
       component: Question,
     },

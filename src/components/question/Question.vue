@@ -8,14 +8,22 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import QuestionItem from '@/components/question/QuestionItem.vue';
+import { Route } from 'vue-router';
 
-@Component({
+const store = '$store';
+const route = '$route';
+
+export default {
+  name: 'Question',
   components: {
-    questionItem: QuestionItem,
+    'questionItem': QuestionItem,
   },
-})
-
-export default class Question extends Vue {
+  created() {
+    let contextID= this[route].params.cID;
+    this[store].dispatch('getSurvey', {
+        context: contextID,
+      });
+  }
 }
 </script>
 

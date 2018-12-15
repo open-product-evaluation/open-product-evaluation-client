@@ -1,11 +1,15 @@
 <template>
-  <div class="hello">
-    <h1>Open Product Evaluation</h1>
+  <div class="surveycards">
     <h2>SurveyListe</h2>
     <p>
       OPE - und alles ist okay!
     </p>
-    <button @click="updateContext()">Context hinzufügen</button>
+    <ul >
+      <li v-for="survey in surveys" :key="survey.id">
+        {{ survey.activeSurvey.title }}
+        <button @click="startSurvey(survey.id)">Starten</button>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -13,29 +17,28 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 const store = '$store';
+const router = '$router';
 
 export default {
   name: 'SurveyEdit',
   created() {
     this[store].dispatch('createDevice', { name: 'hi'});
+    this[store].dispatch('getSurveys');
+  },
+  computed: {
+    surveys() {
+      return this[store].getters.getSurveys
+    },
   },
   methods: {
-    updateContext() {
-      
-      
-      //Update Device 
-      // TODO exchange contextID
+    //Update Device 
+    startSurvey(contextID) {
       const device = this[store].getters.getDevice;
       this[store].dispatch('updateDevice', {
         id: device.device.id,
-        contextId: '7df600774ceaa14488143c9d7877fd71662f4750c7c1c77aede7aa684d7c16f1',
+        contextId: contextID,
       });
-
-      //Get Specific Device
-      // TODO exchange context
-      this[store].dispatch('getSurvey', {
-        context: '7df600774ceaa14488143c9d7877fd71662f4750c7c1c77aede7aa684d7c16f1',
-        });
+      this[router].push({name:'question', params:{cID:contextID}});
     },
   },
 };

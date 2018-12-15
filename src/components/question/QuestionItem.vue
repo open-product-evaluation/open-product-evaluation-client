@@ -21,7 +21,9 @@ import RegulatorOptions from '@/components/question/RegulatorOption.vue';
 import LikeOptions from '@/components/question/LikeOption.vue';
 import LikeDislikeOptions from '@/components/question/LikeDislikeOption.vue';
 
-@Component({
+
+export default {
+  name: 'QuestionItem',
   components: {
     choice: ChoiceOptions,
     ranking: RankingOptions,
@@ -30,9 +32,6 @@ import LikeDislikeOptions from '@/components/question/LikeDislikeOption.vue';
     like: LikeOptions,
     likeDislike: LikeDislikeOptions,
     },
-})
-
-export default class QuestionItem extends Vue {
 }
 </script>
 

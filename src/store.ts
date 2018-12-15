@@ -27,11 +27,9 @@ const mutations = {
     state.device = payload;
   },
   currentSurvey(_state, payload) {
-    // eslint-disable-next-line
     _state.currentSurvey = payload;
   },
   setSurveys(_state, payload) {
-    // eslint-disable-next-line
     _state.surveys = payload;
   },
 };
@@ -52,13 +50,13 @@ const actions = {
   getSurveys(context) {
     Survey.getAllSurveys()
       .then((data) => {
-        context.commit('setSurveys', data.data !== undefined ? data.data["surveys"] : null);
+        context.commit('setSurveys', data.data !== undefined ? data.data["contexts"] : null);
       });
   },
   getSurvey(context, payload) {
     Survey.getSurvey(payload.context)
       .then((data) => {
-        context.commit('currentSurvey', data.data !== undefined ? data.data["survey"] : null);
+        context.commit('currentSurvey', data.data !== undefined ? data.data["context"] : null);
       });
   },
 };

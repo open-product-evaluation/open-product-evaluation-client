@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <router-link to="/">Go to SurveyList</router-link><br>
-    <router-link to="/question">Go to Question</router-link>
     <router-view/>
   </div>
 </template>
