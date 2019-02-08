@@ -18,7 +18,8 @@ const getters = {
   getDevice: (state) => state.device,
   getSurveys: (state) => state.surveys || [],
   getSurvey: (state) => state.currentSurvey,
-};
+  getQuestion: (state) => (questionID) => state.currentSurvey.questions.find( (question) => question.id === questionID),
+ };
 
 const mutations = {
   createDevice(state, payload) {
@@ -32,6 +33,9 @@ const mutations = {
   setSurveys(_state, payload) {
     _state.surveys = payload;
   },
+  currentQuestions(_state, payload) {
+    _state.currentSurvey.questions = payload;
+  }
 };
 
 const actions = {
@@ -56,7 +60,8 @@ const actions = {
   getSurvey(context, payload) {
     Survey.getSurvey(payload.context)
       .then((data) => {
-        context.commit('currentSurvey', data.data !== undefined ? data.data["context"] : null);
+        context.commit('currentSurvey', data.data !== undefined ? data.data["context"].activeSurvey : null);
+        context.commit('currentQuestions', data.data !== undefined ? data.data["context"].activeSurvey.questions : null);
       });
   },
 };

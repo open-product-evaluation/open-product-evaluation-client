@@ -22,8 +22,9 @@ const router = '$router';
 export default {
   name: 'SurveyEdit',
   created() {
-    this[store].dispatch('createDevice', { name: 'hi'});
-    this[store].dispatch('getSurveys');
+    this[store].dispatch('createDevice', { name: 'hi'}).then((result) =>
+      this[store].dispatch('getSurveys')
+    )
   },
   computed: {
     surveys() {
