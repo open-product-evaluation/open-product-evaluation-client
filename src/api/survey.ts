@@ -36,6 +36,7 @@ const getSurvey = (context: string) => apiClient.query(
                 types
                 questions {
                   id
+                  type
                   description
                   value
                   items {

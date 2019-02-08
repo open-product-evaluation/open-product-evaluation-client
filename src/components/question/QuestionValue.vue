@@ -16,7 +16,6 @@ export default {
   },
   computed: {
     question() {
-      console.log(this.id);
       return JSON.parse(JSON.stringify(this.$store.getters.getQuestion(this.id)))
     },
   },

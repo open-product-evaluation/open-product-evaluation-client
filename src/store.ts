@@ -61,7 +61,8 @@ const actions = {
     Survey.getSurvey(payload.context)
       .then((data) => {
         context.commit('currentSurvey', data.data !== undefined ? data.data["context"].activeSurvey : null);
-        context.commit('currentQuestions', data.data !== undefined ? data.data["context"].activeSurvey.questions : null);
+        context.commit('currentQuestions', data.data !== undefined ? data.data["context"].
+        activeSurvey.questions : null);
       });
   },
 };

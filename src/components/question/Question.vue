@@ -14,12 +14,12 @@
                                     && survey.questions.length > 0">
 
           <!-- display question title and description -->
-          <questionmeta :id="survey.questions[index].id"></questionmeta>
+          <questionMeta :id="survey.questions[index].id"></questionMeta>
 
           <!-- display question items -->
-          <questionitems :id="survey.questions[index].id"
+          <questionItems :id="survey.questions[index].id"
                  v-if="displayItems(survey.questions[index].type)">
-          </questionitems>
+          </questionItems>
 
           <!-- display choices -->
           <choice :id="survey.questions[index].id"
@@ -100,14 +100,14 @@ const route = '$route';
 export default {
   name: 'Question',
   components: {
-    questionItem: QuestionItem,
+    questionItems: QuestionItem,
     choice: ChoiceOptions,
     ranking: RankingOptions,
     favorite: FavoriteOptions,
     regulator: RegulatorOptions,
     like: LikeOptions,
     likeDislike: LikeDislikeOptions,
-    questionmeta: QuestionValue,
+    questionMeta: QuestionValue,
   },
   data() {
     return {
@@ -127,6 +127,7 @@ export default {
   },
   methods: {
     displayItems(type) {
+      console.log(this.survey.questions[this.index]);
       return !(type === 'RANKING' || type === 'FAVORITE')
     },
     next() {

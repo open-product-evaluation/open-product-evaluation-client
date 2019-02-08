@@ -1,0 +1,25 @@
+$textColor: #53505f;
+
+$backgroundColor: #eef1f5;
+$secondaryBackgroundColor: #2a3142;
+
+$primaryColor: #36a2f5;
+$primaryHoverColor: #2a3142;
+$secondaryColor: #2b7cbb;
+$secondaryHoverColor: #2a3142;
+
+$borderColor: #e5e9ec;
+
+:export {
+    textColor: $textColor;
+    backgroundColor: $backgroundColor;
+    secondaryBackgroundColor: $secondaryBackgroundColor;
+
+    primaryColor: $primaryColor;
+    primaryHoverColor: $primaryHoverColor;
+
+    secondaryColor: $secondaryColor;
+    secondaryHoverColor: $secondaryHoverColor;
+
+    borderColor: $borderColor;
+  }
