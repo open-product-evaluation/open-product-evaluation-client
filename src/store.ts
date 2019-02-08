@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Device from '@/api/device';
+import Client from '@/api/client';
 import Survey from '@/api/survey';
 
 Vue.use(Vuex);
 
 const state = {
-  device: {},
+  client: {},
   surveys: [],
   currentSurvey: {
     questions: [],
@@ -15,16 +15,16 @@ const state = {
 };
 
 const getters = {
-  getDevice: (state) => state.device,
+  getClient: (state) => state.client,
   getSurveys: (state) => state.surveys || [],
   getSurvey: (state) => state.currentSurvey,
 };
 
 const mutations = {
-  createDevice(state, payload) {
-    localStorage.setItem('currentDevice', JSON.stringify(payload.device));
+  createClient(state, payload) {
+    localStorage.setItem('currentClient', JSON.stringify(payload.client));
     if (payload.token) { localStorage.setItem('currentToken', payload.token); }
-    state.device = payload;
+    state.client = payload;
   },
   currentSurvey(_state, payload) {
     _state.currentSurvey = payload;
@@ -35,28 +35,28 @@ const mutations = {
 };
 
 const actions = {
-  updateDevice(context, payload) {
-    Device.updateDevice(payload.id, payload.contextId)
+  updateClient(context, payload) {
+    Client.updateClient(payload.id, payload.domainId)
     .then((data) => {
-      context.commit('createDevice', data.data !== undefined ? data.data.updateDevice : null);
+      context.commit('createClient', data.data !== undefined ? data.data.updateClient : null);
     });
   },
-  createDevice(context, payload) {
-    Device.createDevice( payload.name)
+  createClient(context, payload) {
+    Client.createClient( payload.name)
     .then((data) => {
-      context.commit('createDevice', data.data !== undefined ? data.data.createDevice : null);
+      context.commit('createClient', data.data !== undefined ? data.data.createClient : null);
     });
   },
   getSurveys(context) {
     Survey.getAllSurveys()
       .then((data) => {
-        context.commit('setSurveys', data.data !== undefined ? data.data["contexts"] : null);
+        context.commit('setSurveys', data.data !== undefined ? data.data["domains"] : null);
       });
   },
   getSurvey(context, payload) {
-    Survey.getSurvey(payload.context)
+    Survey.getSurvey(payload.domain)
       .then((data) => {
-        context.commit('currentSurvey', data.data !== undefined ? data.data["context"] : null);
+        context.commit('currentSurvey', data.data !== undefined ? data.data["domain"] : null);
       });
   },
 };
