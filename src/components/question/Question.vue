@@ -19,9 +19,9 @@ export default {
     'questionItem': QuestionItem,
   },
   created() {
-    let contextID= this[route].params.cID;
+    let domainID= this[route].params.cID;
     this[store].dispatch('getSurvey', {
-        context: contextID,
+        domain: domainID,
       });
   }
 }

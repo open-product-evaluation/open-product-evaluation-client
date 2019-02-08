@@ -22,23 +22,23 @@ const router = '$router';
 export default {
   name: 'SurveyEdit',
   created() {
-    this[store].dispatch('createDevice', { name: 'hi'});
+    this[store].dispatch('createClient', { name: 'hi2'});
     this[store].dispatch('getSurveys');
   },
   computed: {
     surveys() {
-      return this[store].getters.getSurveys
+      return this[store].getters.getSurveys;
     },
   },
   methods: {
-    //Update Device 
-    startSurvey(contextID) {
-      const device = this[store].getters.getDevice;
-      this[store].dispatch('updateDevice', {
-        id: device.device.id,
-        contextId: contextID,
+    //Update Client 
+    startSurvey(domainID) {
+      const client = this[store].getters.getClient;
+      this[store].dispatch('updateClient', {
+        id: client.client.id,
+        domainId: domainID,
       });
-      this[router].push({name:'question', params:{cID:contextID}});
+      this[router].push({name:'question', params:{cID:domainID}});
     },
   },
 };

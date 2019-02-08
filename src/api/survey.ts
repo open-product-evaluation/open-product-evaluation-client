@@ -1,13 +1,13 @@
 import gql from 'graphql-tag';
 import apiClient from '@/utils/apollo';
 /**
- * @description create new Device
+ * @description create new Client
  */
 const getAllSurveys = () => apiClient.query(
     {
         query : gql`
         query getAllSurveys{
-            contexts(types: [LIKE, LIKEDISLIKE, FAVORITE, REGULATOR, RANKING, CHOICE]) {
+            domains(types: [LIKE, LIKEDISLIKE, FAVORITE, REGULATOR, RANKING, CHOICE]) {
               id
               activeSurvey{
                 id
@@ -20,13 +20,13 @@ const getAllSurveys = () => apiClient.query(
 
 /**
  * @description get specific survey
- * @param context: ID of chosen Survey conntected to Device
+ * @param domain: ID of chosen Survey conntected to Client
  */
-const getSurvey = (context: string) => apiClient.query(
+const getSurvey = (domain: string) => apiClient.query(
   {
       query : gql`
-            query getSurvey ($contextID: ID!){
-            context(contextID: $contextID) {
+            query getSurvey ($domainID: ID!){
+            domain(domainID: $domainID) {
               id
               name
               activeSurvey {
@@ -120,7 +120,7 @@ const getSurvey = (context: string) => apiClient.query(
             }
           }`,
           variables: {
-            contextID: context,
+            domainID: domain,
           },
 });
 
