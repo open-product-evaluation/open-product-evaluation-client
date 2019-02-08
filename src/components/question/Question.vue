@@ -27,9 +27,9 @@
           </choice>
 
           <!-- display like / dislike options -->
-          <likedislike :id="survey.questions[index].id"
+          <likeDislike :id="survey.questions[index].id"
                        v-if="survey.questions[index].type === 'LIKEDISLIKE'">
-          </likedislike>
+          </likeDislike>
 
           <!-- display like option -->
           <like :id="survey.questions[index].id"

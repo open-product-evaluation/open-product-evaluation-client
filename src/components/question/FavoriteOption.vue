@@ -9,9 +9,10 @@
          :class="{ selected: selected === item.id}">
         <div class="image"
              :style="{backgroundImage: `url(${item.image.url})`}">
-          <font-awesome-icon icon="star" />
+          <!-- <font-awesome-icon icon="star" /> -->
         </div>
       </a>
+      <p> {{item.label}}</p>
     </div>
   </div>
 </template>
