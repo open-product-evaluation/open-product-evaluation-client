@@ -71,6 +71,12 @@ const actions = {
       // TODO:  Do something with response?
     });
   },
+  createAnswerLike(context, payload) {
+    Question.likeAnswer( payload.question, payload.likeID)
+    .then((data) => {
+      // TODO:  Do something with response?
+    });
+  },
 };
 
 export default new Vuex.Store({

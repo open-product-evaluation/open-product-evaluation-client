@@ -3,7 +3,8 @@
     <li class="like">
       <input type="checkbox"
              :id="`like-${question.id}`"
-             :name="`like-${question.id}`" />
+             :name="`like-${question.id}`" 
+             @click="answer(true)"/>
       <label class="icon"
              :for="`like-${question.id}`"
              :style="{backgroundImage: `url(${question.likeIcon.url})`}">
@@ -25,6 +26,11 @@ export default {
     question(this: any) {
       return JSON.parse(JSON.stringify(this['$store'].getters.getQuestion(this.id)))
     },
+  },
+  methods: {
+    answer(liked){
+      this['$store'].dispatch('createAnswerLike', { question: this.id, likeID: liked});
+    }
   },
 }
 </script>
