@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import Client from '@/api/client';
 import Survey from '@/api/survey';
+import Question from '@/api/question';
 
 Vue.use(Vuex);
 
@@ -63,6 +64,12 @@ const actions = {
         context.commit('currentSurvey', data.data !== undefined ? data.data["domain"].activeSurvey : null);
         context.commit('currentQuestions', data.data !== undefined ? data.data["domain"].activeSurvey.questions : null);
       });
+  },
+  createAnswerChoice(context, payload) {
+    Question.choiseAnswer( payload.question, payload.choiceID)
+    .then((data) => {
+      // TODO:  Do something with response?
+    });
   },
 };
 

@@ -8,13 +8,17 @@
              :id="`choice-${choice.id}`"
              :name="`choice-${question.id}`"
              v-if="choice.image && choice.image.url"
-             :value="choice.label" />
+             :value="choice.label" 
+             @click="answer(choice.id)"
+             />
       <label :for="`choice-${choice.id}`"
              v-if="!choice.image">
        <input type="radio"
               :id="`choice-${choice.id}`"
               :name="`choice-${question.id}`"
-              :value="choice.label" />
+              :value="choice.label" 
+              @click="answer(choice.id)"
+              />
         {{ choice.label}}
       </label>
       <label class="icon"
@@ -31,16 +35,22 @@
   </ol>
 </template>
 
-<script>
+<script lang="ts">
+
 export default {
   name: 'ChoiceOption',
   props: {
     id: String,
   },
   computed: {
-    question() {
-      return JSON.parse(JSON.stringify(this.$store.getters.getQuestion(this.id)))
+    question(this: any) {
+      return this['$store'].getters.getQuestion(this.id)
     },
+  },
+  methods: { 
+    answer(this: any, choice) {
+      this['$store'].dispatch('createAnswerChoice', { question: this.id, choiceID: choice});
+    }
   },
 }
 </script>

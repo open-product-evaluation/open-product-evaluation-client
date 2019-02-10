@@ -93,7 +93,6 @@ import LikeOptions from '@/components/question/LikeOption.vue';
 import LikeDislikeOptions from '@/components/question/LikeDislikeOption.vue';
 import QuestionValue from '@/components/question/QuestionValue.vue';
 
-const store = '$store';
 const router = '$router';
 const route = '$route';
 
@@ -116,13 +115,13 @@ export default {
   },
   created() {
     let domainID= this[route].params.cID;
-    this[store].dispatch('getSurvey', {
+    this['$store'].dispatch('getSurvey', {
         domain: domainID,
       });
   },
   computed: {
     survey() {
-      return this[store].getters.getSurvey
+      return this['$store'].getters.getSurvey
     },
   },
   methods: {
