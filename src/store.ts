@@ -83,6 +83,12 @@ const actions = {
       // TODO:  Do something with response?
     });
   },
+  createAnswerFavorite(context, payload) {
+    Question.favoriteAnswer( payload.question, payload.favoriteID)
+    .then((data) => {
+      // TODO:  Do something with response?
+    });
+  },
 };
 
 export default new Vuex.Store({

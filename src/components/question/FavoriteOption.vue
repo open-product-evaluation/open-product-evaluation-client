@@ -37,6 +37,7 @@ export default {
     select(this: any, event, id) {
       event.preventDefault()
       this.selected = id
+      this['$store'].dispatch('createAnswerFavorite', { question: this.id, favoriteID: this.selected});
     },
   },
 }
