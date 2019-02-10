@@ -15,7 +15,7 @@
   </draggable>
 </template>
 
-<script>
+<script lang="ts">
 import draggable from 'vuedraggable'
 export default {
   name: 'RankingOption',
