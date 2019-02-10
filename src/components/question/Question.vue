@@ -93,9 +93,6 @@ import LikeOptions from '@/components/question/LikeOption.vue';
 import LikeDislikeOptions from '@/components/question/LikeDislikeOption.vue';
 import QuestionValue from '@/components/question/QuestionValue.vue';
 
-const router = '$router';
-const route = '$route';
-
 export default {
   name: 'Question',
   components: {
@@ -114,7 +111,7 @@ export default {
     }
   },
   created() {
-    let domainID= this[route].params.cID;
+    let domainID= this['$route'].params.cID;
     this['$store'].dispatch('getSurvey', {
         domain: domainID,
       });
@@ -129,7 +126,7 @@ export default {
       return !(type === 'RANKING' || type === 'FAVORITE')
     },
     next(this: any) {
-      (this.index < this.survey.questions.length-1) ? (this.index++) : this[router].push({name:'surveyList'});
+      (this.index < this.survey.questions.length-1) ? (this.index++) : this['$router'].push({name:'surveyList'});
     },
     previous(this: any) {
       if (this.index > 0) {

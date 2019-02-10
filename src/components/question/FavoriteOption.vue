@@ -29,12 +29,12 @@ export default {
     }
   },
   computed: {
-    question() {
-      return JSON.parse(JSON.stringify(this.$store.getters.getQuestion(this.id)))
+    question(this: any) {
+      return JSON.parse(JSON.stringify(this['$store'].getters.getQuestion(this.id)))
     },
   },
   methods: {
-    select(event, id) {
+    select(this: any, event, id) {
       event.preventDefault()
       this.selected = id
     },

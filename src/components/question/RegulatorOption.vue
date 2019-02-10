@@ -34,12 +34,12 @@ export default {
     id: String,
   },
   computed: {
-    question() {
-      return JSON.parse(JSON.stringify(this.$store.getters.getQuestion(this.id)))
+    question(this: any) {
+      return JSON.parse(JSON.stringify(this['$store'].getters.getQuestion(this.id)))
     },
   },
   methods: {
-    updateValue(event) {
+    updateValue(this: any, event) {
       this.value = event.target.value
     },
   },

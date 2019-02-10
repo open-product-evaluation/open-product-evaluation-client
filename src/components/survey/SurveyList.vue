@@ -16,30 +16,27 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-const store = '$store';
-const router = '$router';
-
 export default {
   name: 'SurveyEdit',
   created() {
-    this[store].dispatch('createClient', { name: 'hi'}).then((result) =>
-      this[store].dispatch('getSurveys')
+    this['$store'].dispatch('createClient', { name: 'hi'}).then((result) =>
+      this['$store'].dispatch('getSurveys')
     )
   },
   computed: {
     surveys() {
-      return this[store].getters.getSurveys;
+      return this['$store'].getters.getSurveys;
     },
   },
   methods: {
     //Update Client 
     startSurvey(domainID) {
-      const client = this[store].getters.getClient;
-      this[store].dispatch('updateClient', {
+      const client = this['$store'].getters.getClient;
+      this['$store'].dispatch('updateClient', {
         id: client.client.id,
         domainId: domainID,
       });
-      this[router].push({name:'question', params:{cID:domainID}});
+      this['$router'].push({name:'question', params:{cID:domainID}});
     },
   },
 };
