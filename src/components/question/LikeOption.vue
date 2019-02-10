@@ -28,7 +28,7 @@ export default {
     },
   },
   methods: {
-    answer(liked){
+    answer(this: any, liked){
       this['$store'].dispatch('createAnswerLike', { question: this.id, likeID: liked});
     }
   },
