@@ -115,9 +115,9 @@ export default {
     }
   },
   created() {
-    let contextID= this[route].params.cID;
+    let domainID= this[route].params.cID;
     this[store].dispatch('getSurvey', {
-        context: contextID,
+        domain: domainID,
       });
   },
   computed: {
@@ -127,13 +127,12 @@ export default {
   },
   methods: {
     displayItems(type) {
-      console.log(this.survey.questions[this.index]);
       return !(type === 'RANKING' || type === 'FAVORITE')
     },
-    next() {
+    next(this: any) {
       (this.index < this.survey.questions.length-1) ? (this.index++) : this[router].push({name:'surveyList'});
     },
-    previous(){
+    previous(this: any) {
       if (this.index > 0) {
         this.index -= 1;
       }
