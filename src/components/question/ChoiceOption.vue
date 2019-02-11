@@ -1,20 +1,93 @@
 <template>
-  <div>
-    <h2>Choice</h2>
-  </div>
+  <ol class="choices">
+    <li class="choice"
+        v-for="choice in question.choices"
+        :class="{'no-image': !choice.image }"
+        :key="choice.id">
+      <input type="radio"
+             :id="`choice-${choice.id}`"
+             :name="`choice-${question.id}`"
+             v-if="choice.image && choice.image.url"
+             :value="choice.label" 
+             @click="answer(choice.id)"
+             />
+      <label :for="`choice-${choice.id}`"
+             v-if="!choice.image">
+       <input type="radio"
+              :id="`choice-${choice.id}`"
+              :name="`choice-${question.id}`"
+              :value="choice.label" 
+              @click="answer(choice.id)"
+              />
+        {{ choice.label}}
+      </label>
+      <label class="icon"
+             :for="`choice-${choice.id}`"
+             v-if="choice.image && choice.image.url"
+             :style="{backgroundImage: `url(${choice.image.url})`}">
+
+      </label>
+      <span class="label"
+            v-if="choice.image && choice.image.url">
+        {{ choice.label }}
+      </span>
+    </li>
+  </ol>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
 
-@Component
-export default class ChoiceOption extends Vue {
+export default {
+  name: 'ChoiceOption',
+  props: {
+    id: String,
+  },
+  computed: {
+    question(this: any) {
+      return this['$store'].getters.getQuestion(this.id)
+    },
+  },
+  methods: { 
+    answer(this: any, choice) {
+      this['$store'].dispatch('createAnswerChoice', { question: this.id, choiceID: choice});
+    }
+  },
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
+<style scoped="true" lang="scss">
+@import "../../scss/variables"; 
+  .choices {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    margin-bottom: 2rem;
+  }
+  input[type="radio"]:checked + label + span { color: $primaryColor; }
+  .choice {
+    text-align: center;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    &.no-image {
+      flex-direction: row;
+      label { margin-bottom: 0;}
+      input { display: inline; margin-right: 5px; }
+    }
+    input { display: none;}
+    .icon {
+      display: block;
+      cursor: pointer;
+      width: 2.5rem;
+      margin-bottom: 0.5rem;
+      background-size: contain;
+      margin: 0 auto 0.5rem;
+      height: 2.5rem;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
 </style>
