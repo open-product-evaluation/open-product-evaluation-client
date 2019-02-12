@@ -44,13 +44,13 @@ export default {
     },
   },
   mounted(this: any){
-    this['$root'].$on('next', data => {
-      if (data=="REGULATOR"){
+    this['$root'].$on('next', (data) => {
+      if (data === 'REGULATOR') {
         const rating = (this.value != null) ? parseFloat(this.value) : 0;
         this['$store'].dispatch('createAnswerRegulator', { question: this.id, ratingID: rating });
-      }
+      };
     });
-  }
+  },
 };
 </script>
 

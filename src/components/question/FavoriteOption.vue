@@ -1,18 +1,11 @@
 <template>
   <div class="options row">
-    <div class="col-6 col-sm-4"
-         v-for="item in question.items"
-         :key="item.id">
-      <a class="item"
-         @click="select($event, item.id)"
-         href="#"
-         :class="{ selected: selected === item.id}">
-        <div class="image"
-             :style="{backgroundImage: `url(${item.image.url})`}">
-          <!-- <font-awesome-icon icon="star" /> -->
-        </div>
-      </a>
-      <p> {{item.label}}</p>
+  <div v-for="item in question.items" :key="item.id">
+      <b-card :img-src="`${item.image.url}`"
+        style="max-width: 40rem;"
+        :class="{ selected: selected === item.id}">
+        <b-button @click="select($event, item.id)"> {{ item.label }}</b-button>
+      </b-card>
     </div>
   </div>
 </template>
@@ -40,12 +33,12 @@ export default {
     },
   },
   mounted(this: any) {
-    this['$root'].$on('next', data => {
-      if (data==='FAVORITE'){
+    this['$root'].$on('next', (data) => {
+      if (data === 'FAVORITE') {
         this['$store'].dispatch('createAnswerFavorite', { question: this.id, favoriteID: this.selected});
-      }
-    })
-  }
+      };
+    });
+  },
 };
 </script>
 

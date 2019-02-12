@@ -35,7 +35,7 @@ export default {
   props: {
     id: String,
   },
-  data: function (){ 
+  data() { 
     return {
       liked: '',
     };
@@ -51,12 +51,12 @@ export default {
     },
   },
   mounted(this: any) {
-    this['$root'].$on('next', data => {
-      if (data=="LIKEDISLIKE"){
+    this['$root'].$on('next', (data) => {
+      if (data === 'LIKEDISLIKE') {
         this['$store'].dispatch('createAnswerLikeDislike', { question: this.id, likeID: this.liked});
-      }
+      };
     });
-  }
+  },
 };
 </script>
 

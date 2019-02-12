@@ -41,7 +41,7 @@ export default {
   props: {
     id: String,
   },
-  data: function (){ 
+  data() {
     return {
       choice: '',
     };
@@ -54,11 +54,12 @@ export default {
   methods: {
     answer(this: any, selectedItem) {
       this.choice = selectedItem;
+      console.log("", this.question);
     },
   },
   mounted(this: any) {
-    this['$root'].$on('next', data => {
-      if (data=="CHOICE"){
+    this['$root'].$on('next', (data) => {
+      if (data === 'CHOICE"') {
         this['$store'].dispatch('createAnswerChoice', { question: this.id, choiceID: this.choice});
       }
     });

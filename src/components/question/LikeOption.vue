@@ -22,7 +22,7 @@ export default {
   props: {
     id: String,
   },
-  data: function (){ 
+  data() { 
     return {
       liked: '',
     };
@@ -38,10 +38,10 @@ export default {
     },
   },
   mounted(this: any) {
-    this['$root'].$on('next', data => {
-      if (data=="LIKE"){
+    this['$root'].$on('next', (data) => {
+      if (data === 'LIKE') {
         this['$store'].dispatch('createAnswerLike', { question: this.id, likeID: this.liked});
-      }
+      };
     });
   },
 };

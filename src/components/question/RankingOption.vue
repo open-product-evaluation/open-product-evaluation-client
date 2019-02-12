@@ -4,20 +4,15 @@
              @start="drag = true"
              @end="drag = false"
              class="options row">
-      <div class="col-6 col-sm-4"
-          v-for="(item, index) in question.items"
-          :key="item.id">
-        <div class="image"
-            :style="{backgroundImage: `url(${item.image.url})`}">
-        </div>
-         <span class="label" 
-         v-if="item.image && item.image.url">
-        {{ item.label }}
-        </span>
-        <span class="rankingLabel">Platz {{ index + 1}}</span>
-      </div>
+    <div class="col-6" v-for="(item, index) in question.items" :key="item.id">
+      <b-card :title="`Platz ${index + 1}`"
+      :sub-title="`${item.label}`"
+      :img-src="`${item.image.url}`"
+      img-top>
+      </b-card>
+    </div>
   </draggable>
-  </div>
+</div>
 </template>
 
 <script lang="ts">
@@ -48,10 +43,10 @@ export default {
     },
   },
   mounted(this: any){
-    this['$root'].$on('next', data => {
-      if (data=="RANKING"){
+    this['$root'].$on('next', (data) => {
+      if (data === 'RANKING') {
         this['$store'].dispatch('createAnswerRanking', { question: this.id, rankingID: this.getAnswers() });
-      }
+      };
     });
   },
 };

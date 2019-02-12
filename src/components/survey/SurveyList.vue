@@ -4,12 +4,15 @@
     <p>
       OPE - und alles ist okay!
     </p>
-    <ul >
-      <li v-for="survey in surveys" :key="survey.id">
-        {{ survey.activeSurvey.title }}
-        <button @click="startSurvey(survey.id)">Starten</button>
-      </li>
-    </ul>
+    <div v-for="survey in surveys" :key="survey.id">
+      <b-card :title="`${survey.activeSurvey.title}`"
+        img-src=""
+        style="max-width: 40rem;"
+        class="mb-2">
+        <p class="card-text"> {{survey.activeSurvey.description}}</p>
+        <b-button @click="startSurvey(survey.id)">Starten</b-button>
+      </b-card>
+    </div>
   </div>
 </template>
 
