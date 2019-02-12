@@ -1,4 +1,5 @@
 <template>
+<div class="drag">
   <draggable v-model="question.items"
              @start="drag = true"
              @end="drag = false"
@@ -6,13 +7,14 @@
     <div class="col-6 col-sm-4"
          v-for="(item, index) in question.items"
          :key="item.id">
-
       <div class="image"
            :style="{backgroundImage: `url(${item.image.url})`}">
         <span class="rank">{{ index + 1}}</span>
       </div>
     </div>
   </draggable>
+  <button @click="answer">Antworten</button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -27,9 +29,23 @@ export default {
   },
   computed: {
     question(this: any) {
-      return JSON.parse(JSON.stringify(this['$store'].getters.getQuestion(this.id)))
+      return this['$store'].getters.getQuestion(this.id)
     },
   },
+  methods: {
+    getAnswers(this: any): string[]{
+      //Build array for rankingItems
+      //[1,...,n] -> n is best
+      let favoriteArray : string[] = [];
+      this.question.items.forEach(element => {
+        favoriteArray.push(element.id);
+      });
+      return favoriteArray;
+    },
+    answer(this: any){
+      this['$store'].dispatch('createAnswerRanking', {question: this.id, rankingID: this.getAnswers() });
+    }
+  }
 }
 </script>
 

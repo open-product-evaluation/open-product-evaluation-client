@@ -89,7 +89,7 @@ const favoriteAnswer = (question: string, favoriteID: boolean) => apiClient.muta
         },
     });
 
-    //Mutation Answer FavoriteQuestion
+    //Mutation Answer RegulatorQuestion
 const regulatorAnswer = (question: string, ratingID: number) => apiClient.mutate(
     {
         mutation : gql`
@@ -110,10 +110,32 @@ const regulatorAnswer = (question: string, ratingID: number) => apiClient.mutate
             rating: ratingID,
         },
     });
+ //Mutation Answer RankingQuestion
+const rankingAnswer = (question: string, rankingID: [string]) => apiClient.mutate(
+    {
+        mutation : gql`
+        mutation($questionID: ID!, $rankedItems: [ID!]){
+            setAnswer(data: {
+                questionID: $questionID
+                rankedItems: $rankedItems
+            }){
+                __typename
+                answer{
+                    __typename
+                    question
+                }
+            }
+        }`,
+        variables: {
+            questionID: question,
+            rankedItems: rankingID,
+        },
+    });
 export default {
     choiseAnswer,
     likeAnswer,
     likeDislikeAnswer,
     favoriteAnswer,
     regulatorAnswer,
+    rankingAnswer,
 };
