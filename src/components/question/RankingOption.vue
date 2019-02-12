@@ -4,16 +4,19 @@
              @start="drag = true"
              @end="drag = false"
              class="options row">
-    <div class="col-6 col-sm-4"
-         v-for="(item, index) in question.items"
-         :key="item.id">
-      <div class="image"
-           :style="{backgroundImage: `url(${item.image.url})`}">
-        <span class="rank">{{ index + 1}}</span>
+      <div class="col-6 col-sm-4"
+          v-for="(item, index) in question.items"
+          :key="item.id">
+        <div class="image"
+            :style="{backgroundImage: `url(${item.image.url})`}">
+        </div>
+         <span class="label" 
+         v-if="item.image && item.image.url">
+        {{ item.label }}
+        </span>
+        <span class="rankingLabel">Platz {{ index + 1}}</span>
       </div>
-    </div>
   </draggable>
-  <button @click="answer">Antworten</button>
   </div>
 </template>
 
@@ -43,9 +46,13 @@ export default {
       });
       return favoriteArray;
     },
-    answer(this: any) {
-      this['$store'].dispatch('createAnswerRanking', {question: this.id, rankingID: this.getAnswers() });
-    },
+  },
+  mounted(this: any){
+    this['$root'].$on('next', data => {
+      if (data=="RANKING"){
+        this['$store'].dispatch('createAnswerRanking', { question: this.id, rankingID: this.getAnswers() });
+      }
+    });
   },
 };
 </script>
@@ -68,6 +75,12 @@ export default {
     align-items: center;
     justify-content: center;
     position: absolute;
+    font-size: 2rem;
+    color: $primaryColor;
+  }
+  .rankingLabel {
+    display: flex;
+    justify-content: center;
     font-size: 2rem;
     color: $primaryColor;
   }

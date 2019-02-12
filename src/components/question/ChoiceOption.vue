@@ -25,7 +25,6 @@
              :for="`choice-${choice.id}`"
              v-if="choice.image && choice.image.url"
              :style="{backgroundImage: `url(${choice.image.url})`}">
-
       </label>
       <span class="label"
             v-if="choice.image && choice.image.url">
@@ -42,15 +41,27 @@ export default {
   props: {
     id: String,
   },
+  data: function (){ 
+    return {
+      choice: '',
+    };
+  },
   computed: {
     question(this: any) {
       return this['$store'].getters.getQuestion(this.id);
     },
   },
   methods: {
-    answer(this: any, choice) {
-      this['$store'].dispatch('createAnswerChoice', { question: this.id, choiceID: choice});
+    answer(this: any, selectedItem) {
+      this.choice = selectedItem;
     },
+  },
+  mounted(this: any) {
+    this['$root'].$on('next', data => {
+      if (data=="CHOICE"){
+        this['$store'].dispatch('createAnswerChoice', { question: this.id, choiceID: this.choice});
+      }
+    });
   },
 };
 </script>

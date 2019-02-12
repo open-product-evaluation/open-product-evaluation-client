@@ -18,10 +18,11 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 export default {
   name: 'SurveyEdit',
-  created() {
-    this['$store'].dispatch('createClient', { name: 'hi'}).then((result) =>
-      this['$store'].dispatch('getSurveys'),
-    );
+  created(this: any) {
+    this['$store'].dispatch('createClient', { name: 'hi'}).then((result) => {
+      this['$store'].dispatch('getSurveys');
+      this.surveys;
+    });
   },
   computed: {
     surveys() {

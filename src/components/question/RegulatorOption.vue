@@ -15,7 +15,6 @@
         <span v-if="value === null" class="value">{{ question.default }}</span>
         <span v-if="value !== null" class="value">{{ value }}</span>
       </div>
-      <button @click="answer()">Abschicken</button> 
       <div class="col-1">
         {{ question.max }}
       </div>
@@ -43,11 +42,15 @@ export default {
     updateValue(this: any, event) {
       this.value = event.target.value;
     },
-    answer(this: any) {
-      const rating = (this.value != null) ? parseFloat(this.value) : 0;
-      this['$store'].dispatch('createAnswerRegulator', {question: this.id, ratingID: rating });
-    },
   },
+  mounted(this: any){
+    this['$root'].$on('next', data => {
+      if (data=="REGULATOR"){
+        const rating = (this.value != null) ? parseFloat(this.value) : 0;
+        this['$store'].dispatch('createAnswerRegulator', { question: this.id, ratingID: rating });
+      }
+    });
+  }
 };
 </script>
 

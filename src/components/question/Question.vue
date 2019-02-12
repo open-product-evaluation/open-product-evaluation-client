@@ -3,7 +3,7 @@
     <div class="container">
       <b-card>
 
-        <!-- <h3>{{ survey.title }}</h3> -->
+        <h3>{{ survey.title }}</h3>
 
         <p class="description">
           {{ survey.description }}
@@ -75,6 +75,11 @@
                    v-if="index !== survey.questions.length - 1">
               Next
             </b-btn>
+            <b-btn variant="primary"
+                   @click="next"
+                   v-if="index == survey.questions.length -1 ">
+              Fertig
+            </b-btn>
           </b-col>
         </b-row>
       </b-card>
@@ -127,6 +132,7 @@ export default {
     },
     next(this: any) {
       (this.index < this.survey.questions.length - 1) ? (this.index++) : this['$router'].push({name: 'surveyList'});
+       this['$root'].$emit('next', this.survey.questions[this.index-1].type);
     },
     previous(this: any) {
       if (this.index > 0) {

@@ -22,6 +22,11 @@ export default {
   props: {
     id: String,
   },
+  data: function (){ 
+    return {
+      liked: '',
+    };
+  },
   computed: {
     question(this: any) {
       return this['$store'].getters.getQuestion(this.id);
@@ -29,8 +34,15 @@ export default {
   },
   methods: {
     answer(this: any, liked) {
-      this['$store'].dispatch('createAnswerLike', { question: this.id, likeID: liked});
+      this.liked = liked;
     },
+  },
+  mounted(this: any) {
+    this['$root'].$on('next', data => {
+      if (data=="LIKE"){
+        this['$store'].dispatch('createAnswerLike', { question: this.id, likeID: this.liked});
+      }
+    });
   },
 };
 </script>
