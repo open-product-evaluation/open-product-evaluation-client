@@ -88,9 +88,32 @@ const favoriteAnswer = (question: string, favoriteID: boolean) => apiClient.muta
             favoriteItem: favoriteID,
         },
     });
+
+    //Mutation Answer FavoriteQuestion
+const regulatorAnswer = (question: string, ratingID: number) => apiClient.mutate(
+    {
+        mutation : gql`
+        mutation($questionID: ID!, $rating: Float!){
+            setAnswer(data: {
+                questionID: $questionID
+                rating: $rating
+            }){
+                __typename
+                answer{
+                    __typename
+                    question
+                }
+            }
+        }`,
+        variables: {
+            questionID: question,
+            rating: ratingID,
+        },
+    });
 export default {
     choiseAnswer,
     likeAnswer,
     likeDislikeAnswer,
     favoriteAnswer,
+    regulatorAnswer,
 };

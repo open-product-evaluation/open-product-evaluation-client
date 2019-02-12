@@ -41,6 +41,8 @@ export default {
   methods: {
     updateValue(this: any, event) {
       this.value = event.target.value
+      // TODO change position of sending answer to server
+      this['$store'].dispatch('createAnswerRegulator', { question: this.id, ratingID: parseFloat(this.value) });
     },
   },
 }

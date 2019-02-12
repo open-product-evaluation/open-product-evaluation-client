@@ -89,6 +89,12 @@ const actions = {
       // TODO:  Do something with response?
     });
   },
+  createAnswerRegulator(context, payload) {
+    Question.regulatorAnswer( payload.question, payload.ratingID)
+    .then((data) => {
+      // TODO:  Do something with response?
+    });
+  },
 };
 
 export default new Vuex.Store({
