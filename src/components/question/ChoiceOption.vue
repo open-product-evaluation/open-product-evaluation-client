@@ -44,15 +44,15 @@ export default {
   },
   computed: {
     question(this: any) {
-      return this['$store'].getters.getQuestion(this.id)
+      return this['$store'].getters.getQuestion(this.id);
     },
   },
-  methods: { 
+  methods: {
     answer(this: any, choice) {
       this['$store'].dispatch('createAnswerChoice', { question: this.id, choiceID: choice});
-    }
+    },
   },
-}
+};
 </script>
 
 <style scoped="true" lang="scss">

@@ -37,15 +37,15 @@ export default {
   },
   computed: {
     question(this: any) {
-      return JSON.parse(JSON.stringify(this['$store'].getters.getQuestion(this.id)))
+      return this['$store'].getters.getQuestion(this.id);
     },
   },
   methods: {
-    answer(this: any, liked){
+    answer(this: any, liked) {
       this['$store'].dispatch('createAnswerLikeDislike', { question: this.id, likeID: liked});
     },
   },
-}
+};
 </script>
 
 

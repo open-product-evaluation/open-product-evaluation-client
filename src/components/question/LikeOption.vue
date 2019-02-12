@@ -24,15 +24,15 @@ export default {
   },
   computed: {
     question(this: any) {
-      return JSON.parse(JSON.stringify(this['$store'].getters.getQuestion(this.id)))
+      return this['$store'].getters.getQuestion(this.id);
     },
   },
   methods: {
-    answer(this: any, liked){
+    answer(this: any, liked) {
       this['$store'].dispatch('createAnswerLike', { question: this.id, likeID: liked});
-    }
+    },
   },
-}
+};
 </script>
 
 <style scoped="true" lang="scss">

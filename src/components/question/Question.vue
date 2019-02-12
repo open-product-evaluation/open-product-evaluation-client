@@ -108,33 +108,33 @@ export default {
   data() {
     return {
       index: 0,
-    }
+    };
   },
   created() {
-    let domainID= this['$route'].params.cID;
+    const domainID = this['$route'].params.cID;
     this['$store'].dispatch('getSurvey', {
         domain: domainID,
       });
   },
   computed: {
     survey() {
-      return this['$store'].getters.getSurvey
+      return this['$store'].getters.getSurvey;
     },
   },
   methods: {
     displayItems(type) {
-      return !(type === 'RANKING' || type === 'FAVORITE')
+      return !(type === 'RANKING' || type === 'FAVORITE');
     },
     next(this: any) {
-      (this.index < this.survey.questions.length-1) ? (this.index++) : this['$router'].push({name:'surveyList'});
+      (this.index < this.survey.questions.length - 1) ? (this.index++) : this['$router'].push({name: 'surveyList'});
     },
     previous(this: any) {
       if (this.index > 0) {
         this.index -= 1;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

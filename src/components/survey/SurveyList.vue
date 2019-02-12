@@ -20,8 +20,8 @@ export default {
   name: 'SurveyEdit',
   created() {
     this['$store'].dispatch('createClient', { name: 'hi'}).then((result) =>
-      this['$store'].dispatch('getSurveys')
-    )
+      this['$store'].dispatch('getSurveys'),
+    );
   },
   computed: {
     surveys() {
@@ -29,14 +29,14 @@ export default {
     },
   },
   methods: {
-    //Update Client 
+    // Update Client
     startSurvey(domainID) {
       const client = this['$store'].getters.getClient;
       this['$store'].dispatch('updateClient', {
         id: client.client.id,
         domainId: domainID,
       });
-      this['$router'].push({name:'question', params:{cID:domainID}});
+      this['$router'].push({name: 'question', params: {cID: domainID}});
     },
   },
 };

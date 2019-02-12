@@ -29,26 +29,26 @@ export default {
   data() {
     return {
       value: null,
-    }
+    };
   },
   props: {
     id: String,
   },
   computed: {
     question(this: any) {
-      return JSON.parse(JSON.stringify(this['$store'].getters.getQuestion(this.id)))
+      return this['$store'].getters.getQuestion(this.id);
     },
   },
   methods: {
     updateValue(this: any, event) {
-      this.value = event.target.value
+      this.value = event.target.value;
     },
-    answer(this: any){
-      let rating = (this.value != null) ? parseFloat(this.value) : 0;
+    answer(this: any) {
+      const rating = (this.value != null) ? parseFloat(this.value) : 0;
       this['$store'].dispatch('createAnswerRegulator', {question: this.id, ratingID: rating });
     },
   },
-}
+};
 </script>
 
 

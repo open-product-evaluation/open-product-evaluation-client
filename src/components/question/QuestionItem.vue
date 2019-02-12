@@ -19,10 +19,10 @@ export default {
   },
   computed: {
     question(this: any) {
-      return JSON.parse(JSON.stringify(this['$store'].getters.getQuestion(this.id)))
+      return this['$store'].getters.getQuestion(this.id);
     },
   },
-}
+};
 </script>
 
 <style scoped="true" lang="scss">

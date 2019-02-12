@@ -26,21 +26,21 @@ export default {
   data() {
     return {
       selected: '',
-    }
+    };
   },
   computed: {
     question(this: any) {
-      return JSON.parse(JSON.stringify(this['$store'].getters.getQuestion(this.id)))
+      return this['$store'].getters.getQuestion(this.id);
     },
   },
   methods: {
     select(this: any, event, id) {
-      event.preventDefault()
-      this.selected = id
+      event.preventDefault();
+      this.selected = id;
       this['$store'].dispatch('createAnswerFavorite', { question: this.id, favoriteID: this.selected});
     },
   },
-}
+};
 </script>
 
 

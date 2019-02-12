@@ -18,7 +18,8 @@
 </template>
 
 <script lang="ts">
-import draggable from 'vuedraggable'
+import draggable from 'vuedraggable';
+
 export default {
   name: 'RankingOption',
   components: {
@@ -29,24 +30,24 @@ export default {
   },
   computed: {
     question(this: any) {
-      return this['$store'].getters.getQuestion(this.id)
+      return this['$store'].getters.getQuestion(this.id);
     },
   },
   methods: {
-    getAnswers(this: any): string[]{
-      //Build array for rankingItems
-      //[1,...,n] -> n is best
-      let favoriteArray : string[] = [];
-      this.question.items.forEach(element => {
+    getAnswers(this: any): string[] {
+      // Build array for rankingItems
+      // [1,...,n] -> n is best
+      let favoriteArray: string[] = [];
+      this.question.items.forEach( (element) => {
         favoriteArray.push(element.id);
       });
       return favoriteArray;
     },
-    answer(this: any){
+    answer(this: any) {
       this['$store'].dispatch('createAnswerRanking', {question: this.id, rankingID: this.getAnswers() });
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped="true" lang="scss">
