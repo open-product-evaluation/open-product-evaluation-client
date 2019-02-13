@@ -82,7 +82,10 @@
           </b-col>
         </b-row>
       </b-card>
-      <b-progress :value="counter" :max="max" :label="max" show-progress animated class="mb-2"></b-progress>
+      <b-progress :max="max">
+        <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
+        </b-progress-bar>
+      </b-progress>
   </div>
 </template>
 
@@ -134,7 +137,7 @@ export default {
     next(this: any) {
       (this.index < this.survey.questions.length - 1) ? (this.index++) : this['$router'].push({name: 'surveyList'});
        this['$root'].$emit('next', this.survey.questions[this.index-1].type);
-       this.counter = this.index/this.survey.questions.length * 100;
+       this.counter = Math.floor(this.index/this.survey.questions.length * 100);
     },
     previous(this: any) {
       if (this.index > 0) {
@@ -151,7 +154,10 @@ h3 {
   margin: 40px 0 0;
 }
 .progress {
-  height: 1.5rem;
   font-size: 1rem;
+  height: max-content;
+}
+.progress-bar {
+  height: 1.5rem;
 }
 </style>

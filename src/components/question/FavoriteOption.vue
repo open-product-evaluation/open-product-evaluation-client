@@ -1,9 +1,9 @@
 <template>
   <div class="options row">
   <div v-for="item in question.items" :key="item.id">
-      <b-card :img-src="`${item.image.url}`"
-        style="max-width: 40rem;"
+      <b-card style="max-width: 40rem;"
         :class="{ selected: selected === item.id}">
+        <img style="max-width: 100%;" v-img :src="`${item.image.url}`">
         <b-button @click="select($event, item.id)"> {{ item.label }}</b-button>
       </b-card>
     </div>

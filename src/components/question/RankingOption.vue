@@ -4,11 +4,15 @@
              @start="drag = true"
              @end="drag = false"
              class="options row">
-    <div class="col-6" v-for="(item, index) in question.items" :key="item.id">
+    <div class="col-6" 
+          v-for="(item, index) in question.items" 
+          :key="item.id">
       <b-card :title="`Platz ${index + 1}`"
-      :sub-title="`${item.label}`"
-      :img-src="`${item.image.url}`"
-      img-top>
+          :sub-title="`${item.label}`" 
+          img-top>
+        <img style="max-width: 100%;" 
+          v-img :src="`${item.image.url}`">
+        <b-button @click="select($event, item.id)"> {{ item.label }}</b-button>
       </b-card>
     </div>
   </draggable>
