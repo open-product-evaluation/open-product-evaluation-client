@@ -54,12 +54,12 @@ export default {
   methods: {
     answer(this: any, selectedItem) {
       this.choice = selectedItem;
-      console.log("", this.question);
     },
   },
   mounted(this: any) {
     this['$root'].$on('next', (data) => {
-      if (data === 'CHOICE"') {
+      if (data === 'CHOICE' && this.choice!='') {
+        // TODO if not answered, don't go to next question
         this['$store'].dispatch('createAnswerChoice', { question: this.id, choiceID: this.choice});
       }
     });

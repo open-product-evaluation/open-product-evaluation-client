@@ -55,18 +55,14 @@
                      && survey.questions.length
                      && survey.questions.length > 0">
           <b-col cols="4">
+            <!--
             <b-btn variant="primary"
                    @click="previous"
                    v-if="index !== 0">
               Previous
-            </b-btn>
+            </b-btn> -->
           </b-col>
           <b-col class="text-center">
-            <b-btn variant="secondary"
-                   @click="index = 0"
-                   v-if="index > 0">
-              Start
-            </b-btn>
           </b-col>
           <b-col cols="4" class="text-right">
             <b-btn variant="primary"
@@ -77,7 +73,7 @@
             <b-btn variant="primary"
                    @click="next"
                    v-if="index == survey.questions.length -1 ">
-              Fertig
+              Beenden
             </b-btn>
           </b-col>
         </b-row>

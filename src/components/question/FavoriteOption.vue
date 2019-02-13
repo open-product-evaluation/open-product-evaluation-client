@@ -35,7 +35,7 @@ export default {
   },
   mounted(this: any) {
     this['$root'].$on('next', (data) => {
-      if (data === 'FAVORITE') {
+      if (data === 'FAVORITE' && this.selected!='') {
         this['$store'].dispatch('createAnswerFavorite', { question: this.id, favoriteID: this.selected});
       };
     });

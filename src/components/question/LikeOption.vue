@@ -39,7 +39,7 @@ export default {
   },
   mounted(this: any) {
     this['$root'].$on('next', (data) => {
-      if (data === 'LIKE') {
+      if (data === 'LIKE' && this.liked!='') {
         this['$store'].dispatch('createAnswerLike', { question: this.id, likeID: this.liked});
       };
     });

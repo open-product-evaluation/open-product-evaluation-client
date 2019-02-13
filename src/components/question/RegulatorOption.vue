@@ -10,7 +10,7 @@
                :min="question.min"
                :max="question.max"
                :step="question.stepSize"
-               :value="question.default"
+               v-bind:value="value"
                @change="updateValue" />
         <span v-if="value === null" class="value">{{ question.default }}</span>
         <span v-if="value !== null" class="value">{{ value }}</span>
@@ -45,7 +45,7 @@ export default {
   },
   mounted(this: any){
     this['$root'].$on('next', (data) => {
-      if (data === 'REGULATOR') {
+      if (data === 'REGULATOR' && this.value!=null) {
         const rating = (this.value != null) ? parseFloat(this.value) : 0;
         this['$store'].dispatch('createAnswerRegulator', { question: this.id, ratingID: rating });
       };
