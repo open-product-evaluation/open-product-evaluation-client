@@ -1,5 +1,4 @@
 <template>
-  <div class="preview">
     <div class="container">
       <b-card>
 
@@ -83,7 +82,7 @@
           </b-col>
         </b-row>
       </b-card>
-    </div>
+      <b-progress :value="counter" :max="max" :label="max" show-progress animated class="mb-2"></b-progress>
   </div>
 </template>
 
@@ -113,6 +112,8 @@ export default {
   data() {
     return {
       index: 0,
+      max: 100,
+      counter: 0,
     };
   },
   created() {
@@ -133,6 +134,7 @@ export default {
     next(this: any) {
       (this.index < this.survey.questions.length - 1) ? (this.index++) : this['$router'].push({name: 'surveyList'});
        this['$root'].$emit('next', this.survey.questions[this.index-1].type);
+       this.counter = this.index/this.survey.questions.length * 100;
     },
     previous(this: any) {
       if (this.index > 0) {
@@ -147,5 +149,9 @@ export default {
 <style scoped>
 h3 {
   margin: 40px 0 0;
+}
+.progress {
+  height: 1.5rem;
+  font-size: 1rem;
 }
 </style>
