@@ -1,9 +1,10 @@
 <template>
-  <div class="options row">
-  <div v-for="item in question.items" :key="item.id">
-      <b-card style="max-width: 40rem;"
-        :class="{ selected: selected === item.id}">
-        <img style="max-width: 100%;" v-img :src="`${item.image.url}`">
+  <div style="display: inline-flex;">
+  <div v-for="item in question.items" :key="item.id" :class="((question.items.length%2)===0) ? 'col-lg-6' : 'col-lg-4'">
+      <b-card
+        :class="{ selected: selected === item.id}"
+        header-tag="header">
+        <img slot="header" style="max-width: 100%;" v-img :src="`${item.image.url}`">
         <b-button @click="select($event, item.id)"> {{ item.label }}</b-button>
       </b-card>
     </div>
@@ -69,5 +70,8 @@ export default {
     .oi {
       display: block;
     }
+  }
+  .card-header {
+    padding: 0;
   }
 </style>

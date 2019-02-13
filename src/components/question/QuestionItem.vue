@@ -1,12 +1,14 @@
 <template>
   <div class="row items"
        v-if="question.items && question.items.length > 0">
-    <div class="col-6 col-sm-4"
-         v-for="item in question.items"
-         :key="item.id">
-      <div class="item"
-           :style="{backgroundImage: `url(${item.image.url})`}">
-      </div>
+    <div :class="((question.items.length%2)===0) ? 'col-lg-6' : 'col-lg-4'"
+         v-for="(item, i) in question.items"
+         :key="`${item.id}`+i">
+         <b-card
+        :sub-title="`${item.label}`"
+        header-tag="header">
+        <img slot="header" style="max-width: 100%;" v-img :src="`${item.image.url}`">
+      </b-card>
     </div>
   </div>
 </template>
@@ -35,5 +37,8 @@ export default {
 }
   .item img {
     width: 100%;
+  }
+  .card-header {
+    padding: 0;
   }
 </style>
