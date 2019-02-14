@@ -45,11 +45,11 @@ export default {
       return favoriteArray;
     },
   },
-  mounted(this: any){
+  mounted(this: any) {
     this['$root'].$on('next', (data) => {
       if (data === 'RANKING') {
         this['$store'].dispatch('createAnswerRanking', { question: this.id, rankingID: this.getAnswers() });
-      };
+      }
     });
   },
 };
@@ -81,5 +81,9 @@ export default {
     justify-content: center;
     font-size: 2rem;
     color: $primaryColor;
+  }
+  .card-header {
+    padding: 0;
+    max-width: 100%;
   }
 </style>

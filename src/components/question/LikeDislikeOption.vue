@@ -35,7 +35,7 @@ export default {
   props: {
     id: String,
   },
-  data() { 
+  data() {
     return {
       liked: '',
     };
@@ -52,9 +52,9 @@ export default {
   },
   mounted(this: any) {
     this['$root'].$on('next', (data) => {
-      if (data === 'LIKEDISLIKE' && this.liked!='') {
+      if (data === 'LIKEDISLIKE' && this.liked !== '') {
         this['$store'].dispatch('createAnswerLikeDislike', { question: this.id, likeID: this.liked});
-      };
+      }
     });
   },
 };
@@ -76,6 +76,7 @@ export default {
   .like, .dislike {
     text-align: center;
     flex-grow: 1;
+    font-size: 1.5rem;
     input { display: none; }
     .icon {
       display: block;

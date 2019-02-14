@@ -58,7 +58,7 @@ export default {
   },
   mounted(this: any) {
     this['$root'].$on('next', (data) => {
-      if (data === 'CHOICE' && this.choice!='') {
+      if (data === 'CHOICE' && this.choice !== '') {
         // TODO if not answered, don't go to next question
         this['$store'].dispatch('createAnswerChoice', { question: this.id, choiceID: this.choice});
       }
@@ -78,6 +78,7 @@ export default {
   }
   input[type="radio"]:checked + label + span { color: $primaryColor; }
   .choice {
+    font-size: 1.5rem;
     text-align: center;
     flex-grow: 1;
     display: flex;

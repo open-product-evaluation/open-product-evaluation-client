@@ -43,12 +43,12 @@ export default {
       this.value = event.target.value;
     },
   },
-  mounted(this: any){
+  mounted(this: any) {
     this['$root'].$on('next', (data) => {
-      if (data === 'REGULATOR' && this.value!=null) {
+      if (data === 'REGULATOR' && this.value != null) {
         const rating = (this.value != null) ? parseFloat(this.value) : 0;
         this['$store'].dispatch('createAnswerRegulator', { question: this.id, ratingID: rating });
-      };
+      }
     });
   },
 };
@@ -56,5 +56,12 @@ export default {
 
 
 <style scoped="true" lang="scss">
-  .range { text-align: center; }
+  .range { 
+    text-align: center; 
+    font-size: 1.5rem;
+    padding: 0;
+    }
+  .col-1 {
+    font-size: 1.5rem;
+  }
 </style>

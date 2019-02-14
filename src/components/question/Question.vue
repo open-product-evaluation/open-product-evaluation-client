@@ -1,8 +1,7 @@
 <template>
     <div class="container">
       <b-card>
-
-        <h3>{{ survey.title }}</h3>
+        <h2>{{ survey.title }}</h2>
 
         <p class="description">
           {{ survey.description }}
@@ -78,10 +77,12 @@
           </b-col>
         </b-row>
       </b-card>
+      <!-- TODO Choose progressBar oder ProgressSteps --> 
       <b-progress :max="max">
         <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
         </b-progress-bar>
       </b-progress>
+      <step-indicator :current="index" :total="survey.questions.length"></step-indicator>
   </div>
 </template>
 
@@ -95,6 +96,7 @@ import RegulatorOptions from '@/components/question/RegulatorOption.vue';
 import LikeOptions from '@/components/question/LikeOption.vue';
 import LikeDislikeOptions from '@/components/question/LikeDislikeOption.vue';
 import QuestionValue from '@/components/question/QuestionValue.vue';
+import StepIndicator from 'vue-step-indicator';
 
 export default {
   name: 'Question',
@@ -107,6 +109,7 @@ export default {
     like: LikeOptions,
     likeDislike: LikeDislikeOptions,
     questionMeta: QuestionValue,
+    StepIndicator,
   },
   data() {
     return {
@@ -132,8 +135,8 @@ export default {
     },
     next(this: any) {
       (this.index < this.survey.questions.length - 1) ? (this.index++) : this['$router'].push({name: 'surveyList'});
-       this['$root'].$emit('next', this.survey.questions[this.index-1].type);
-       this.counter = Math.floor(this.index/this.survey.questions.length * 100);
+       this['$root'].$emit('next', this.survey.questions[this.index - 1].type);
+       this.counter = Math.floor(this.index / this.survey.questions.length * 100);
     },
     previous(this: any) {
       if (this.index > 0) {
@@ -143,11 +146,14 @@ export default {
   },
 };
 </script>
-
+<style src="vue-step-indicator/dist/vue-step-indicator.css"></style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;
+}
+.description {
+  font-size: 1.25rem;
 }
 .progress {
   font-size: 1rem;

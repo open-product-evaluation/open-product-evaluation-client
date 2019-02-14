@@ -39,9 +39,9 @@ export default {
   },
   mounted(this: any) {
     this['$root'].$on('next', (data) => {
-      if (data === 'LIKE' && this.liked!='') {
+      if (data === 'LIKE' && this.liked !== '') {
         this['$store'].dispatch('createAnswerLike', { question: this.id, likeID: this.liked});
-      };
+      }
     });
   },
 };
@@ -57,6 +57,7 @@ export default {
     color: $primaryColor;
   }
   .like {
+    font-size: 1.5rem;
     text-align: center;
     flex-grow: 1;
     input { display: none; }

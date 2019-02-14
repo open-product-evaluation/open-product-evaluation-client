@@ -4,9 +4,9 @@
     <div :class="((question.items.length%2)===0) ? 'col-lg-6' : 'col-lg-4'"
          v-for="(item, i) in question.items"
          :key="`${item.id}`+i">
-      <b-card :sub-title="`${item.label}`"
+      <b-card :title="`${item.label}`"
           header-tag="header">
-        <img slot="header" style="max-width: 100%;" v-img :src="`${item.image.url}`">
+        <img slot="header" style="max-width:100%" v-img :src="`${item.image.url}`">
       </b-card>
     </div>
   </div>
