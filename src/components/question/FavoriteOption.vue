@@ -5,7 +5,7 @@
         :class="{ selected: selected === item.id}"
         header-tag="header">
         <img slot="header" style="max-width: 100%;" v-img :src="`${item.image.url}`">
-        <b-button @click="select($event, item.id)"> {{ item.label }}</b-button>
+        <b-button variant="primary" @click="select($event, item.id)"> {{ item.label }}</b-button>
       </b-card>
     </div>
   </div>

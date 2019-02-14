@@ -1,12 +1,17 @@
 <template>
     <div class="container">
       <b-card>
-        <h2>{{ survey.title }}</h2>
-
-        <p class="description">
-          {{ survey.description }}
-        </p>
-
+        <div slot="header">
+          <h2 >{{ survey.title }}</h2>
+          
+          <p class="description">
+            {{ survey.description }}
+          </p>
+        </div>
+        <!-- TODO Choose progressBar oder ProgressSteps --> 
+        <div class="stepper">
+            <step-indicator :current="index" :total="survey.questions.length"></step-indicator>
+        </div>
         <div class="question" v-if="survey.questions
                                     && survey.questions.length
                                     && survey.questions.length > 0">
@@ -49,21 +54,19 @@
                     v-if="survey.questions[index].type === 'FAVORITE'">
           </favorite>
         </div>
-
+        
+        <div slot="footer">
         <b-row v-if="survey.questions
                      && survey.questions.length
                      && survey.questions.length > 0">
-          <b-col cols="4">
-            <!--
+          <b-col cols="6" class="text-left">
             <b-btn variant="primary"
                    @click="previous"
                    v-if="index !== 0">
               Previous
-            </b-btn> -->
+            </b-btn>
           </b-col>
-          <b-col class="text-center">
-          </b-col>
-          <b-col cols="4" class="text-right">
+          <b-col cols="6" class="text-right">
             <b-btn variant="primary"
                    @click="next"
                    v-if="index !== survey.questions.length - 1">
@@ -76,13 +79,12 @@
             </b-btn>
           </b-col>
         </b-row>
+        </div>
       </b-card>
-      <!-- TODO Choose progressBar oder ProgressSteps --> 
       <b-progress :max="max">
         <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
         </b-progress-bar>
       </b-progress>
-      <step-indicator :current="index" :total="survey.questions.length"></step-indicator>
   </div>
 </template>
 
@@ -161,5 +163,8 @@ h3 {
 }
 .progress-bar {
   height: 1.5rem;
+}
+.stepper {
+  margin-bottom: 1rem;
 }
 </style>
