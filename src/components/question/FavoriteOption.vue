@@ -1,18 +1,12 @@
 <template>
-  <div class="options row">
-    <div class="col-6 col-sm-4"
-         v-for="item in question.items"
-         :key="item.id">
-      <a class="item"
-         @click="select($event, item.id)"
-         href="#"
-         :class="{ selected: selected === item.id}">
-        <div class="image"
-             :style="{backgroundImage: `url(${item.image.url})`}">
-          <!-- <font-awesome-icon icon="star" /> -->
-        </div>
-      </a>
-      <p> {{item.label}}</p>
+  <div style="display: inline-flex;">
+  <div v-for="item in question.items" :key="item.id" :class="((question.items.length%2)===0) ? 'col-lg-6' : 'col-lg-4'">
+      <b-card
+        :class="{ selected: selected === item.id}"
+        header-tag="header">
+        <img slot="header" style="max-width: 100%;" v-img :src="`${item.image.url}`">
+        <b-button variant="primary" @click="select($event, item.id)"> {{ item.label }}</b-button>
+      </b-card>
     </div>
   </div>
 </template>
@@ -26,21 +20,27 @@ export default {
   data() {
     return {
       selected: '',
-    }
+    };
   },
   computed: {
     question(this: any) {
-      return JSON.parse(JSON.stringify(this['$store'].getters.getQuestion(this.id)))
+      return this['$store'].getters.getQuestion(this.id);
     },
   },
   methods: {
     select(this: any, event, id) {
-      event.preventDefault()
-      this.selected = id
-      this['$store'].dispatch('createAnswerFavorite', { question: this.id, favoriteID: this.selected});
+      event.preventDefault();
+      this.selected = id;
     },
   },
-}
+  mounted(this: any) {
+    this['$root'].$on('next', (data) => {
+      if (data === 'FAVORITE' && this.selected !== '') {
+        this['$store'].dispatch('createAnswerFavorite', { question: this.id, favoriteID: this.selected});
+      }
+    });
+  },
+};
 </script>
 
 
@@ -70,5 +70,8 @@ export default {
     .oi {
       display: block;
     }
+  }
+  .card-header {
+    padding: 0;
   }
 </style>

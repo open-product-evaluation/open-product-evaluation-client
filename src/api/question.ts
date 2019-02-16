@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import apiClient from '@/utils/apollo';
 
-//Mutation Answer ChoiceQuestion
+// Mutation Answer ChoiceQuestion
 const choiseAnswer = (question: string, choiceID: string) => apiClient.mutate(
     {
         mutation : gql`
@@ -23,7 +23,7 @@ const choiseAnswer = (question: string, choiceID: string) => apiClient.mutate(
         },
     });
 
-//Mutation Answer LIKEQuestion
+// Mutation Answer LIKEQuestion
 const likeAnswer = (question: string, likeID: boolean) => apiClient.mutate(
     {
         mutation : gql`
@@ -45,7 +45,7 @@ const likeAnswer = (question: string, likeID: boolean) => apiClient.mutate(
         },
     });
 
-//Mutation Answer LikeDislikeQuestion
+// Mutation Answer LikeDislikeQuestion
 const likeDislikeAnswer = (question: string, likeID: boolean) => apiClient.mutate(
     {
         mutation : gql`
@@ -67,7 +67,7 @@ const likeDislikeAnswer = (question: string, likeID: boolean) => apiClient.mutat
         },
     });
 
-//Mutation Answer FavoriteQuestion
+// Mutation Answer FavoriteQuestion
 const favoriteAnswer = (question: string, favoriteID: boolean) => apiClient.mutate(
     {
         mutation : gql`
@@ -88,9 +88,54 @@ const favoriteAnswer = (question: string, favoriteID: boolean) => apiClient.muta
             favoriteItem: favoriteID,
         },
     });
+
+// Mutation Answer RegulatorQuestion
+const regulatorAnswer = (question: string, ratingID: number) => apiClient.mutate(
+    {
+        mutation : gql`
+        mutation($questionID: ID!, $rating: Float!){
+            setAnswer(data: {
+                questionID: $questionID
+                rating: $rating
+            }){
+                __typename
+                answer{
+                    __typename
+                    question
+                }
+            }
+        }`,
+        variables: {
+            questionID: question,
+            rating: ratingID,
+        },
+    });
+// Mutation Answer RankingQuestion
+const rankingAnswer = (question: string, rankingID: [string]) => apiClient.mutate(
+    {
+        mutation : gql`
+        mutation($questionID: ID!, $rankedItems: [ID!]){
+            setAnswer(data: {
+                questionID: $questionID
+                rankedItems: $rankedItems
+            }){
+                __typename
+                answer{
+                    __typename
+                    question
+                }
+            }
+        }`,
+        variables: {
+            questionID: question,
+            rankedItems: rankingID,
+        },
+    });
 export default {
     choiseAnswer,
     likeAnswer,
     likeDislikeAnswer,
     favoriteAnswer,
+    regulatorAnswer,
+    rankingAnswer,
 };

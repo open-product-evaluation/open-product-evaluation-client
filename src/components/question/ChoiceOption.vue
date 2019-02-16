@@ -25,7 +25,6 @@
              :for="`choice-${choice.id}`"
              v-if="choice.image && choice.image.url"
              :style="{backgroundImage: `url(${choice.image.url})`}">
-
       </label>
       <span class="label"
             v-if="choice.image && choice.image.url">
@@ -42,17 +41,30 @@ export default {
   props: {
     id: String,
   },
+  data() {
+    return {
+      choice: '',
+    };
+  },
   computed: {
     question(this: any) {
-      return this['$store'].getters.getQuestion(this.id)
+      return this['$store'].getters.getQuestion(this.id);
     },
   },
-  methods: { 
-    answer(this: any, choice) {
-      this['$store'].dispatch('createAnswerChoice', { question: this.id, choiceID: choice});
-    }
+  methods: {
+    answer(this: any, selectedItem) {
+      this.choice = selectedItem;
+    },
   },
-}
+  mounted(this: any) {
+    this['$root'].$on('next', (data) => {
+      if (data === 'CHOICE' && this.choice !== '') {
+        // TODO if not answered, don't go to next question
+        this['$store'].dispatch('createAnswerChoice', { question: this.id, choiceID: this.choice});
+      }
+    });
+  },
+};
 </script>
 
 <style scoped="true" lang="scss">
@@ -66,6 +78,7 @@ export default {
   }
   input[type="radio"]:checked + label + span { color: $primaryColor; }
   .choice {
+    font-size: 1.5rem;
     text-align: center;
     flex-grow: 1;
     display: flex;

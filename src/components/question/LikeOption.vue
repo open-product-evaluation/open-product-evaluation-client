@@ -22,17 +22,29 @@ export default {
   props: {
     id: String,
   },
+  data() { 
+    return {
+      liked: '',
+    };
+  },
   computed: {
     question(this: any) {
-      return JSON.parse(JSON.stringify(this['$store'].getters.getQuestion(this.id)))
+      return this['$store'].getters.getQuestion(this.id);
     },
   },
   methods: {
-    answer(this: any, liked){
-      this['$store'].dispatch('createAnswerLike', { question: this.id, likeID: liked});
-    }
+    answer(this: any, liked) {
+      this.liked = liked;
+    },
   },
-}
+  mounted(this: any) {
+    this['$root'].$on('next', (data) => {
+      if (data === 'LIKE' && this.liked !== '') {
+        this['$store'].dispatch('createAnswerLike', { question: this.id, likeID: this.liked});
+      }
+    });
+  },
+};
 </script>
 
 <style scoped="true" lang="scss">
@@ -45,6 +57,7 @@ export default {
     color: $primaryColor;
   }
   .like {
+    font-size: 1.5rem;
     text-align: center;
     flex-grow: 1;
     input { display: none; }

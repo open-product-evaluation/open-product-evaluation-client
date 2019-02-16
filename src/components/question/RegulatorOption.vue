@@ -10,7 +10,7 @@
                :min="question.min"
                :max="question.max"
                :step="question.stepSize"
-               :value="question.default"
+               v-bind:value="value"
                @change="updateValue" />
         <span v-if="value === null" class="value">{{ question.default }}</span>
         <span v-if="value !== null" class="value">{{ value }}</span>
@@ -28,25 +28,40 @@ export default {
   data() {
     return {
       value: null,
-    }
+    };
   },
   props: {
     id: String,
   },
   computed: {
     question(this: any) {
-      return JSON.parse(JSON.stringify(this['$store'].getters.getQuestion(this.id)))
+      return this['$store'].getters.getQuestion(this.id);
     },
   },
   methods: {
     updateValue(this: any, event) {
-      this.value = event.target.value
+      this.value = event.target.value;
     },
   },
-}
+  mounted(this: any) {
+    this['$root'].$on('next', (data) => {
+      if (data === 'REGULATOR' && this.value != null) {
+        const rating = (this.value != null) ? parseFloat(this.value) : 0;
+        this['$store'].dispatch('createAnswerRegulator', { question: this.id, ratingID: rating });
+      }
+    });
+  },
+};
 </script>
 
 
 <style scoped="true" lang="scss">
-  .range { text-align: center; }
+  .range { 
+    text-align: center; 
+    font-size: 1.5rem;
+    padding: 0;
+    }
+  .col-1 {
+    font-size: 1.5rem;
+  }
 </style>

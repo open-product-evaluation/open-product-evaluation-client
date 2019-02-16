@@ -35,17 +35,29 @@ export default {
   props: {
     id: String,
   },
+  data() {
+    return {
+      liked: '',
+    };
+  },
   computed: {
     question(this: any) {
-      return JSON.parse(JSON.stringify(this['$store'].getters.getQuestion(this.id)))
+      return this['$store'].getters.getQuestion(this.id);
     },
   },
   methods: {
-    answer(this: any, liked){
-      this['$store'].dispatch('createAnswerLikeDislike', { question: this.id, likeID: liked});
+    answer(this: any, liked) {
+      this.liked = liked;
     },
   },
-}
+  mounted(this: any) {
+    this['$root'].$on('next', (data) => {
+      if (data === 'LIKEDISLIKE' && this.liked !== '') {
+        this['$store'].dispatch('createAnswerLikeDislike', { question: this.id, likeID: this.liked});
+      }
+    });
+  },
+};
 </script>
 
 
@@ -64,6 +76,7 @@ export default {
   .like, .dislike {
     text-align: center;
     flex-grow: 1;
+    font-size: 1.5rem;
     input { display: none; }
     .icon {
       display: block;
