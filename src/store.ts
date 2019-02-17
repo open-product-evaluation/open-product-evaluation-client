@@ -24,7 +24,6 @@ const getters = {
 
 const mutations = {
   createClient(state, payload) {
-    localStorage.setItem('currentClient', JSON.stringify(payload.client));
     if (payload.token) { localStorage.setItem('currentToken', payload.token); }
     state.client = payload;
   },
@@ -47,16 +46,39 @@ const actions = {
     });
   },
   createClient(context, payload) {
-    Client.createClient( payload.name)
-    .then((data) => {
-      context.commit('createClient', data.data !== undefined ? data.data.createClient : null);
+    return new Promise( (resolve, reject) => {
+      // console.error(payload.data['errors'][0].message);
+      localStorage.clear();
+      Client.createClient( payload.name )
+      .then( (data) => {
+        context.commit('createClient', data.data !== undefined ? data.data.createClient : null);
+        resolve(data.data);
+      },
+      (error) => {
+        reject(error);
+      });
     });
   },
-  getSurveys(context) {
-    Survey.getAllSurveys()
-      .then((data) => {
-        context.commit('setSurveys', data.data !== undefined ? data.data["domains"] : null);
+  getSurveys(this: any, context) {
+    return new Promise( (resolve, reject) => {
+      Survey.getAllSurveys()
+      .then( (data) => {
+        if ( data['errors'] == null && this.client !== undefined) {
+            context.commit('setSurveys', data.data !== undefined ? data.data['domains'] : null);
+        } else {
+          this.dispatch('createClient', { name: 'DeviceName' })
+          .then( () => {
+              Survey.getAllSurveys()
+              .then( (result) => {
+                context.commit('setSurveys', result.data !== undefined ? result.data['domains'] : null);
+                resolve(result);
+              });
+          }, (error) => {
+              reject(error);
+          });
+        }
       });
+    });
   },
   getSurvey(context, payload) {
     Survey.getSurvey(payload.domain)

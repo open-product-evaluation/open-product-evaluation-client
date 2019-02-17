@@ -22,10 +22,13 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default {
   name: 'SurveyEdit',
   created(this: any) {
-    this['$store'].dispatch('createClient', { name: 'hi'}).then((result) => {
-      this['$store'].dispatch('getSurveys');
-      this.surveys;
-    });
+      this['$store'].dispatch('getSurveys').then((result) => {
+        this.surveys;
+      },
+      (error) => {
+        // console.log(error.message);
+        // Authorization failed
+      });
   },
   computed: {
     surveys() {
