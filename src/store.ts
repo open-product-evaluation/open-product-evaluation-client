@@ -13,6 +13,7 @@ const state = {
     questions: [],
     votes: [],
   },
+  hasToken : false,
 };
 
 const getters = {
@@ -20,11 +21,15 @@ const getters = {
   getSurveys: (state) => state.surveys || [],
   getSurvey: (state) => state.currentSurvey,
   getQuestion: (state) => (questionID) => state.currentSurvey.questions.find( (question) => question.id === questionID),
- };
+  hasToken: (state) => state.hasToken,
+};
 
 const mutations = {
   createClient(state, payload) {
-    if (payload.token) { localStorage.setItem('currentToken', payload.token); }
+    if (payload.token) {
+      localStorage.setItem('currentToken', payload.token);
+      state.client.hasToken = true;
+    }
     state.client = payload;
   },
   currentSurvey(state, payload) {
@@ -48,7 +53,7 @@ const actions = {
   createClient(context, payload) {
     return new Promise( (resolve, reject) => {
       // console.error(payload.data['errors'][0].message);
-      localStorage.clear();
+      localStorage.removeItem('currentToken');
       Client.createClient( payload.name )
       .then( (data) => {
         context.commit('createClient', data.data !== undefined ? data.data.createClient : null);
@@ -63,9 +68,10 @@ const actions = {
     return new Promise( (resolve, reject) => {
       Survey.getAllSurveys()
       .then( (data) => {
-        if ( data['errors'] == null && this.client !== undefined) {
+        if ( data['errors'] == null ) {
             context.commit('setSurveys', data.data !== undefined ? data.data['domains'] : null);
         } else {
+          // Token has expired
           this.dispatch('createClient', { name: 'DeviceName' })
           .then( () => {
               Survey.getAllSurveys()

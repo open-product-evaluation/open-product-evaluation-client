@@ -1,13 +1,12 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-
+import store from './store';
 import SurveyList from '@/components/survey/SurveyList.vue';
 import Question from '@/components/question/Question.vue';
-import store from './store';
 
 Vue.use(Router);
 
-export default new Router({
+const router =  new Router({
   routes: [
     {
       path: '/',
@@ -21,3 +20,15 @@ export default new Router({
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  if (!store.getters.hasToken) {
+    store.dispatch('createClient', ({ name: 'mobilePhone'})).then((result) => {
+      next();
+    });
+  } else {
+    next();
+  }
+});
+
+export default router;
