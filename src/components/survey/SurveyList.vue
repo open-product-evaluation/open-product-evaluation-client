@@ -38,9 +38,9 @@ export default {
   methods: {
     // Update Client
     startSurvey(domainID) {
-      const client = this['$store'].getters.getClient;
+      const client = localStorage.getItem('client');
       this['$store'].dispatch('updateClient', {
-        id: client.client.id,
+        id: client,
         domainId: domainID,
       });
       this['$router'].push({name: 'question', params: {cID: domainID}});

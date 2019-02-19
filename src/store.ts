@@ -13,7 +13,6 @@ const state = {
     questions: [],
     votes: [],
   },
-  hasToken : false,
 };
 
 const getters = {
@@ -21,15 +20,18 @@ const getters = {
   getSurveys: (state) => state.surveys || [],
   getSurvey: (state) => state.currentSurvey,
   getQuestion: (state) => (questionID) => state.currentSurvey.questions.find( (question) => question.id === questionID),
-  hasToken: (state) => state.hasToken,
 };
 
 const mutations = {
   createClient(state, payload) {
     if (payload.token) {
       localStorage.setItem('currentToken', payload.token);
-      state.client.hasToken = true;
     }
+    localStorage.setItem('client', payload.client.id);
+    state.client = payload;
+  },
+  updateClient(state, payload) {
+    localStorage.setItem('client', payload.client.id);
     state.client = payload;
   },
   currentSurvey(state, payload) {
@@ -45,15 +47,17 @@ const mutations = {
 
 const actions = {
   updateClient(context, payload) {
+    console.log(payload.id + payload.domainId);
     Client.updateClient(payload.id, payload.domainId)
     .then((data) => {
-      context.commit('createClient', data.data !== undefined ? data.data.updateClient : null);
+      context.commit('updateClient', data.data !== undefined ? data.data.updateClient : null);
     });
   },
   createClient(context, payload) {
     return new Promise( (resolve, reject) => {
       // console.error(payload.data['errors'][0].message);
       localStorage.removeItem('currentToken');
+      localStorage.removeItem('client');
       Client.createClient( payload.name )
       .then( (data) => {
         context.commit('createClient', data.data !== undefined ? data.data.createClient : null);
