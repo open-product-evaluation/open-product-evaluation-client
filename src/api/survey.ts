@@ -25,7 +25,7 @@ const getAllSurveys = () => apiClient.query(
 const getSurvey = (domain: string) => apiClient.query(
   {
       query : gql`
-            query getSurvey ($domainID: ID!){
+            query getSurvey ($domainID: HashID!){
             domain(domainID: $domainID) {
               id
               name

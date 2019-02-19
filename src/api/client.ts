@@ -47,7 +47,7 @@ const deleteClient = (clientId: string) => apiClient.mutate(
  */
 const updateClient = (clientId: string, domain: string) => apiClient.mutate(
     { mutation : gql`
-        mutation updateClientMutation ($clientID: ID!, $domainID: ID){
+        mutation updateClientMutation ($clientID: HashID!, $domainID: HashID){
         updateClient(data:
             {
             domain: $domainID
