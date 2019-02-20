@@ -8,55 +8,72 @@
             {{ survey.description }}
           </p>
         </div>
-        <!-- TODO Choose progressBar oder ProgressSteps --> 
-        <div class="stepper">
-            <step-indicator :current="index" :total="survey.questions.length"></step-indicator>
-        </div>
-        <div class="question" v-if="survey.questions
-                                    && survey.questions.length
-                                    && survey.questions.length > 0">
+        <b-row no-gutters>
+          <b-col md="1"/>
+          <b-col md="10">
+          <!-- TODO Choose progressBar oder ProgressSteps --> 
+          <div class="stepper">
+              <step-indicator :current="index" :total="survey.questions.length"></step-indicator>
+          </div>
 
-          <!-- display question title and description -->
-          <questionMeta :id="survey.questions[index].id"></questionMeta>
+          <div class="question" v-if="survey.questions
+                                      && survey.questions.length
+                                      && survey.questions.length > 0">
 
-          <!-- display question items -->
-          <questionItems :id="survey.questions[index].id"
-                 v-if="displayItems(survey.questions[index].type)">
-          </questionItems>
+            <!-- display question title and description -->
+            <questionMeta :id="survey.questions[index].id"></questionMeta>
 
-          <!-- display choices -->
-          <choice :id="survey.questions[index].id"
-                  v-if="survey.questions[index].type === 'CHOICE'">
-          </choice>
+            <!-- display question items -->
+            <questionItems :id="survey.questions[index].id"
+                  v-if="displayItems(survey.questions[index].type)">
+            </questionItems>
 
-          <!-- display like / dislike options -->
-          <likeDislike :id="survey.questions[index].id"
-                       v-if="survey.questions[index].type === 'LIKEDISLIKE'">
-          </likeDislike>
+            <!-- display choices -->
+            <choice :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type === 'CHOICE'">
+            </choice>
 
-          <!-- display like option -->
-          <like :id="survey.questions[index].id"
-                v-if="survey.questions[index].type === 'LIKE'">
-          </like>
+            <!-- display like / dislike options -->
+            <likeDislike :id="survey.questions[index].id"
+                        v-if="survey.questions[index].type === 'LIKEDISLIKE'">
+            </likeDislike>
 
-          <!-- display regulator option -->
-          <regulator :id="survey.questions[index].id"
-                     v-if="survey.questions[index].type === 'REGULATOR'">
-          </regulator>
+            <!-- display like option -->
+            <like :id="survey.questions[index].id"
+                  v-if="survey.questions[index].type === 'LIKE'">
+            </like>
 
-          <!-- display special ranking options -->
-          <ranking :id="survey.questions[index].id"
-                   v-if="survey.questions[index].type === 'RANKING'">
-          </ranking>
+            <!-- display regulator option -->
+            <regulator :id="survey.questions[index].id"
+                      v-if="survey.questions[index].type === 'REGULATOR'">
+            </regulator>
 
-          <!-- display special favorite options -->
-          <favorite :id="survey.questions[index].id"
-                    v-if="survey.questions[index].type === 'FAVORITE'">
-          </favorite>
-        </div>
-        
-        <div slot="footer">
-        <b-row v-if="survey.questions
+            <!-- display special ranking options -->
+            <ranking :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type === 'RANKING'">
+            </ranking>
+
+            <!-- display special favorite options -->
+            <favorite :id="survey.questions[index].id"
+                      v-if="survey.questions[index].type === 'FAVORITE'">
+            </favorite>
+          </div>
+          <b-row>
+            <b-col cols="6" class="text-center">
+              <b-btn variant="primary">
+                enthalten
+              </b-btn>
+            </b-col>
+            <b-col cols="6" class="text-center">
+              <b-btn variant="primary">
+                senden
+              </b-btn>
+            </b-col>
+
+
+          </b-row>
+
+          <!-- <b-row v-if="survey.questions
                      && survey.questions.length
                      && survey.questions.length > 0">
           <b-col cols="6" class="text-left">
@@ -78,8 +95,25 @@
               Beenden
             </b-btn>
           </b-col>
+        </b-row> -->
+          </b-col>
+          <b-col md="1">
+            <b-button @click="next"
+                   v-if="index !== survey.questions.length - 1">--></b-button>
+          </b-col>
         </b-row>
+
+        <!-- In den Footer?-->
+        <div class="votes" slot="footer" v-if="survey.questions
+                                      && survey.questions.length
+                                      && survey.questions.length > 0">
+                                      <p>{{survey.questions[index].type}} </p>
+          <!-- display choice Votes -->
+            <choiceVotes :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type === 'CHOICE'">
+            </choiceVotes>
         </div>
+
       </b-card>
       <b-progress :max="max">
         <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
@@ -91,12 +125,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import QuestionItem from '@/components/question/QuestionItem.vue';
-import ChoiceOptions from '@/components/question/ChoiceOption.vue';
-import RankingOptions from '@/components/question/RankingOption.vue';
-import FavoriteOptions from '@/components/question/FavoriteOption.vue';
-import RegulatorOptions from '@/components/question/RegulatorOption.vue';
-import LikeOptions from '@/components/question/LikeOption.vue';
-import LikeDislikeOptions from '@/components/question/LikeDislikeOption.vue';
+import ChoiceOptions from '@/components/question/options/ChoiceOption.vue';
+import ChoiceVotes from '@/components/question/votes/ChoiceVotes.vue';
+import RankingOptions from '@/components/question/options/RankingOption.vue';
+import FavoriteOptions from '@/components/question/options/FavoriteOption.vue';
+import RegulatorOptions from '@/components/question/options/RegulatorOption.vue';
+import LikeOptions from '@/components/question/options/LikeOption.vue';
+import LikeDislikeOptions from '@/components/question/options/LikeDislikeOption.vue';
 import QuestionValue from '@/components/question/QuestionValue.vue';
 import StepIndicator from 'vue-step-indicator';
 
@@ -105,6 +140,7 @@ export default {
   components: {
     questionItems: QuestionItem,
     choice: ChoiceOptions,
+    choiceVotes: ChoiceVotes,
     ranking: RankingOptions,
     favorite: FavoriteOptions,
     regulator: RegulatorOptions,

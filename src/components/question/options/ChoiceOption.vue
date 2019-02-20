@@ -68,7 +68,7 @@ export default {
 </script>
 
 <style scoped="true" lang="scss">
-@import "../../scss/variables"; 
+@import "../../../scss/variables"; 
   .choices {
     padding: 0;
     display: flex;

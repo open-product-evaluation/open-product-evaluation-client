@@ -45,7 +45,7 @@ export default {
 
 
 <style scoped="true" lang="scss">
-@import "../../scss/variables"; 
+@import "../../../scss/variables"; 
   .item {
     display: block;
     border: 3px solid #FFFFFF;

@@ -20,6 +20,9 @@ const getters = {
   getSurveys: (state) => state.surveys || [],
   getSurvey: (state) => state.currentSurvey,
   getQuestion: (state) => (questionID) => state.currentSurvey.questions.find( (question) => question.id === questionID),
+  getVotes: (state) => (questionID) => {
+    return filterVotes(questionID);
+  },
 };
 
 const mutations = {
@@ -43,11 +46,13 @@ const mutations = {
   currentQuestions(state, payload) {
     state.currentSurvey.questions = payload;
   },
+  currentVotes(state, payload) {
+    state.currentSurvey.votes = payload;
+  },
 };
 
 const actions = {
   updateClient(context, payload) {
-    console.log(payload.id + payload.domainId);
     Client.updateClient(payload.id, payload.domainId)
     .then((data) => {
       context.commit('updateClient', data.data !== undefined ? data.data.updateClient : null);
@@ -95,6 +100,7 @@ const actions = {
       .then((data) => {
         context.commit('currentSurvey', data.data !== undefined ? data.data["domain"].activeSurvey : null);
         context.commit('currentQuestions', data.data !== undefined ? data.data["domain"].activeSurvey.questions : null);
+        context.commit('currentVotes', data.data !== undefined ? data.data['domain'].activeSurvey.votes : null);
       });
   },
   createAnswerChoice(context, payload) {
@@ -141,3 +147,15 @@ export default new Vuex.Store({
   mutations,
   actions,
 });
+
+function filterVotes(questionID) {
+  const result: string[] = [];
+  state.currentSurvey.votes.map((vote) => {
+    result.push(filterCurrentQuestionsVotes(vote, (questionID)));
+  });
+  return result;
+}
+
+function filterCurrentQuestionsVotes(vote, questionID) {
+  return vote.answers.filter( (answer) => answer.question === questionID);
+}

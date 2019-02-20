@@ -56,7 +56,7 @@ export default {
 </script>
 
 <style scoped="true" lang="scss">
-@import "../../scss/variables"; 
+@import "../../../scss/variables"; 
   .image {
     width: 100%;
     padding-top: 100%;

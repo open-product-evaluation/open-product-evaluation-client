@@ -1,26 +1,13 @@
 <template>
   <ol class="options">
     <li class="like">
-      <input type="radio"
+      <input type="checkbox"
              :id="`like-${question.id}`"
-             :name="`likedislike-${question.id}`"
-             @click="answer(true)" />
+             :name="`like-${question.id}`" 
+             @click="answer(true)"/>
       <label class="icon"
              :for="`like-${question.id}`"
              :style="{backgroundImage: `url(${question.likeIcon.url})`}">
-      </label>
-      <span class="label">
-        Like
-      </span>
-    </li>
-    <li class="dislike">
-      <input type="radio"
-             :id="`dislike-${question.id}`"
-             :name="`likedislike-${question.id}`" 
-             @click="answer(false)"/>
-      <label class="icon"
-             :for="`dislike-${question.id}`"
-             :style="{backgroundImage: `url(${question.dislikeIcon.url})`}">
       </label>
       <span class="label">
         Like
@@ -31,11 +18,11 @@
 
 <script lang="ts">
 export default {
-  name: 'LikeDislikeOption',
+  name: 'LikeOption',
   props: {
     id: String,
   },
-  data() {
+  data() { 
     return {
       liked: '',
     };
@@ -52,31 +39,27 @@ export default {
   },
   mounted(this: any) {
     this['$root'].$on('next', (data) => {
-      if (data === 'LIKEDISLIKE' && this.liked !== '') {
-        this['$store'].dispatch('createAnswerLikeDislike', { question: this.id, likeID: this.liked});
+      if (data === 'LIKE' && this.liked !== '') {
+        this['$store'].dispatch('createAnswerLike', { question: this.id, likeID: this.liked});
       }
     });
   },
 };
 </script>
 
-
 <style scoped="true" lang="scss">
-@import "../../scss/variables"; 
+@import "../../../scss/variables"; 
   .options {
-    padding: 0;
-    display: flex;
-    flex-direction: row;
     list-style: none;
-    margin-bottom: 2rem;
+    padding: 0;
   }
-  input[type="radio"]:checked+label+span {
+  input[type="checkbox"]:checked+label+span {
     color: $primaryColor;
   }
-  .like, .dislike {
+  .like {
+    font-size: 1.5rem;
     text-align: center;
     flex-grow: 1;
-    font-size: 1.5rem;
     input { display: none; }
     .icon {
       display: block;
