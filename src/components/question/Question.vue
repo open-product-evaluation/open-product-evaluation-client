@@ -109,9 +109,9 @@
                                       && survey.questions.length > 0">
                                       <p>{{survey.questions[index].type}} </p>
           <!-- display choice Votes -->
-            <choiceVotes :id="survey.questions[index].id"
-                    v-if="survey.questions[index].type === 'CHOICE'">
-            </choiceVotes>
+            <barVotes :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type === 'CHOICE' || survey.questions[index].type ==='FAVORITE'">
+            </barVotes>
         </div>
 
       </b-card>
@@ -126,13 +126,13 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import QuestionItem from '@/components/question/QuestionItem.vue';
 import ChoiceOptions from '@/components/question/options/ChoiceOption.vue';
-import ChoiceVotes from '@/components/question/votes/ChoiceVotes.vue';
 import RankingOptions from '@/components/question/options/RankingOption.vue';
 import FavoriteOptions from '@/components/question/options/FavoriteOption.vue';
 import RegulatorOptions from '@/components/question/options/RegulatorOption.vue';
 import LikeOptions from '@/components/question/options/LikeOption.vue';
 import LikeDislikeOptions from '@/components/question/options/LikeDislikeOption.vue';
 import QuestionValue from '@/components/question/QuestionValue.vue';
+import BarVotes from '@/components/question/votes/BarVotes.vue';
 import StepIndicator from 'vue-step-indicator';
 
 export default {
@@ -140,7 +140,6 @@ export default {
   components: {
     questionItems: QuestionItem,
     choice: ChoiceOptions,
-    choiceVotes: ChoiceVotes,
     ranking: RankingOptions,
     favorite: FavoriteOptions,
     regulator: RegulatorOptions,
@@ -148,6 +147,7 @@ export default {
     likeDislike: LikeDislikeOptions,
     questionMeta: QuestionValue,
     StepIndicator,
+    barVotes: BarVotes
   },
   data() {
     return {
