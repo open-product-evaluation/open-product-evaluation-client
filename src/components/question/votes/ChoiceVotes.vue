@@ -22,6 +22,11 @@ export default {
             id: 'vuechartChoice',
             toolbar: { show: false }
           },
+          dataLabels: {
+            style: {
+                fontSize: '1.5rem',
+            },
+          }
         },
         series: [{
             data: [],
@@ -30,10 +35,10 @@ export default {
     },
   computed: {
     votes(this: any) {
-        return this['$store'].getters.getVote(this.id);
+        return this.$store.getters.getVote(this.id);
     },
     question(this: any) {
-        return this['$store'].getters.getQuestion(this.id);
+        return this.$store.getters.getQuestion(this.id);
     },
   },
   created: function(this: any) {
@@ -59,7 +64,7 @@ export default {
                 'y': this.countInArray(this.votes, element.id)
             });
         });
-        this['$data'].series = [{
+        this.$data.series = [{
             data: result
         }];
     },

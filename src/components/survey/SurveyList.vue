@@ -22,8 +22,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default {
   name: 'SurveyEdit',
   created(this: any) {
-      this['$store'].dispatch('getSurveys').then((result) => {
-        this.surveys;
+      this['$store'].dispatch('getSurveys').then((result) => { 
+        // received Surveys
       },
       (error) => {
         // console.log(error.message);

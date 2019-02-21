@@ -1,6 +1,6 @@
 <template>
 <div>
-    <apexchart style="text-align: center; margin: auto;" width="50%" type="radialBar" :options="chartOptions" :series="series" :labels="labels"></apexchart>
+    <apexchart width="60%" type="donut" :options="chartOptions" :series="series" :labels="labels"></apexchart>
 </div>
 </template>
 
@@ -19,13 +19,25 @@ export default {
       return {
         series: [],
         chartOptions: {
-          labels: ['Liked'],
+          labels: ['Liked', 'Neutral'],
+          dataLabels: {
+            formatter: function (val) {
+                return Math.round(val) +  '%';
+            },
+            style: {
+                fontSize: '1.25rem',
+            },
+          },
+          legend: {
+              position: 'top',
+              fontSize: '20px',
+          }
         }
       }
     },
   computed: {
     votes(this: any) {
-        return this['$store'].getters.getVote(this.id);
+        return this.$store.getters.getVote(this.id);
     },
   },
   created: function(this: any) {
@@ -42,10 +54,10 @@ export default {
                 }
            });
        });
-       return [(counter/max)*100];
+       return [(counter/max)*100, ((max-counter)/max)*100];
    },
    getVotesDiagramm(this: any) {
-        this['$data'].series = this.countInArray(this.votes);
+        this.$data.series = this.countInArray(this.votes);
     },
   },
 };

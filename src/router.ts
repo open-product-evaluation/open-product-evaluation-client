@@ -24,7 +24,6 @@ const router =  new Router({
 router.beforeEach((to, from, next) => {
   if ((localStorage.getItem('currentToken') === '' || localStorage.getItem('currentToken') === null) &&
           (localStorage.getItem('client') === '' || localStorage.getItem('client') === null) ) {
-    console.log("neuer Client wurde erstellt");
     store.dispatch('createClient', ({ name: 'mobilePhone'})).then((result) => {
       next();
     });

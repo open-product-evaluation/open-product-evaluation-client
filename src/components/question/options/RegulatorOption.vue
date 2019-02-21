@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     question(this: any) {
-      return this['$store'].getters.getQuestion(this.id);
+      return this.$store.getters.getQuestion(this.id);
     },
   },
   methods: {
@@ -44,10 +44,10 @@ export default {
     },
   },
   mounted(this: any) {
-    this['$root'].$on('next', (data) => {
+    this.$root.$on('next', (data) => {
       if (data === 'REGULATOR' && this.value != null) {
         const rating = (this.value != null) ? parseFloat(this.value) : 0;
-        this['$store'].dispatch('createAnswerRegulator', { question: this.id, ratingID: rating });
+        this.$store.dispatch('createAnswerRegulator', { question: this.id, ratingID: rating });
       }
     });
   },

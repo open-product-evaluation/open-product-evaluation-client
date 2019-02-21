@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     question(this: any) {
-      return this['$store'].getters.getQuestion(this.id);
+      return this.$store.getters.getQuestion(this.id);
     },
   },
   methods: {
@@ -38,9 +38,9 @@ export default {
     },
   },
   mounted(this: any) {
-    this['$root'].$on('next', (data) => {
+    this.$root.$on('next', (data) => {
       if (data === 'LIKE' && this.liked !== '') {
-        this['$store'].dispatch('createAnswerLike', { question: this.id, likeID: this.liked});
+        this.$store.dispatch('createAnswerLike', { question: this.id, likeID: this.liked});
       }
     });
   },

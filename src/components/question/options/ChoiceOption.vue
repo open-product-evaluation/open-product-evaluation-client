@@ -48,7 +48,7 @@ export default {
   },
   computed: {
     question(this: any) {
-      return this['$store'].getters.getQuestion(this.id);
+      return this.$store.getters.getQuestion(this.id);
     },
   },
   methods: {
@@ -57,10 +57,10 @@ export default {
     },
   },
   mounted(this: any) {
-    this['$root'].$on('next', (data) => {
+    this.$root.$on('next', (data) => {
       if (data === 'CHOICE' && this.choice !== '') {
         // TODO if not answered, don't go to next question
-        this['$store'].dispatch('createAnswerChoice', { question: this.id, choiceID: this.choice});
+        this.$store.dispatch('createAnswerChoice', { question: this.id, choiceID: this.choice});
       }
     });
   },

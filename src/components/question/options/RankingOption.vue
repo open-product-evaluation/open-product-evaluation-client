@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     question(this: any) {
-      return this['$store'].getters.getQuestion(this.id);
+      return this.$store.getters.getQuestion(this.id);
     },
   },
   methods: {
@@ -46,9 +46,9 @@ export default {
     },
   },
   mounted(this: any) {
-    this['$root'].$on('next', (data) => {
+    this.$root.$on('next', (data) => {
       if (data === 'RANKING') {
-        this['$store'].dispatch('createAnswerRanking', { question: this.id, rankingID: this.getAnswers() });
+        this.$store.dispatch('createAnswerRanking', { question: this.id, rankingID: this.getAnswers() });
       }
     });
   },
