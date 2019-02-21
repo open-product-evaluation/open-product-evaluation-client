@@ -108,10 +108,16 @@
                                       && survey.questions.length
                                       && survey.questions.length > 0">
                                       <p>{{survey.questions[index].type}} </p>
-          <!-- display choice Votes -->
-            <barVotes :id="survey.questions[index].id"
-                    v-if="survey.questions[index].type === 'CHOICE' || survey.questions[index].type ==='FAVORITE'">
-            </barVotes>
+          <!-- display  Votes -->
+            <choiceVotes :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type === 'CHOICE'">
+            </choiceVotes>
+            <favoriteVotes :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type ==='FAVORITE'">
+            </favoriteVotes>
+             <likeVotes :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type === 'LIKE'">
+            </likeVotes>
         </div>
 
       </b-card>
@@ -132,7 +138,9 @@ import RegulatorOptions from '@/components/question/options/RegulatorOption.vue'
 import LikeOptions from '@/components/question/options/LikeOption.vue';
 import LikeDislikeOptions from '@/components/question/options/LikeDislikeOption.vue';
 import QuestionValue from '@/components/question/QuestionValue.vue';
-import BarVotes from '@/components/question/votes/BarVotes.vue';
+import ChoiceVotes from '@/components/question/votes/ChoiceVotes.vue';
+import FavoriteVotes from '@/components/question/votes/FavoriteVotes.vue';
+import LikeVotes from '@/components/question/votes/LikeVotes.vue';
 import StepIndicator from 'vue-step-indicator';
 
 export default {
@@ -147,7 +155,9 @@ export default {
     likeDislike: LikeDislikeOptions,
     questionMeta: QuestionValue,
     StepIndicator,
-    barVotes: BarVotes
+    choiceVotes: ChoiceVotes,
+    favoriteVotes: FavoriteVotes,
+    likeVotes: LikeVotes,
   },
   data() {
     return {
