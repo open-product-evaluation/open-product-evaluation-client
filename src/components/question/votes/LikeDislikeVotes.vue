@@ -1,6 +1,6 @@
 <template>
 <div>
-    <apexchart style="text-align: center; margin: auto;" width="50%" type="radialBar" :options="chartOptions" :series="series" :labels="labels"></apexchart>
+    <apexchart width="80%" type="donut" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
 
@@ -8,7 +8,7 @@
 import VueApexCharts from 'vue-apexcharts';
 
 export default {
-  name: 'LikeVotes',
+  name: 'LikeDislikeVotes',
   components: {
       apexchart: VueApexCharts,
   },
@@ -19,7 +19,7 @@ export default {
       return {
         series: [],
         chartOptions: {
-          labels: ['Liked'],
+          labels: ['Liked', 'Disliked', 'Neutral'],
         }
       }
     },
@@ -33,16 +33,20 @@ export default {
   },
   methods: {
    countInArray: function(this: any, votes) {
-       let counter = 0, max = 0;
+       let counterLike = 0, counterDislike = 0, max = 0;
        votes.forEach(answer => {
            answer.forEach(element => {
                max++;
                 if (element.liked === true) {
-                    counter ++;
+                    counterLike ++;
+                }
+                else if (element.liked === false) {
+                    counterDislike ++;
                 }
            });
        });
-       return [(counter/max)*100];
+       let neutral = max - counterDislike - counterLike;
+       return [ (counterLike/max)*100, (counterDislike/max)*100, (neutral/max)*100 ];
    },
    getVotesDiagramm(this: any) {
         this['$data'].series = this.countInArray(this.votes);
