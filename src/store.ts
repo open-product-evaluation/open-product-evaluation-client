@@ -20,7 +20,8 @@ const getters = {
   getSurveys: (state) => state.surveys || [],
   getSurvey: (state) => state.currentSurvey,
   getQuestion: (state) => (questionID) => state.currentSurvey.questions.find( (question) => question.id === questionID),
-  getVotes: (state) => (questionID) => {
+  getVotes: (state) => state.currentSurvey.votes,
+  getVote: (state) => (questionID) => {
     return filterVotes(questionID);
   },
 };
@@ -150,7 +151,7 @@ export default new Vuex.Store({
 
 function filterVotes(questionID) {
   const result: string[] = [];
-  state.currentSurvey.votes.map((vote) => {
+  state.currentSurvey.votes.map( (vote) => {
     result.push(filterCurrentQuestionsVotes(vote, (questionID)));
   });
   return result;
