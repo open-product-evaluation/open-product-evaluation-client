@@ -22,7 +22,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default {
   name: 'SurveyEdit',
   created(this: any) {
-      this['$store'].dispatch('getSurveys').then((result) => { 
+      this.$store.dispatch('getSurveys').then((result) => {
         // received Surveys
       },
       (error) => {
@@ -31,19 +31,19 @@ export default {
       });
   },
   computed: {
-    surveys() {
-      return this['$store'].getters.getSurveys;
+    surveys(this: any) {
+      return this.$store.getters.getSurveys;
     },
   },
   methods: {
     // Update Client
-    startSurvey(domainID) {
+    startSurvey(this: any, domainID) {
       const client = localStorage.getItem('client');
-      this['$store'].dispatch('updateClient', {
+      this.$store.dispatch('updateClient', {
         id: client,
         domainId: domainID,
       });
-      this['$router'].push({name: 'question', params: {cID: domainID}});
+      this.$router.push({name: 'question', params: {cID: domainID}});
     },
   },
 };

@@ -15,57 +15,57 @@ export default {
   props: {
     id: String,
   },
-  data: function() {
+  data() {
       return {
         chartOptions: {
           chart: {
             id: 'vuechartChoice',
-            toolbar: { show: false }
+            toolbar: { show: false },
           },
           dataLabels: {
             style: {
                 fontSize: '1.5rem',
             },
-          }
+          },
         },
         series: [{
             data: [],
         }],
-      }
+      };
     },
-  computed: {
-    votes(this: any) {
-        return this.$store.getters.getVote(this.id);
+    computed: {
+        votes(this: any) {
+            return this.$store.getters.getVote(this.id);
+        },
+        question(this: any) {
+            return this.$store.getters.getQuestion(this.id);
+        },
     },
-    question(this: any) {
-        return this.$store.getters.getQuestion(this.id);
+    created(this: any) {
+        this.getVotesDiagramm();
     },
-  },
-  created: function(this: any) {
-      this.getVotesDiagramm();
-  },
-  methods: {
-   countInArray: function(this: any, votes, id) {
-       let counter = 0;
-       votes.forEach(answer => {
-           answer.forEach(element => {
-                if (element.choice == id) {
-                    counter ++;
-                }
-           });
-       });
-       return counter;
-   },
-   getVotesDiagramm(this: any) {
-        let result : any[] = [];
-        this.question.choices.forEach(element => {
+    methods: {
+        countInArray(this: any, votes, id) {
+            let counter = 0;
+            votes.forEach( (answer) => {
+                answer.forEach( (element) => {
+                    if (element.choice === id) {
+                        counter ++;
+                        }
+                    });
+                });
+            return counter;
+    },
+    getVotesDiagramm(this: any) {
+        const result: any[] = [];
+        this.question.choices.forEach( (element) => {
             result.push({
-                'x': element.label,
-                'y': this.countInArray(this.votes, element.id)
+                x: element.label,
+                y: this.countInArray(this.votes, element.id),
             });
         });
         this.$data.series = [{
-            data: result
+            data: result,
         }];
     },
   },

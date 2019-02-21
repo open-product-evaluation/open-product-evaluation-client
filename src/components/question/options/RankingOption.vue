@@ -38,7 +38,7 @@ export default {
     getAnswers(this: any): string[] {
       // Build array for rankingItems
       // [1,...,n] -> n is best
-      let favoriteArray: string[] = [];
+      const favoriteArray: string[] = [];
       this.question.items.forEach( (element) => {
         favoriteArray.push(element.id);
       });

@@ -176,15 +176,17 @@ export default {
       counter: 0,
     };
   },
-  created() {
-    const domainID = this['$route'].params.cID;
-    this['$store'].dispatch('getSurvey', {
+  created(this: any) {
+    // const domainID = this['$route'].params.cID;
+    /* TODO Change route.params.cID */
+    const domainID = this._routerRoot._route.params.cID;
+    this.$store.dispatch('getSurvey', {
         domain: domainID,
       });
   },
   computed: {
-    survey() {
-      return this['$store'].getters.getSurvey;
+    survey(this: any) {
+      return this.$store.getters.getSurvey;
     },
   },
   methods: {
@@ -192,9 +194,9 @@ export default {
       return !(type === 'RANKING' || type === 'FAVORITE');
     },
     next(this: any) {
-      (this.index < this.survey.questions.length - 1) ? (this.index++) : this['$router'].push({name: 'surveyList'});
-       this['$root'].$emit('next', this.survey.questions[this.index - 1].type);
-       this.counter = Math.floor(this.index / this.survey.questions.length * 100);
+      (this.index < this.survey.questions.length - 1) ? (this.index++) : this.$router.push({name: 'surveyList'});
+      this.$root.$emit('next', this.survey.questions[this.index - 1].type);
+      this.counter = Math.floor(this.index / this.survey.questions.length * 100);
     },
     previous(this: any) {
       if (this.index > 0) {

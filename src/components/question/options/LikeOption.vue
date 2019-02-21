@@ -22,7 +22,7 @@ export default {
   props: {
     id: String,
   },
-  data() { 
+  data() {
     return {
       liked: '',
     };

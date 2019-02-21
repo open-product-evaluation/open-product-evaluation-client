@@ -15,50 +15,51 @@ export default {
   props: {
     id: String,
   },
-  data: function() {
+  data() {
       return {
         series: [],
         chartOptions: {
-          labels: ['Liked', 'Disliked', 'Neutral'],
-          dataLabels: {
-            formatter: function (val) {
-                return val +  ' %';
+            labels: ['Liked', 'Disliked', 'Neutral'],
+            dataLabels: {
+                formatter(val) {
+                    return val +  ' %';
+                },
+                style: {
+                    fontSize: '1.25rem',
+                },
             },
-            style: {
-                fontSize: '1.25rem',
+            legend: {
+                position: 'top',
+                fontSize: '20px',
             },
-          },
-          legend: {
-              position: 'top',
-              fontSize: '20px',
-          }
-        }
-      }
+        },
+      };
     },
   computed: {
     votes(this: any) {
         return this.$store.getters.getVote(this.id);
     },
   },
-  created: function(this: any) {
+  created(this: any) {
       this.getVotesDiagramm();
   },
   methods: {
-   countInArray: function(this: any, votes) {
-       let counterLike = 0, counterDislike = 0, max = 0;
-       votes.forEach(answer => {
-           answer.forEach(element => {
+   countInArray(this: any, votes) {
+       let counterLike = 0;
+       let counterDislike = 0;
+       let max = 0;
+       votes.forEach( (answer) => {
+           answer.forEach( (element) => {
                max++;
-                if (element.liked === true) {
-                    counterLike ++;
-                }
-                else if (element.liked === false) {
+               if (element.liked === true) {
+                   counterLike ++;
+                } else if (element.liked === false) {
                     counterDislike ++;
                 }
            });
        });
-       let neutral = max - counterDislike - counterLike;
-       return [ (counterLike/max)*100, (counterDislike/max)*100, (neutral/max)*100 ];
+       const neutral = max - counterDislike - counterLike;
+       return [ (counterLike / max) * 100, (counterDislike / max) * 100, (neutral / max) * 100 ];
    },
    getVotesDiagramm(this: any) {
         this.$data.series = this.countInArray(this.votes);

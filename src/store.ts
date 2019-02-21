@@ -16,39 +16,39 @@ const state = {
 };
 
 const getters = {
-  getClient: (state) => state.client,
-  getSurveys: (state) => state.surveys || [],
-  getSurvey: (state) => state.currentSurvey,
-  getQuestion: (state) => (questionID) => state.currentSurvey.questions.find( (question) => question.id === questionID),
-  getVotes: (state) => state.currentSurvey.votes,
-  getVote: (state) => (questionID) => {
+  getClient: () => state.client,
+  getSurveys: () => state.surveys || [],
+  getSurvey: () => state.currentSurvey,
+  getQuestion: () => (questionID) => state.currentSurvey.questions.find( (question: any) => question.id === questionID),
+  getVotes: () => state.currentSurvey.votes,
+  getVote: () => (questionID) => {
     return filterVotes(questionID);
   },
 };
 
 const mutations = {
-  createClient(state, payload) {
+  createClient(states, payload) {
     if (payload.token) {
       localStorage.setItem('currentToken', payload.token);
     }
     localStorage.setItem('client', payload.client.id);
-    state.client = payload;
+    states.client = payload;
   },
-  updateClient(state, payload) {
+  updateClient(states, payload) {
     localStorage.setItem('client', payload.client.id);
-    state.client = payload;
+    states.client = payload;
   },
-  currentSurvey(state, payload) {
-    state.currentSurvey = payload;
+  currentSurvey(states, payload) {
+    states.currentSurvey = payload;
   },
-  setSurveys(state, payload) {
-    state.surveys = payload;
+  setSurveys(states, payload) {
+    states.surveys = payload;
   },
-  currentQuestions(state, payload) {
-    state.currentSurvey.questions = payload;
+  currentQuestions(states, payload) {
+    states.currentSurvey.questions = payload;
   },
-  currentVotes(state, payload) {
-    state.currentSurvey.votes = payload;
+  currentVotes(states, payload) {
+    states.currentSurvey.votes = payload;
   },
 };
 
@@ -65,7 +65,7 @@ const actions = {
       localStorage.removeItem('currentToken');
       localStorage.removeItem('client');
       Client.createClient( payload.name )
-      .then( (data) => {
+      .then((data) => {
         context.commit('createClient', data.data !== undefined ? data.data.createClient : null);
         resolve(data.data);
       },
@@ -77,16 +77,16 @@ const actions = {
   getSurveys(this: any, context) {
     return new Promise( (resolve, reject) => {
       Survey.getAllSurveys()
-      .then( (data) => {
-        if ( data['errors'] == null ) {
-            context.commit('setSurveys', data.data !== undefined ? data.data['domains'] : null);
+      .then( (data: any) => {
+        if ( data.errors == null ) {
+            context.commit('setSurveys', data.data !== undefined ? data.data.domains : null);
         } else {
           // Token has expired
           this.dispatch('createClient', { name: 'DeviceName' })
           .then( () => {
               Survey.getAllSurveys()
-              .then( (result) => {
-                context.commit('setSurveys', result.data !== undefined ? result.data['domains'] : null);
+              .then( (result: any) => {
+                context.commit('setSurveys', result.data !== undefined ? result.data.domains : null);
                 resolve(result);
               });
           }, (error) => {
@@ -98,10 +98,10 @@ const actions = {
   },
   getSurvey(context, payload) {
     Survey.getSurvey(payload.domain)
-      .then((data) => {
-        context.commit('currentSurvey', data.data !== undefined ? data.data["domain"].activeSurvey : null);
-        context.commit('currentQuestions', data.data !== undefined ? data.data["domain"].activeSurvey.questions : null);
-        context.commit('currentVotes', data.data !== undefined ? data.data['domain'].activeSurvey.votes : null);
+      .then((data: any) => {
+        context.commit('currentSurvey', data.data !== undefined ? data.data.domain.activeSurvey : null);
+        context.commit('currentQuestions', data.data !== undefined ? data.data.domain.activeSurvey.questions : null);
+        context.commit('currentVotes', data.data !== undefined ? data.data.domain.activeSurvey.votes : null);
       });
   },
   createAnswerChoice(context, payload) {
