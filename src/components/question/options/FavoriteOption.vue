@@ -1,13 +1,27 @@
 <template>
+<div>
   <div style="display: inline-flex;">
   <div v-for="item in question.items" :key="item.id" :class="((question.items.length%2)===0) ? 'col-lg-6' : 'col-lg-4'">
       <b-card
         :class="{ selected: selected === item.id}"
         header-tag="header">
-        <img slot="header" style="max-width: 100%;" v-img :src="`${item.image.url}`">
+
+        <img slot="header" v-if="item.image && item.image.url" style="max-width: 100%;" v-img :src="`${item.image.url}`">
         <b-button variant="primary" @click="select($event, item.id)"> {{ item.label }}</b-button>
       </b-card>
     </div>
+  </div>
+  <b-row>
+      <b-col cols="6">
+        <div class ="text-center">
+          <input type="checkbox"/>
+          <label>enthalten</label>
+        </div>
+      </b-col>
+      <b-col cols="6" class="text-center" v-if="!answered">
+        <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -20,6 +34,7 @@ export default {
   data() {
     return {
       selected: '',
+      answered: false,
     };
   },
   computed: {
@@ -32,13 +47,11 @@ export default {
       event.preventDefault();
       this.selected = id;
     },
-  },
-  mounted(this: any) {
-    this.$root.$on('next', (data) => {
-      if (data === 'FAVORITE' && this.selected !== '') {
-        this.$store.dispatch('createAnswerFavorite', { question: this.id, favoriteID: this.selected});
-      }
-    });
+    sendAnswer(this: any) {
+      this.$store.dispatch('createAnswerFavorite', { question: this.id, favoriteID: this.selected});
+      this.answered = true;
+      this.$root.$emit('answered');
+    },
   },
 };
 </script>
