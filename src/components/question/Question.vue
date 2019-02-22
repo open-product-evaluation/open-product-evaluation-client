@@ -163,6 +163,7 @@ export default {
         (this.index < this.survey.questions.length - 1) ? (this.index++) : this.$router.push({name: 'surveyList'});
         this.$root.$emit('next', this.survey.questions[this.index - 1].type);
         this.counter = Math.floor(this.index / this.survey.questions.length * 100);
+        this.answered = false;
     },
   },
   mounted(this: any) {

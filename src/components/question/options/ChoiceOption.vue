@@ -39,15 +39,15 @@
     </li>
   </ol>
   <b-row>
-  <b-col cols="6">
+    <b-col cols="6">
       <div class ="neutral text-center">
         <input type="checkbox" @click="deselectAll()" :checked="!selected"/>
         <label>enthalten</label>
       </div>
-  </b-col>
-  <b-col cols="6" class="text-center" v-if="!answered">
-    <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
-  </b-col>
+    </b-col>
+    <b-col cols="6" class="text-center" v-if="!answered">
+      <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
+    </b-col>
   </b-row>
 </div>
 </template>
