@@ -22,7 +22,7 @@ export default {
             labels: ['Liked', 'Disliked', 'Neutral'],
             dataLabels: {
                 formatter(val) {
-                    return val +  ' %';
+                    return Math.round(val) +  ' %';
                 },
                 style: {
                     fontSize: '1.25rem',

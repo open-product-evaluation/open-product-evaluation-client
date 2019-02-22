@@ -2,11 +2,10 @@
 <div>
   <div style="display: inline-flex;">
   <div v-for="item in question.items" :key="item.id" :class="((question.items.length%2)===0) ? 'col-lg-6' : 'col-lg-4'">
-      <b-card
-        :class="{ selected: selected === item.id}"
-        header-tag="header">
-
-        <img slot="header" v-if="item.image && item.image.url" style="max-width: 100%;" v-img :src="`${item.image.url}`">
+      <b-card :class="{ selected: selected === item.id}">
+        <b-card-header>
+           <img v-if="item.image && item.image.url" style="max-width: 100%;" v-img :src="`${item.image.url}`">
+        </b-card-header>
         <b-button variant="primary" @click="select($event, item.id)"> {{ item.label }}</b-button>
       </b-card>
     </div>

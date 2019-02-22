@@ -1,4 +1,5 @@
 <template>
+<div>
 <div class="drag">
   <draggable v-model="question.items"
              @start="drag = true"
@@ -8,13 +9,25 @@
           v-for="(item, index) in question.items" 
           :key="item.id">
       <b-card :title="`Platz ${index + 1}`"
-          :sub-title="`${item.label}`"
-          :header-tag="header">
-        <img slot="header" style="max-width: 100%;" 
-          v-img :src="`${item.image.url}`">
+          :sub-title="`${item.label}`">
+          <b-card-header>
+            <img style="max-width: 100%;"  v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
+          </b-card-header>
       </b-card>
     </div>
   </draggable>
+</div>
+    <b-row>
+      <b-col cols="6">
+        <div class ="text-center">
+          <input type="checkbox"/>
+          <label>enthalten</label>
+        </div>
+      </b-col>
+      <b-col cols="6" class="text-center" v-if="!answered">
+        <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
+      </b-col>
+    </b-row>
 </div>
 </template>
 
@@ -28,6 +41,11 @@ export default {
   },
   props: {
     id: String,
+  },
+  data() {
+    return {
+      answered: false,
+    };
   },
   computed: {
     question(this: any) {
@@ -44,13 +62,11 @@ export default {
       });
       return favoriteArray;
     },
-  },
-  mounted(this: any) {
-    this.$root.$on('next', (data) => {
-      if (data === 'RANKING') {
-        this.$store.dispatch('createAnswerRanking', { question: this.id, rankingID: this.getAnswers() });
-      }
-    });
+    sendAnswer(this: any) {
+      this.$store.dispatch('createAnswerRanking', { question: this.id, rankingID: this.getAnswers() });
+      this.answered = true;
+      this.$root.$emit('answered');
+    },
   },
 };
 </script>
