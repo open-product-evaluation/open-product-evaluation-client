@@ -6,7 +6,7 @@
         <input type="radio"
               :id="`like-${question.id}`"
               :name="`likedislike-${question.id}`"
-              @click="answer(true)" />
+              @click="updateValue(true)" />
         <label class="icon"
               :for="`like-${question.id}`"
               :style="{backgroundImage: `url(${question.likeIcon.url})`}">
@@ -17,7 +17,7 @@
              class="icon"
              :id="`like-${question.id}`"
              :name="`likedislike-${question.id}`"
-             @click="answer(true)" />
+             @click="updateValue(true)" />
       </div>
       <span class="label">
         Like
@@ -28,7 +28,7 @@
         <input type="radio"
               :id="`dislike-${question.id}`"
               :name="`likedislike-${question.id}`" 
-              @click="answer(false)"/>
+              @click="updateValue(false)"/>
         <label class="icon"
               :for="`dislike-${question.id}`"
               :style="{backgroundImage: `url(${question.dislikeIcon.url})`}">
@@ -39,7 +39,7 @@
               class="icon"
              :id="`dislike-${question.id}`"
              :name="`likedislike-${question.id}`"
-             @click="answer(false)" />
+             @click="updateValue(false)" />
         </div>
       <span class="label">
         Dislike
@@ -78,7 +78,7 @@ export default {
     },
   },
   methods: {
-    answer(this: any, liked) {
+    updateValue(this: any, liked) {
       this.liked = liked;
     },
     sendAnswer(this: any) {

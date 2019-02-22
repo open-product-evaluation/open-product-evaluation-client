@@ -11,7 +11,7 @@
              v-if="choice.image && choice.image.url"
              :value="choice.label"
              :checked="choice.id == selected"
-             @click="answer(choice.id)"
+             @click="updateValue(choice.id)"
              />
       <label :for="`choice-${choice.id}`"
              v-if="!choice.image">
@@ -21,7 +21,7 @@
               :value="choice.id"
               :checked="choice.id == selected"
               v-if="!choice.image"
-              @click="answer(choice.id)"
+              @click="updateValue(choice.id)"
               />
         {{ choice.label}}
       </label>
@@ -30,7 +30,7 @@
              v-if="choice.image && choice.image.url"
              :checked="choice.id == selected"
              :style="{backgroundImage: `url(${choice.image.url})`}"
-             @click="answer(choice.id)">
+             @click="updateValue(choice.id)">
       </label>
       <span class="label"
             v-if="choice.image && choice.image.url">
@@ -71,7 +71,7 @@ export default {
     },
   },
   methods: {
-    answer(this: any, selectedItem) {
+    updateValue(this: any, selectedItem) {
       this.selected = selectedItem;
     },
     deselectAll(this: any) {

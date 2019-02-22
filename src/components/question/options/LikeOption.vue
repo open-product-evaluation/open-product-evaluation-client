@@ -6,7 +6,7 @@
           <input type="checkbox"
                 :id="`like-${question.id}`"
                 :name="`like-${question.id}`" 
-                @click="answer(true)"/>
+                @click="updateValue(true)"/>
           <label class="icon"
                 :for="`like-${question.id}`"
                 :style="{backgroundImage: `url(${question.likeIcon.url})`}">
@@ -16,7 +16,7 @@
           <input type="checkbox" class="icon"
                 :id="`like-${question.id}`"
                 :name="`like-${question.id}`"
-                @click="answer(true)"/>
+                @click="updateValue(true)"/>
         </div>
         <span class="label">
           Like
@@ -55,7 +55,7 @@ export default {
     },
   },
   methods: {
-    answer(this: any, liked) {
+    updateValue(this: any, liked) {
       this.liked = liked;
     },
     sendAnswer(this: any) {

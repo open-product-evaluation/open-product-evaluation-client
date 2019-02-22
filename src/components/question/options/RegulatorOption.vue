@@ -19,6 +19,17 @@
         {{ question.max }}
       </div>
     </div>
+    <b-row>
+      <b-col cols="6">
+        <div class ="text-center">
+          <input type="checkbox"/>
+          <label>enthalten</label>
+        </div>
+      </b-col>
+      <b-col cols="6" class="text-center" v-if="!answered">
+        <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -28,6 +39,7 @@ export default {
   data() {
     return {
       value: null,
+      answered: false,
     };
   },
   props: {
@@ -42,14 +54,12 @@ export default {
     updateValue(this: any, event) {
       this.value = event.target.value;
     },
-  },
-  mounted(this: any) {
-    this.$root.$on('next', (data) => {
-      if (data === 'REGULATOR' && this.value != null) {
-        const rating = (this.value != null) ? parseFloat(this.value) : 0;
-        this.$store.dispatch('createAnswerRegulator', { question: this.id, ratingID: rating });
-      }
-    });
+    sendAnswer(this: any) {
+      const rating = (this.value != null) ? parseFloat(this.value) : 0;
+      this.$store.dispatch('createAnswerRegulator', { question: this.id, ratingID: rating });
+      this.answered = true;
+      this.$root.$emit('answered');
+    },
   },
 };
 </script>
