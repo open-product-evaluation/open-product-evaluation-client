@@ -58,55 +58,21 @@
                       v-if="survey.questions[index].type === 'FAVORITE'">
             </favorite>
           </div>
-          <b-row>
-            <b-col cols="6" class="text-center">
-              <b-btn variant="primary">
-                enthalten
-              </b-btn>
-            </b-col>
-            <b-col cols="6" class="text-center">
-              <b-btn variant="primary">
-                senden
-              </b-btn>
-            </b-col>
-
-
-          </b-row>
-
-          <!-- <b-row v-if="survey.questions
-                     && survey.questions.length
-                     && survey.questions.length > 0">
-          <b-col cols="6" class="text-left">
-            <b-btn variant="primary"
-                   @click="previous"
-                   v-if="index !== 0">
-              Previous
-            </b-btn>
           </b-col>
-          <b-col cols="6" class="text-right">
-            <b-btn variant="primary"
-                   @click="next"
-                   v-if="index !== survey.questions.length - 1">
-              Next
+          <b-col cols="1" class="next_btn"  
+          v-if="answered">
+            <b-btn variant="secondary" @click="next"
+                v-if="index !== survey.questions.length - 1">
+                  weiter
             </b-btn>
-            <b-btn variant="primary"
-                   @click="next"
-                   v-if="index == survey.questions.length -1 ">
-              Beenden
-            </b-btn>
-          </b-col>
-        </b-row> -->
-          </b-col>
-          <b-col md="1">
-            <b-button @click="next"
-                   v-if="index !== survey.questions.length - 1">--></b-button>
           </b-col>
         </b-row>
 
         <!-- In den Footer?-->
         <div class="votes" slot="footer" v-if="survey.questions
                                       && survey.questions.length
-                                      && survey.questions.length > 0">
+                                      && survey.questions.length > 0 
+                                      && answered">
                                       <p>{{survey.questions[index].type}} </p>
           <!-- display  Votes -->
             <choiceVotes :id="survey.questions[index].id"
@@ -127,7 +93,7 @@
         </div>
 
       </b-card>
-      <b-progress :max="max">
+      <b-progress :max="100">
         <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
         </b-progress-bar>
       </b-progress>
@@ -172,8 +138,8 @@ export default {
   data() {
     return {
       index: 0,
-      max: 100,
       counter: 0,
+      answered: false,
     };
   },
   created(this: any) {
@@ -194,15 +160,15 @@ export default {
       return !(type === 'RANKING' || type === 'FAVORITE');
     },
     next(this: any) {
-      (this.index < this.survey.questions.length - 1) ? (this.index++) : this.$router.push({name: 'surveyList'});
-      this.$root.$emit('next', this.survey.questions[this.index - 1].type);
-      this.counter = Math.floor(this.index / this.survey.questions.length * 100);
+        (this.index < this.survey.questions.length - 1) ? (this.index++) : this.$router.push({name: 'surveyList'});
+        this.$root.$emit('next', this.survey.questions[this.index - 1].type);
+        this.counter = Math.floor(this.index / this.survey.questions.length * 100);
     },
-    previous(this: any) {
-      if (this.index > 0) {
-        this.index -= 1;
-      }
-    },
+  },
+  mounted(this: any) {
+    this.$root.$on('answered', () => {
+        this.answered = true;
+    });
   },
 };
 </script>
@@ -224,5 +190,9 @@ h3 {
 }
 .stepper {
   margin-bottom: 1rem;
+}
+
+.next_btn {
+  margin-top: auto;
 }
 </style>
