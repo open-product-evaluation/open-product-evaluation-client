@@ -13,8 +13,8 @@
   <b-row>
       <b-col cols="6">
         <div class ="text-center">
-          <input type="checkbox"/>
-          <label>enthalten</label>
+          <input type="checkbox" :checked="selected==''" @click="deselectAll()"/>
+          <label>keine Angabe</label>
         </div>
       </b-col>
       <b-col cols="6" class="text-center" v-if="!answered">
@@ -45,6 +45,9 @@ export default {
     select(this: any, event, id) {
       event.preventDefault();
       this.selected = id;
+    },
+    deselectAll(this: any) {
+      this.selected = '';
     },
     sendAnswer(this: any) {
       this.$store.dispatch('createAnswerFavorite', { question: this.id, favoriteID: this.selected});

@@ -23,7 +23,7 @@
       <b-col cols="6">
         <div class ="text-center">
           <input type="checkbox"/>
-          <label>enthalten</label>
+          <label>keine Angabe</label>
         </div>
       </b-col>
       <b-col cols="6" class="text-center" v-if="!answered">

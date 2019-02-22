@@ -21,10 +21,10 @@
       <b-col cols="6">
         <div class ="text-center">
           <input type="checkbox"/>
-          <label>enthalten</label>
+          <label>keine Angabe</label>
         </div>
       </b-col>
-      <b-col cols="6" class="text-center" v-if="!answered">
+      <b-col cols="6" class="text-center" v-if="!answered" @click="updateValue()">
         <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
       </b-col>
     </b-row>
@@ -66,6 +66,9 @@ export default {
       this.$store.dispatch('createAnswerRanking', { question: this.id, rankingID: this.getAnswers() });
       this.answered = true;
       this.$root.$emit('answered');
+    },
+    updateValue() {
+      // TODO change answere
     },
   },
 };

@@ -6,6 +6,7 @@
         <input type="radio"
               :id="`like-${question.id}`"
               :name="`likedislike-${question.id}`"
+              :checked="liked==true"
               @click="updateValue(true)" />
         <label class="icon"
               :for="`like-${question.id}`"
@@ -17,6 +18,7 @@
              class="icon"
              :id="`like-${question.id}`"
              :name="`likedislike-${question.id}`"
+             :checked="liked==true"
              @click="updateValue(true)" />
       </div>
       <span class="label">
@@ -28,6 +30,7 @@
         <input type="radio"
               :id="`dislike-${question.id}`"
               :name="`likedislike-${question.id}`" 
+              :checked="liked==false"
               @click="updateValue(false)"/>
         <label class="icon"
               :for="`dislike-${question.id}`"
@@ -39,6 +42,7 @@
               class="icon"
              :id="`dislike-${question.id}`"
              :name="`likedislike-${question.id}`"
+             :checked="liked==false"
              @click="updateValue(false)" />
         </div>
       <span class="label">
@@ -49,8 +53,8 @@
   <b-row>
     <b-col cols="6">
       <div class ="text-center">
-        <input type="checkbox"/>
-        <label>enthalten</label>
+        <input type="checkbox" @click="deselectAll()" :checked="liked==null"/>
+        <label>keine Angabe</label>
       </div>
     </b-col>
     <b-col cols="6" class="text-center" v-if="!answered">
@@ -80,6 +84,9 @@ export default {
   methods: {
     updateValue(this: any, liked) {
       this.liked = liked;
+    },
+    deselectAll(this: any) {
+      this.liked = null;
     },
     sendAnswer(this: any) {
       this.$store.dispatch('createAnswerLikeDislike', { question: this.id, likeID: this.liked});

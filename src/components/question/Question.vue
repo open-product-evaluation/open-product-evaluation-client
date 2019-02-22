@@ -1,14 +1,15 @@
 <template>
     <div class="container">
-      <b-card>
-        <div slot="header">
+      <b-card no-body>
+        <b-card-header>
           <h2 >{{ survey.title }}</h2>
-          
           <p class="description">
             {{ survey.description }}
           </p>
-        </div>
-        <b-row no-gutters>
+        </b-card-header>
+
+        <b-card-body>
+        <b-row>
           <b-col md="1"/>
           <b-col md="10">
           <!-- TODO Choose progressBar oder ProgressSteps --> 
@@ -19,7 +20,6 @@
           <div class="question" v-if="survey.questions
                                       && survey.questions.length
                                       && survey.questions.length > 0">
-
             <!-- display question title and description -->
             <questionMeta :id="survey.questions[index].id"></questionMeta>
 
@@ -58,49 +58,48 @@
                       v-if="survey.questions[index].type === 'FAVORITE'">
             </favorite>
           </div>
-          </b-col>
-          <b-col cols="1" class="next_btn"  
-          v-if="answered">
-            <b-btn variant="secondary" @click="next"
-                v-if="index !== survey.questions.length - 1">
-                  weiter
-            </b-btn>
-            <b-btn variant="secondary" @click="next"
-                v-if="index == survey.questions.length -1">
-                  Start
-            </b-btn>
-          </b-col>
-        </b-row>
+        </b-col>
 
-        <!-- In den Footer?-->
-        <div class="votes" slot="footer" v-if="survey.questions
+        <b-col cols="1" class="next_btn"
+                v-if="answered">
+          <b-btn variant="secondary" @click="next"
+                v-if="index !== survey.questions.length - 1">weiter
+          </b-btn>
+          <b-btn variant="secondary" @click="next"
+                  v-if="index == survey.questions.length -1">Start
+          </b-btn>
+        </b-col>
+      </b-row>
+      <div class="votes" v-if="survey.questions
                                       && survey.questions.length
                                       && survey.questions.length > 0 
                                       && answered">
-                                      <p>{{survey.questions[index].type}} </p>
+          <h4> Bisheriges Ergebnis </h4>
           <!-- display  Votes -->
-            <choiceVotes :id="survey.questions[index].id"
+          <choiceVotes :id="survey.questions[index].id"
                     v-if="survey.questions[index].type === 'CHOICE'">
-            </choiceVotes>
-            <favoriteVotes :id="survey.questions[index].id"
+          </choiceVotes>
+          <favoriteVotes :id="survey.questions[index].id"
                     v-if="survey.questions[index].type ==='FAVORITE'">
-            </favoriteVotes>
-             <likeVotes :id="survey.questions[index].id"
+          </favoriteVotes>
+          <likeVotes :id="survey.questions[index].id"
                     v-if="survey.questions[index].type === 'LIKE'">
-            </likeVotes>
-            <likeDislikeVotes :id="survey.questions[index].id"
+          </likeVotes>
+          <likeDislikeVotes :id="survey.questions[index].id"
                     v-if="survey.questions[index].type === 'LIKEDISLIKE'">
-            </likeDislikeVotes>
-             <regulatorVotes :id="survey.questions[index].id"
+          </likeDislikeVotes>
+          <regulatorVotes :id="survey.questions[index].id"
                     v-if="survey.questions[index].type === 'REGULATOR'">
-            </regulatorVotes>
+          </regulatorVotes>
         </div>
-
-      </b-card>
-      <b-progress :max="100">
-        <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
-        </b-progress-bar>
-      </b-progress>
+      </b-card-body>
+      <b-card-footer>
+        <b-progress :max="100">
+          <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
+          </b-progress-bar>
+        </b-progress>
+      </b-card-footer>
+    </b-card>
   </div>
 </template>
 
@@ -196,8 +195,10 @@ h3 {
 .stepper {
   margin-bottom: 1rem;
 }
-
 .next_btn {
   margin-top: auto;
+}
+.votes {
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
 }
 </style>

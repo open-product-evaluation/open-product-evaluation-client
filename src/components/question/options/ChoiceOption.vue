@@ -42,7 +42,7 @@
     <b-col cols="6">
       <div class ="neutral text-center">
         <input type="checkbox" @click="deselectAll()" :checked="!selected"/>
-        <label>enthalten</label>
+        <label>keine Angabe</label>
       </div>
     </b-col>
     <b-col cols="6" class="text-center" v-if="!answered">

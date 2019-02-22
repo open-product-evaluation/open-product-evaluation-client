@@ -6,6 +6,7 @@
           <input type="checkbox"
                 :id="`like-${question.id}`"
                 :name="`like-${question.id}`" 
+                :checked="liked==true"
                 @click="updateValue(true)"/>
           <label class="icon"
                 :for="`like-${question.id}`"
@@ -16,6 +17,7 @@
           <input type="checkbox" class="icon"
                 :id="`like-${question.id}`"
                 :name="`like-${question.id}`"
+                :checked="liked==true"
                 @click="updateValue(true)"/>
         </div>
         <span class="label">
@@ -26,8 +28,8 @@
     <b-row>
       <b-col cols="6">
         <div class ="text-center">
-          <input type="checkbox"/>
-          <label>enthalten</label>
+          <input type="checkbox" @click="deselectAll()" :checked="!liked"/>
+          <label>keine Angabe</label>
         </div>
       </b-col>
       <b-col cols="6" class="text-center" v-if="!answered">
@@ -45,7 +47,7 @@ export default {
   },
   data() {
     return {
-      liked: '',
+      liked: false,
       answered: false,
     };
   },
@@ -57,6 +59,9 @@ export default {
   methods: {
     updateValue(this: any, liked) {
       this.liked = liked;
+    },
+    deselectAll(this: any) {
+      this.liked = false;
     },
     sendAnswer(this: any) {
       this.$store.dispatch('createAnswerLike', { question: this.id, likeID: this.liked});
