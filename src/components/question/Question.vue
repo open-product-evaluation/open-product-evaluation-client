@@ -65,6 +65,10 @@
                 v-if="index !== survey.questions.length - 1">
                   weiter
             </b-btn>
+            <b-btn variant="secondary" @click="next"
+                v-if="index == survey.questions.length -1">
+                  Start
+            </b-btn>
           </b-col>
         </b-row>
 
