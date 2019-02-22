@@ -9,7 +9,6 @@
                 @click="answer(true)"/>
           <label class="icon"
                 :for="`like-${question.id}`"
-                v-if="question.likeIcon && question.likeIcon.url"
                 :style="{backgroundImage: `url(${question.likeIcon.url})`}">
           </label>
         </div>
@@ -18,7 +17,6 @@
                 :id="`like-${question.id}`"
                 :name="`like-${question.id}`"
                 @click="answer(true)"/>
-          </label>
         </div>
         <span class="label">
           Like
@@ -27,7 +25,7 @@
     </ol>
     <b-row>
       <b-col cols="6">
-        <div class ="neutral text-center">
+        <div class ="text-center">
           <input type="checkbox"/>
           <label>enthalten</label>
         </div>
@@ -64,7 +62,7 @@ export default {
       this.$store.dispatch('createAnswerLike', { question: this.id, likeID: this.liked});
       this.answered = true;
       this.$root.$emit('answered');
-    }
+    },
   },
 };
 </script>
