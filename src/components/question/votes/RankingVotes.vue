@@ -1,6 +1,5 @@
 <template>
 <div>
-    <h5> Durchschnitt: {{ avg }}</h5>
 <apexchart width="80%" type="bar" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
@@ -9,7 +8,7 @@
 import VueApexCharts from 'vue-apexcharts';
 
 export default {
-  name: 'RegulatorVotes',
+  name: 'ChoiceVotes',
   components: {
       apexchart: VueApexCharts,
   },
@@ -29,10 +28,9 @@ export default {
             },
           },
         },
-         series: [{
+        series: [{
             data: [],
         }],
-        avg: 0,
       };
     },
     computed: {
@@ -47,31 +45,28 @@ export default {
         this.getVotesDiagramm();
     },
     methods: {
-        valuesOfVotes(this: any): number[] {
-            const values: number[] = [];
-            this.votes.forEach( (answer) => {
+        countInArray(this: any, votes, id) {
+            let counter = 0;
+            votes.forEach( (answer) => {
                 answer.forEach( (element) => {
-                    values.push(element.rating);
+                    if (element.choice === id) {
+                        counter ++;
+                        }
+                    });
                 });
-            });
-            return values;
+            return counter;
         },
         getVotesDiagramm(this: any) {
-            const votes = this.valuesOfVotes();
             const result: any[] = [];
-            let min = this.question.min;
-            do {
-                const tmpVotes = votes;
+            this.question.choices.forEach( (element) => {
                 result.push({
-                    x: min,
-                    y: tmpVotes.filter((v) => (v === min)).length,
+                    x: element.label,
+                    y: this.countInArray(this.votes, element.id),
                 });
-                min += this.question.stepSize;
-            } while (min <= this.question.max);
+            });
             this.$data.series = [{
                 data: result,
             }];
-            this.avg = ((votes.reduce((sum, a) => sum + a)) / votes.length).toFixed(2);
         },
     },
 };
