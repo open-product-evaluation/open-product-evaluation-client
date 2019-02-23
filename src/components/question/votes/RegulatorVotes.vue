@@ -1,6 +1,6 @@
 <template>
 <div>
-<apexchart width="80%" type="line" :options="chartOptions" :series="series"></apexchart>
+<apexchart width="80%" type="bar" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
 
@@ -27,13 +27,8 @@ export default {
                 fontSize: '1.5rem',
             },
           },
-          yaxis: {
-              min: 0,
-              max: 1,
-              tickAmount: 5,
-          },
         },
-        series: [{
+         series: [{
             data: [],
         }],
       };
@@ -50,38 +45,30 @@ export default {
         this.getVotesDiagramm();
     },
     methods: {
-        valuesOfVotes(this: any): number[] {
-            const values: number[] = [];
-            this.votes.forEach( (answer) => {
+        countInArray(this: any, votes, id) {
+            let counter = 0;
+            votes.forEach( (answer) => {
                 answer.forEach( (element) => {
-                        values.push(element.rating);
+                    if (element.rating === id) {
+                        counter ++;
+                        }
+                    });
                 });
-            });
-            return values;
+            return counter;
         },
         getVotesDiagramm(this: any) {
-            const votes = this.valuesOfVotes();
+            const result: any[] = [];
+            let min = this.question.min;
+            do {
+                result.push({
+                    x: min,
+                    y: this.countInArray(this.votes, min),
+                });
+                min += this.question.stepSize;
+            } while (min <= this.question.max);
             this.$data.series = [{
-                data: votes,
+                data: result,
             }];
-            const avg = votes.reduce((sum, a) => sum + a);
-            this.$data.chartOptions.yaxis.max = this.question.max;
-            this.$data.chartOptions.yaxis.min = this.question.min;
-            this.$data.chartOptions.yaxis.tickAmount = (this.question.max - this.question.min) / this.question.stepSize;
-
-            /* Show Average in LineChart*/
-            this.$data.chartOptions.annotations = {
-                yaxis: [{
-                    y: avg / votes.length,
-                    borderColor: '#00E396',
-                    label: {
-                        style: {
-                            color: 'red',
-                        },
-                    text: 'Average',
-                    },
-                }],
-            };
         },
     },
 };

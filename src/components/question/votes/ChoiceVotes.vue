@@ -55,20 +55,20 @@ export default {
                     });
                 });
             return counter;
-    },
-    getVotesDiagramm(this: any) {
-        const result: any[] = [];
-        this.question.choices.forEach( (element) => {
-            result.push({
-                x: element.label,
-                y: this.countInArray(this.votes, element.id),
+        },
+        getVotesDiagramm(this: any) {
+            const result: any[] = [];
+            this.question.choices.forEach( (element) => {
+                result.push({
+                    x: element.label,
+                    y: this.countInArray(this.votes, element.id),
+                });
             });
-        });
-        this.$data.series = [{
-            data: result,
-        }];
+            this.$data.series = [{
+                data: result,
+            }];
+        },
     },
-  },
 };
 </script>
 
