@@ -91,6 +91,9 @@
           <regulatorVotes :id="survey.questions[index].id"
                     v-if="survey.questions[index].type === 'REGULATOR'">
           </regulatorVotes>
+          <rankingVotes :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type === 'RANKING'">
+          </rankingVotes>
         </div>
       </b-card-body>
       <b-card-footer>
@@ -118,6 +121,7 @@ import FavoriteVotes from '@/components/question/votes/FavoriteVotes.vue';
 import LikeVotes from '@/components/question/votes/LikeVotes.vue';
 import LikeDislikeVotes from '@/components/question/votes/LikeDislikeVotes.vue';
 import RegulatorVotes from '@/components/question/votes/RegulatorVotes.vue';
+import RankingVotes from '@/components/question/votes/RankingVotes.vue';
 import StepIndicator from 'vue-step-indicator';
 
 export default {
@@ -137,6 +141,7 @@ export default {
     likeVotes: LikeVotes,
     likeDislikeVotes: LikeDislikeVotes,
     regulatorVotes: RegulatorVotes,
+    rankingVotes: RankingVotes,
   },
   data() {
     return {

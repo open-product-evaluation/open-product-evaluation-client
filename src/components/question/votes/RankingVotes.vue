@@ -1,6 +1,6 @@
 <template>
 <div>
-<apexchart width="80%" type="bar" :options="chartOptions" :series="series"></apexchart>
+<apexchart width="80%" type="heatmap" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
 
@@ -8,7 +8,7 @@
 import VueApexCharts from 'vue-apexcharts';
 
 export default {
-  name: 'ChoiceVotes',
+  name: 'RankingVotes',
   components: {
       apexchart: VueApexCharts,
   },
@@ -28,9 +28,7 @@ export default {
             },
           },
         },
-        series: [{
-            data: [],
-        }],
+        series: [],
       };
     },
     computed: {
@@ -45,28 +43,37 @@ export default {
         this.getVotesDiagramm();
     },
     methods: {
-        countInArray(this: any, votes, id) {
+        countInArray(this: any, id, index) {
             let counter = 0;
-            votes.forEach( (answer) => {
-                answer.forEach( (element) => {
-                    if (element.choice === id) {
-                        counter ++;
-                        }
-                    });
-                });
+            this.votes.forEach( (vote) => {
+                if (vote[0].rankedItems != null) {
+                    if (vote[0].rankedItems[index] === id) {
+                        counter++;
+                    }
+                }
+            });
             return counter;
         },
-        getVotesDiagramm(this: any) {
+        getElement(this: any, id) {
             const result: any[] = [];
-            this.question.choices.forEach( (element) => {
+            for (let i = 0; i < this.question.items.length; i++) {
                 result.push({
-                    x: element.label,
-                    y: this.countInArray(this.votes, element.id),
+                    x: 'Platz: ' + (i + 1),
+                    y: this.countInArray(id, i),
+                });
+            }
+            return result;
+        },
+        getVotesDiagramm(this: any) {
+            const series: any[] = [];
+            this.question.items.forEach( (element) => {
+                // [1, ... n] n is best
+                series.push({
+                    name: element.label,
+                    data: this.getElement(element.id),
                 });
             });
-            this.$data.series = [{
-                data: result,
-            }];
+            this.$data.series = series;
         },
     },
 };
