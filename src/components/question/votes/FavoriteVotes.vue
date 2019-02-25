@@ -1,6 +1,6 @@
 <template>
-<div>
-<apexchart width="80%" type="bar" :options="chartOptions" :series="series"></apexchart>
+<div class="chartDiagramm">
+<apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
 
@@ -24,9 +24,26 @@ export default {
           },
           dataLabels: {
             style: {
-                fontSize: '1.5rem',
+                fontSize: '1.25rem',
             },
           },
+          yaxis: {
+              axisBorder: {
+                  show: true,
+              },
+              title: {
+                  text: 'Anzahl',
+              },
+          },
+          tooltip: {
+                y: {
+                    title: {
+                        formatter() {
+                            return '';
+                        },
+                    },
+                },
+            },
         },
         series: [{
             data: [],
@@ -73,4 +90,8 @@ export default {
 </script>
 
 <style scoped="true" lang="scss">
+.chartDiagramm {
+    margin: 0 auto; 
+    width: 60%;
+}
 </style>

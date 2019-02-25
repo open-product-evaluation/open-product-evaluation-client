@@ -1,7 +1,9 @@
 <template>
-<div>
+<div class ="chart">
     <h5> Durchschnitt: {{ avg }}</h5>
-<apexchart width="80%" type="bar" :options="chartOptions" :series="series"></apexchart>
+    <div class="chartDiagramm" >
+    <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
+    </div>
 </div>
 </template>
 
@@ -24,10 +26,45 @@ export default {
             toolbar: { show: false },
           },
           dataLabels: {
-            style: {
-                fontSize: '1.5rem',
-            },
+                offsetY: 10,
           },
+          plotOptions: {
+              bar: {
+                  columnWidth: '70%',
+                  dataLabels: {
+                      position: 'bottom',
+                  },
+              },
+          },
+          grid: {
+              xaxis: {
+                  lines: {
+                      show: true,
+                  },
+              },
+          },
+          yaxis: {
+              axisBorder: {
+                  show: true,
+              },
+              title: {
+                  text: 'Anzahl',
+              },
+          },
+          xaxis: {
+              title: {
+                  text: 'Wert',
+              },
+          },
+          tooltip: {
+                y: {
+                    title: {
+                        formatter(val) {
+                            return 'Anzahl';
+                        },
+                    },
+                },
+            },
         },
          series: [{
             data: [],
@@ -63,7 +100,7 @@ export default {
             do {
                 const tmpVotes = votes;
                 result.push({
-                    x: min,
+                    x: min.toString(),
                     y: tmpVotes.filter((v) => (v === min)).length,
                 });
                 min += this.question.stepSize;
@@ -72,10 +109,15 @@ export default {
                 data: result,
             }];
             this.avg = ((votes.reduce((sum, a) => sum + a)) / votes.length).toFixed(2);
+            this.$data.chartOptions.xaxis.tickAmount = result.length - 1;
         },
     },
 };
 </script>
 
 <style scoped="true" lang="scss">
+.chartDiagramm {
+    margin: 0 auto; 
+    width: 60%;
+}
 </style>

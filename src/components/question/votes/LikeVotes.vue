@@ -1,6 +1,6 @@
 <template>
-<div>
-    <apexchart width="60%" type="donut" :options="chartOptions" :series="series"></apexchart>
+<div class="chartDiagramm">
+    <apexchart type="donut" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
 
@@ -30,7 +30,6 @@ export default {
           },
           legend: {
               position: 'top',
-              fontSize: '20px',
           },
         },
       };
@@ -65,4 +64,8 @@ export default {
 </script>
 
 <style scoped="true" lang="scss">
+.chartDiagramm {
+    margin: 0 auto; 
+    width: 30%;
+}
 </style>

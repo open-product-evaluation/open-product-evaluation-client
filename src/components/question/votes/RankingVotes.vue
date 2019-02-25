@@ -1,6 +1,6 @@
 <template>
-<div>
-<apexchart width="80%" type="heatmap" :options="chartOptions" :series="series"></apexchart>
+<div class="chartDiagramm">
+<apexchart type="heatmap" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
           },
           dataLabels: {
             style: {
-                fontSize: '1.5rem',
+                fontSize: '1.25rem',
             },
           },
         },
@@ -80,4 +80,8 @@ export default {
 </script>
 
 <style scoped="true" lang="scss">
+.chartDiagramm {
+    margin: 0 auto; 
+    width: 50%;
+}
 </style>
