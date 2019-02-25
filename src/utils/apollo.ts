@@ -2,6 +2,7 @@ import { ApolloClient } from 'apollo-client';
 import { ApolloLink, Observable } from 'apollo-link';
 import { createUploadLink } from 'apollo-upload-client';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
+import { onError } from 'apollo-link-error'
 /* import introspectionQueryResultData from './fragments.json'; */
 
 /**
@@ -76,9 +77,14 @@ const requestLink = new ApolloLink((operation, forward) => new Observable((obser
     };
 }));
 
+const errorLink = onError(({ graphQLErrors }) => {
+    if (graphQLErrors) graphQLErrors.map(({ message }) => console.log(message))
+})
+
 export default new ApolloClient({
     cache: new InMemoryCache({ fragmentMatcher }),
     link: ApolloLink.from([
+        errorLink,
         requestLink,
         createUploadLink({
             uri: 'http://localhost:3000/graphql',
