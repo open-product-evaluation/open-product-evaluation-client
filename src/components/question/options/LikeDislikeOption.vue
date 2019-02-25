@@ -14,12 +14,14 @@
         </label>
       </div>
       <div v-if="!question.likeIcon">
-        <input type="radio" 
-             class="icon"
-             :id="`like-${question.id}`"
-             :name="`likedislike-${question.id}`"
-             :checked="liked==true"
-             @click="updateValue(true)" />
+        <label class="like-checkbox">
+            <input type="checkbox"
+                :id="`like-${question.id}`"
+                :name="`likedislike-${question.id}`"
+                :checked="liked==true"
+                @click="updateValue(true)"/>
+            <v-icon class="icon" name="thumbs-up" ></v-icon>
+            </label>
       </div>
       <span class="label">
         Like
@@ -38,12 +40,14 @@
         </label>
       </div>
       <div v-if="!question.dislikeIcon">
-        <input type="radio"
-              class="icon"
-             :id="`dislike-${question.id}`"
-             :name="`likedislike-${question.id}`"
-             :checked="liked==false"
-             @click="updateValue(false)" />
+          <label class="dislike-checkbox">
+            <input type="checkbox"
+                :id="`dislike-${question.id}`"
+                :name="`likedislike-${question.id}`"
+                :checked="liked==false"
+                @click="updateValue(false)"/>
+            <v-icon class="icon" name="thumbs-down" ></v-icon>
+            </label>
         </div>
       <span class="label">
         Dislike
@@ -72,7 +76,7 @@ export default {
   },
   data() {
     return {
-      liked: '',
+      liked: null,
       answered: false,
     };
   },
@@ -110,6 +114,17 @@ export default {
   input[type="radio"]:checked+label+span {
     color: $primaryColor;
   }
+  .like-checkbox input[type="checkbox"], .dislike-checkbox input[type="checkbox"] {
+    display: none;
+  }
+.like-checkbox input[type="checkbox"]:checked ~ .icon
+{
+    color: $primaryColor;
+}
+.dislike-checkbox input[type="checkbox"]:checked ~ .icon
+{
+    color: $primaryColor;
+}
   .like, .dislike {
     text-align: center;
     flex-grow: 1;

@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import Client from '@/api/client';
 import Survey from '@/api/survey';
 import Question from '@/api/question';
+import Votes from '@/api/votes';
 
 Vue.use(Vuex);
 
@@ -13,6 +14,7 @@ const state = {
     questions: [],
     votes: [],
   },
+  test: [],
 };
 
 const getters = {
@@ -24,6 +26,7 @@ const getters = {
   getVote: () => (questionID) => {
     return filterVotes(questionID);
   },
+  getTest: () => state.test,
 };
 
 const mutations = {
@@ -97,11 +100,23 @@ const actions = {
     });
   },
   getSurvey(context, payload) {
+    return new Promise( (resolve, reject) => {
     Survey.getSurvey(payload.domain)
       .then((data: any) => {
+        if (data === undefined) {
+          reject(data);
+        } else {
         context.commit('currentSurvey', data.data !== undefined ? data.data.domain.activeSurvey : null);
         context.commit('currentQuestions', data.data !== undefined ? data.data.domain.activeSurvey.questions : null);
-        context.commit('currentVotes', data.data !== undefined ? data.data.domain.activeSurvey.votes : null);
+        resolve(data);
+        }
+      });
+    });
+  },
+  getVotes(context, payload) {
+    Votes.getVotes(payload.surveyID)
+      .then((data: any) => {
+        context.commit('currentVotes', data.data !== undefined ? data.data.votes : null);
       });
   },
   createAnswerChoice(context, payload) {

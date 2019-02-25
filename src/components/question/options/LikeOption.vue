@@ -14,11 +14,14 @@
           </label>
         </div>
         <div v-if="!question.likeIcon">
-          <input type="checkbox" class="icon"
+          <label class="like-checkbox">
+            <input type="checkbox"
                 :id="`like-${question.id}`"
                 :name="`like-${question.id}`"
                 :checked="liked==true"
                 @click="updateValue(true)"/>
+            <v-icon class="icon" name="thumbs-up" ></v-icon>
+            </label>
         </div>
         <span class="label">
           Like
@@ -28,7 +31,7 @@
     <b-row>
       <b-col cols="6">
         <div class ="text-center">
-          <input type="checkbox" @click="deselectAll()" :checked="!liked"/>
+          <input type="checkbox" @click="deselectAll()" :checked="liked==null"/>
           <label>keine Angabe</label>
         </div>
       </b-col>
@@ -40,6 +43,7 @@
 </template>
 
 <script lang="ts">
+
 export default {
   name: 'LikeOption',
   props: {
@@ -47,7 +51,7 @@ export default {
   },
   data() {
     return {
-      liked: false,
+      liked: null,
       answered: false,
     };
   },
@@ -58,10 +62,10 @@ export default {
   },
   methods: {
     updateValue(this: any, liked) {
-      this.liked = liked;
+      this.liked === true ? this.liked = false : this.liked = true;
     },
     deselectAll(this: any) {
-      this.liked = false;
+      this.liked = null;
     },
     sendAnswer(this: any) {
       this.$store.dispatch('createAnswerLike', { question: this.id, likeID: this.liked});
@@ -81,6 +85,13 @@ export default {
   input[type="checkbox"]:checked+label+span {
     color: $primaryColor;
   }
+.like-checkbox input[type="checkbox"]{
+    display: none;
+}
+.like-checkbox input[type="checkbox"]:checked ~ .icon
+{
+    color: $primaryColor;
+}
   .like {
     font-size: 1.25rem;
     text-align: center;

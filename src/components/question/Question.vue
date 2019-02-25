@@ -60,11 +60,14 @@
           </div>
         </b-col>
 
-        <b-col cols="1" class="next_btn"
+        <b-col cols="1" class="btn_col"
                 v-if="answered">
-          <b-btn variant="secondary" @click="next"
-                v-if="index !== survey.questions.length - 1">weiter
-          </b-btn>
+          <label class="next_btn" 
+                v-if="index !== survey.questions.length - 1">
+            <input type="button"
+                @click="next"/>
+            <v-icon variant="primary" class="icon" name="arrow-alt-circle-right" ></v-icon>
+            </label>
           <b-btn variant="secondary" @click="next"
                   v-if="index == survey.questions.length -1">Start
           </b-btn>
@@ -151,16 +154,23 @@ export default {
     };
   },
   created(this: any) {
-    // const domainID = this['$route'].params.cID;
-    /* TODO Change route.params.cID */
-    const domainID = this._routerRoot._route.params.cID;
+    const domainID = this.$route.params.cID;
     this.$store.dispatch('getSurvey', {
         domain: domainID,
+    }).then((data) => {
+        this.$store.dispatch('getVotes', {
+          surveyID: this.survey.id,
+        });
+      }, (error) => {
+        console.log(error.message);
       });
   },
   computed: {
     survey(this: any) {
       return this.$store.getters.getSurvey;
+    },
+    votes(this: any) {
+      return this.$store.getters.getVotes;
     },
   },
   methods: {
@@ -184,6 +194,7 @@ export default {
 <style src="vue-step-indicator/dist/vue-step-indicator.css"></style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 h3 {
   margin: 40px 0 0;
 }
@@ -200,7 +211,7 @@ h3 {
 .stepper {
   margin-bottom: 1rem;
 }
-.next_btn {
+.btn_col {
   margin-top: auto;
 }
 .votes {
@@ -209,5 +220,19 @@ h3 {
 }
 .row {
   margin-bottom: 1rem;
+}
+.next_btn input[type="button"]{
+    display: none;
+}
+.icon {
+  display: block;
+  cursor: pointer;
+  width: 2.5rem;
+  margin-bottom: 0.5rem;
+  background-size: contain;
+  margin: 0 auto 0.5rem;
+  height: 2.5rem;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 </style>
