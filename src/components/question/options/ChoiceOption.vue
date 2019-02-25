@@ -98,7 +98,7 @@ export default {
   }
   input[type="radio"]:checked + label + span { color: $primaryColor; }
   .choice {
-    font-size: 1.5rem;
+    font-size: 1rem;
     text-align: center;
     flex-grow: 1;
     display: flex;
@@ -124,6 +124,6 @@ export default {
     }
   }
   .neutral {
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
 </style>

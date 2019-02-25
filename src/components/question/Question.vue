@@ -2,7 +2,7 @@
     <div class="container">
       <b-card no-body>
         <b-card-header>
-          <h2 >{{ survey.title }}</h2>
+          <h3>{{ survey.title }}</h3>
           <p class="description">
             {{ survey.description }}
           </p>
@@ -74,7 +74,7 @@
                                       && survey.questions.length
                                       && survey.questions.length > 0 
                                       && answered">
-          <h4> Bisheriges Ergebnis </h4>
+          <h5> Bisheriges Ergebnis </h5>
           <!-- display  Votes -->
           <choiceVotes :id="survey.questions[index].id"
                     v-if="survey.questions[index].type === 'CHOICE'">
@@ -205,5 +205,9 @@ h3 {
 }
 .votes {
   border-top: 1px solid rgba(0, 0, 0, 0.125);
+  padding-top: 2rem;
+}
+.row {
+  margin-bottom: 1rem;
 }
 </style>

@@ -68,10 +68,10 @@ export default {
 <style scoped="true" lang="scss">
   .range { 
     text-align: center; 
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     padding: 0;
     }
   .col-1 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 </style>

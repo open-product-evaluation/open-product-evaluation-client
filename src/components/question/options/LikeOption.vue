@@ -82,7 +82,7 @@ export default {
     color: $primaryColor;
   }
   .like {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     text-align: center;
     flex-grow: 1;
     input { display: none; }

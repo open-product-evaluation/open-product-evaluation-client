@@ -113,7 +113,7 @@ export default {
   .like, .dislike {
     text-align: center;
     flex-grow: 1;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     input { display: none; }
     .icon {
       display: block;
