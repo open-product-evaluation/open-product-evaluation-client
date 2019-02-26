@@ -1,0 +1,71 @@
+<template>
+<div class="chartDiagramm">
+    <apexchart type="donut" :options="chartOptions" :series="series"></apexchart>
+</div>
+</template>
+
+<script lang="ts">
+import VueApexCharts from 'vue-apexcharts';
+
+export default {
+  name: 'LikeVotes',
+  components: {
+      apexchart: VueApexCharts,
+  },
+  props: {
+    id: String,
+  },
+  data() {
+      return {
+        series: [],
+        chartOptions: {
+          labels: ['Liked', 'Neutral'],
+          dataLabels: {
+            formatter(val) {
+                return Math.round(val) +  '%';
+            },
+            style: {
+                fontSize: '1.25rem',
+            },
+          },
+          legend: {
+              position: 'top',
+          },
+        },
+      };
+    },
+  computed: {
+    votes(this: any) {
+        return this.$store.getters.getVote(this.id);
+    },
+  },
+  created(this: any) {
+      this.getVotesDiagramm();
+  },
+  methods: {
+   countInArray(this: any, votes) {
+       let counter = 0;
+       let max = 0;
+       votes.forEach( (answer) => {
+           answer.forEach( (element) => {
+               max++;
+               if (element.liked === true) {
+                   counter ++;
+                }
+           });
+       });
+       return [(counter / max) * 100, ((max - counter) / max) * 100];
+   },
+   getVotesDiagramm(this: any) {
+        this.$data.series = this.countInArray(this.votes);
+    },
+  },
+};
+</script>
+
+<style scoped="true" lang="scss">
+.chartDiagramm {
+    margin: 0 auto; 
+    width: 30%;
+}
+</style>

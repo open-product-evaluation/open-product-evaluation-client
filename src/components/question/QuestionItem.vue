@@ -20,7 +20,7 @@ export default {
   },
   computed: {
     question(this: any) {
-      return this['$store'].getters.getQuestion(this.id);
+      return this.$store.getters.getQuestion(this.id);
     },
   },
 };

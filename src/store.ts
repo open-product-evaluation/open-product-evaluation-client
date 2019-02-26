@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import Client from '@/api/client';
 import Survey from '@/api/survey';
 import Question from '@/api/question';
+import Votes from '@/api/votes';
 
 Vue.use(Vuex);
 
@@ -13,41 +14,49 @@ const state = {
     questions: [],
     votes: [],
   },
+  test: [],
 };
 
 const getters = {
-  getClient: (state) => state.client,
-  getSurveys: (state) => state.surveys || [],
-  getSurvey: (state) => state.currentSurvey,
-  getQuestion: (state) => (questionID) => state.currentSurvey.questions.find( (question) => question.id === questionID),
+  getClient: () => state.client,
+  getSurveys: () => state.surveys || [],
+  getSurvey: () => state.currentSurvey,
+  getQuestion: () => (questionID) => state.currentSurvey.questions.find( (question: any) => question.id === questionID),
+  getVotes: () => state.currentSurvey.votes,
+  getVote: () => (questionID) => {
+    return filterVotes(questionID);
+  },
+  getTest: () => state.test,
 };
 
 const mutations = {
-  createClient(state, payload) {
+  createClient(states, payload) {
     if (payload.token) {
       localStorage.setItem('currentToken', payload.token);
     }
     localStorage.setItem('client', payload.client.id);
-    state.client = payload;
+    states.client = payload;
   },
-  updateClient(state, payload) {
+  updateClient(states, payload) {
     localStorage.setItem('client', payload.client.id);
-    state.client = payload;
+    states.client = payload;
   },
-  currentSurvey(state, payload) {
-    state.currentSurvey = payload;
+  currentSurvey(states, payload) {
+    states.currentSurvey = payload;
   },
-  setSurveys(state, payload) {
-    state.surveys = payload;
+  setSurveys(states, payload) {
+    states.surveys = payload;
   },
-  currentQuestions(state, payload) {
-    state.currentSurvey.questions = payload;
+  currentQuestions(states, payload) {
+    states.currentSurvey.questions = payload;
+  },
+  currentVotes(states, payload) {
+    states.currentSurvey.votes = payload;
   },
 };
 
 const actions = {
   updateClient(context, payload) {
-    console.log(payload.id + payload.domainId);
     Client.updateClient(payload.id, payload.domainId)
     .then((data) => {
       context.commit('updateClient', data.data !== undefined ? data.data.updateClient : null);
@@ -59,7 +68,7 @@ const actions = {
       localStorage.removeItem('currentToken');
       localStorage.removeItem('client');
       Client.createClient( payload.name )
-      .then( (data) => {
+      .then((data) => {
         context.commit('createClient', data.data !== undefined ? data.data.createClient : null);
         resolve(data.data);
       },
@@ -71,16 +80,16 @@ const actions = {
   getSurveys(this: any, context) {
     return new Promise( (resolve, reject) => {
       Survey.getAllSurveys()
-      .then( (data) => {
-        if ( data['errors'] == null ) {
-            context.commit('setSurveys', data.data !== undefined ? data.data['domains'] : null);
+      .then( (data: any) => {
+        if ( data.errors == null ) {
+            context.commit('setSurveys', data.data !== undefined ? data.data.domains : null);
         } else {
           // Token has expired
           this.dispatch('createClient', { name: 'DeviceName' })
           .then( () => {
               Survey.getAllSurveys()
-              .then( (result) => {
-                context.commit('setSurveys', result.data !== undefined ? result.data['domains'] : null);
+              .then( (result: any) => {
+                context.commit('setSurveys', result.data !== undefined ? result.data.domains : null);
                 resolve(result);
               });
           }, (error) => {
@@ -91,10 +100,23 @@ const actions = {
     });
   },
   getSurvey(context, payload) {
+    return new Promise( (resolve, reject) => {
     Survey.getSurvey(payload.domain)
-      .then((data) => {
-        context.commit('currentSurvey', data.data !== undefined ? data.data["domain"].activeSurvey : null);
-        context.commit('currentQuestions', data.data !== undefined ? data.data["domain"].activeSurvey.questions : null);
+      .then((data: any) => {
+        if (data === undefined) {
+          reject(data);
+        } else {
+        context.commit('currentSurvey', data.data !== undefined ? data.data.domain.activeSurvey : null);
+        context.commit('currentQuestions', data.data !== undefined ? data.data.domain.activeSurvey.questions : null);
+        resolve(data);
+        }
+      });
+    });
+  },
+  getVotes(context, payload) {
+    Votes.getVotes(payload.surveyID)
+      .then((data: any) => {
+        context.commit('currentVotes', data.data !== undefined ? data.data.votes : null);
       });
   },
   createAnswerChoice(context, payload) {
@@ -141,3 +163,15 @@ export default new Vuex.Store({
   mutations,
   actions,
 });
+
+function filterVotes(questionID) {
+  const result: string[] = [];
+  state.currentSurvey.votes.map( (vote) => {
+    result.push(filterCurrentQuestionsVotes(vote, (questionID)));
+  });
+  return result;
+}
+
+function filterCurrentQuestionsVotes(vote, questionID) {
+  return vote.answers.filter( (answer) => answer.question === questionID);
+}

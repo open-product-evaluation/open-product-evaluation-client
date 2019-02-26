@@ -92,31 +92,6 @@ const getSurvey = (domain: string) => apiClient.query(
                     label
                   }
                 }
-                votes{
-                  answers{
-                    question
-                    __typename
-                    ...on LikeDislikeAnswer{
-                      liked
-                    }
-                    ...on LikeAnswer{
-                      liked
-                    }
-                    ...on ChoiceAnswer{
-                      choice
-                    }
-                    ...on RegulatorAnswer{
-                      rating
-                      normalized
-                    }
-                    ...on RankingAnswer{
-                      rankedItems
-                    }
-                    ...on FavoriteAnswer{
-                      favoriteItem
-                    }
-                  }
-                }
               }
             }
           }`,

@@ -1,103 +1,130 @@
 <template>
     <div class="container">
-      <b-card>
-        <div slot="header">
-          <h2 >{{ survey.title }}</h2>
-          
+      <b-card no-body>
+        <b-card-header>
+          <h3>{{ survey.title }}</h3>
           <p class="description">
             {{ survey.description }}
           </p>
+        </b-card-header>
+
+        <b-card-body>
+        <b-row>
+          <b-col md="1"/>
+          <b-col md="10">
+          <!-- TODO Choose progressBar oder ProgressSteps --> 
+          <div class="stepper">
+              <step-indicator :current="index" :total="survey.questions.length"></step-indicator>
+          </div>
+
+          <div class="question" v-if="survey.questions
+                                      && survey.questions.length
+                                      && survey.questions.length > 0">
+            <!-- display question title and description -->
+            <questionMeta :id="survey.questions[index].id"></questionMeta>
+
+            <!-- display question items -->
+            <questionItems :id="survey.questions[index].id"
+                  v-if="displayItems(survey.questions[index].type)">
+            </questionItems>
+
+            <!-- display choices -->
+            <choice :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type === 'CHOICE'">
+            </choice>
+
+            <!-- display like / dislike options -->
+            <likeDislike :id="survey.questions[index].id"
+                        v-if="survey.questions[index].type === 'LIKEDISLIKE'">
+            </likeDislike>
+
+            <!-- display like option -->
+            <like :id="survey.questions[index].id"
+                  v-if="survey.questions[index].type === 'LIKE'">
+            </like>
+
+            <!-- display regulator option -->
+            <regulator :id="survey.questions[index].id"
+                      v-if="survey.questions[index].type === 'REGULATOR'">
+            </regulator>
+
+            <!-- display special ranking options -->
+            <ranking :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type === 'RANKING'">
+            </ranking>
+
+            <!-- display special favorite options -->
+            <favorite :id="survey.questions[index].id"
+                      v-if="survey.questions[index].type === 'FAVORITE'">
+            </favorite>
+          </div>
+        </b-col>
+
+        <b-col cols="1" class="btn_col"
+                v-if="answered">
+          <label class="next_btn" 
+                v-if="index !== survey.questions.length - 1">
+            <input type="button"
+                @click="next"/>
+            <v-icon variant="primary" class="icon" name="arrow-alt-circle-right" ></v-icon>
+            </label>
+          <b-btn variant="secondary" @click="next"
+                  v-if="index == survey.questions.length -1">Start
+          </b-btn>
+        </b-col>
+      </b-row>
+      <div class="votes" v-if="survey.questions
+                                      && survey.questions.length
+                                      && survey.questions.length > 0 
+                                      && answered">
+          <h5> Bisheriges Ergebnis </h5>
+          <!-- display  Votes -->
+          <choiceVotes :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type === 'CHOICE'">
+          </choiceVotes>
+          <favoriteVotes :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type ==='FAVORITE'">
+          </favoriteVotes>
+          <likeVotes :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type === 'LIKE'">
+          </likeVotes>
+          <likeDislikeVotes :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type === 'LIKEDISLIKE'">
+          </likeDislikeVotes>
+          <regulatorVotes :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type === 'REGULATOR'">
+          </regulatorVotes>
+          <rankingVotes :id="survey.questions[index].id"
+                    v-if="survey.questions[index].type === 'RANKING'">
+          </rankingVotes>
         </div>
-        <!-- TODO Choose progressBar oder ProgressSteps --> 
-        <div class="stepper">
-            <step-indicator :current="index" :total="survey.questions.length"></step-indicator>
-        </div>
-        <div class="question" v-if="survey.questions
-                                    && survey.questions.length
-                                    && survey.questions.length > 0">
-
-          <!-- display question title and description -->
-          <questionMeta :id="survey.questions[index].id"></questionMeta>
-
-          <!-- display question items -->
-          <questionItems :id="survey.questions[index].id"
-                 v-if="displayItems(survey.questions[index].type)">
-          </questionItems>
-
-          <!-- display choices -->
-          <choice :id="survey.questions[index].id"
-                  v-if="survey.questions[index].type === 'CHOICE'">
-          </choice>
-
-          <!-- display like / dislike options -->
-          <likeDislike :id="survey.questions[index].id"
-                       v-if="survey.questions[index].type === 'LIKEDISLIKE'">
-          </likeDislike>
-
-          <!-- display like option -->
-          <like :id="survey.questions[index].id"
-                v-if="survey.questions[index].type === 'LIKE'">
-          </like>
-
-          <!-- display regulator option -->
-          <regulator :id="survey.questions[index].id"
-                     v-if="survey.questions[index].type === 'REGULATOR'">
-          </regulator>
-
-          <!-- display special ranking options -->
-          <ranking :id="survey.questions[index].id"
-                   v-if="survey.questions[index].type === 'RANKING'">
-          </ranking>
-
-          <!-- display special favorite options -->
-          <favorite :id="survey.questions[index].id"
-                    v-if="survey.questions[index].type === 'FAVORITE'">
-          </favorite>
-        </div>
-        
-        <div slot="footer">
-        <b-row v-if="survey.questions
-                     && survey.questions.length
-                     && survey.questions.length > 0">
-          <b-col cols="6" class="text-left">
-            <b-btn variant="primary"
-                   @click="previous"
-                   v-if="index !== 0">
-              Previous
-            </b-btn>
-          </b-col>
-          <b-col cols="6" class="text-right">
-            <b-btn variant="primary"
-                   @click="next"
-                   v-if="index !== survey.questions.length - 1">
-              Next
-            </b-btn>
-            <b-btn variant="primary"
-                   @click="next"
-                   v-if="index == survey.questions.length -1 ">
-              Beenden
-            </b-btn>
-          </b-col>
-        </b-row>
-        </div>
-      </b-card>
-      <b-progress :max="max">
-        <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
-        </b-progress-bar>
-      </b-progress>
+      </b-card-body>
+      <b-card-footer>
+        <b-progress :max="100">
+          <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
+          </b-progress-bar>
+        </b-progress>
+      </b-card-footer>
+    </b-card>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import QuestionItem from '@/components/question/QuestionItem.vue';
-import ChoiceOptions from '@/components/question/ChoiceOption.vue';
-import RankingOptions from '@/components/question/RankingOption.vue';
-import FavoriteOptions from '@/components/question/FavoriteOption.vue';
-import RegulatorOptions from '@/components/question/RegulatorOption.vue';
-import LikeOptions from '@/components/question/LikeOption.vue';
-import LikeDislikeOptions from '@/components/question/LikeDislikeOption.vue';
+import ChoiceOptions from '@/components/question/options/ChoiceOption.vue';
+import RankingOptions from '@/components/question/options/RankingOption.vue';
+import FavoriteOptions from '@/components/question/options/FavoriteOption.vue';
+import RegulatorOptions from '@/components/question/options/RegulatorOption.vue';
+import LikeOptions from '@/components/question/options/LikeOption.vue';
+import LikeDislikeOptions from '@/components/question/options/LikeDislikeOption.vue';
 import QuestionValue from '@/components/question/QuestionValue.vue';
+import ChoiceVotes from '@/components/question/votes/ChoiceVotes.vue';
+import FavoriteVotes from '@/components/question/votes/FavoriteVotes.vue';
+import LikeVotes from '@/components/question/votes/LikeVotes.vue';
+import LikeDislikeVotes from '@/components/question/votes/LikeDislikeVotes.vue';
+import RegulatorVotes from '@/components/question/votes/RegulatorVotes.vue';
+import RankingVotes from '@/components/question/votes/RankingVotes.vue';
 import StepIndicator from 'vue-step-indicator';
 
 export default {
@@ -112,23 +139,38 @@ export default {
     likeDislike: LikeDislikeOptions,
     questionMeta: QuestionValue,
     StepIndicator,
+    choiceVotes: ChoiceVotes,
+    favoriteVotes: FavoriteVotes,
+    likeVotes: LikeVotes,
+    likeDislikeVotes: LikeDislikeVotes,
+    regulatorVotes: RegulatorVotes,
+    rankingVotes: RankingVotes,
   },
   data() {
     return {
       index: 0,
-      max: 100,
       counter: 0,
+      answered: false,
     };
   },
-  created() {
-    const domainID = this['$route'].params.cID;
-    this['$store'].dispatch('getSurvey', {
+  created(this: any) {
+    const domainID = this.$route.params.cID;
+    this.$store.dispatch('getSurvey', {
         domain: domainID,
+    }).then((data) => {
+        this.$store.dispatch('getVotes', {
+          surveyID: this.survey.id,
+        });
+      }, (error) => {
+        console.log(error.message);
       });
   },
   computed: {
-    survey() {
-      return this['$store'].getters.getSurvey;
+    survey(this: any) {
+      return this.$store.getters.getSurvey;
+    },
+    votes(this: any) {
+      return this.$store.getters.getVotes;
     },
   },
   methods: {
@@ -136,21 +178,23 @@ export default {
       return !(type === 'RANKING' || type === 'FAVORITE');
     },
     next(this: any) {
-      (this.index < this.survey.questions.length - 1) ? (this.index++) : this['$router'].push({name: 'surveyList'});
-       this['$root'].$emit('next', this.survey.questions[this.index - 1].type);
-       this.counter = Math.floor(this.index / this.survey.questions.length * 100);
+        (this.index < this.survey.questions.length - 1) ? (this.index++) : this.$router.push({name: 'surveyList'});
+        this.$root.$emit('next', this.survey.questions[this.index - 1].type);
+        this.counter = Math.floor(this.index / this.survey.questions.length * 100);
+        this.answered = false;
     },
-    previous(this: any) {
-      if (this.index > 0) {
-        this.index -= 1;
-      }
-    },
+  },
+  mounted(this: any) {
+    this.$root.$on('answered', () => {
+        this.answered = true;
+    });
   },
 };
 </script>
 <style src="vue-step-indicator/dist/vue-step-indicator.css"></style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 h3 {
   margin: 40px 0 0;
 }
@@ -166,5 +210,29 @@ h3 {
 }
 .stepper {
   margin-bottom: 1rem;
+}
+.btn_col {
+  margin-top: auto;
+}
+.votes {
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+  padding-top: 2rem;
+}
+.row {
+  margin-bottom: 1rem;
+}
+.next_btn input[type="button"]{
+    display: none;
+}
+.icon {
+  display: block;
+  cursor: pointer;
+  width: 2.5rem;
+  margin-bottom: 0.5rem;
+  background-size: contain;
+  margin: 0 auto 0.5rem;
+  height: 2.5rem;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 </style>

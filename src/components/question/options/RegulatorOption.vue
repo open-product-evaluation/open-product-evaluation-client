@@ -19,6 +19,17 @@
         {{ question.max }}
       </div>
     </div>
+    <b-row>
+      <b-col cols="6">
+        <div class ="text-center">
+          <input type="checkbox"/>
+          <label>keine Angabe</label>
+        </div>
+      </b-col>
+      <b-col cols="6" class="text-center" v-if="!answered">
+        <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -28,6 +39,7 @@ export default {
   data() {
     return {
       value: null,
+      answered: false,
     };
   },
   props: {
@@ -35,21 +47,19 @@ export default {
   },
   computed: {
     question(this: any) {
-      return this['$store'].getters.getQuestion(this.id);
+      return this.$store.getters.getQuestion(this.id);
     },
   },
   methods: {
     updateValue(this: any, event) {
       this.value = event.target.value;
     },
-  },
-  mounted(this: any) {
-    this['$root'].$on('next', (data) => {
-      if (data === 'REGULATOR' && this.value != null) {
-        const rating = (this.value != null) ? parseFloat(this.value) : 0;
-        this['$store'].dispatch('createAnswerRegulator', { question: this.id, ratingID: rating });
-      }
-    });
+    sendAnswer(this: any) {
+      const rating = (this.value != null) ? parseFloat(this.value) : 0;
+      this.$store.dispatch('createAnswerRegulator', { question: this.id, ratingID: rating });
+      this.answered = true;
+      this.$root.$emit('answered');
+    },
   },
 };
 </script>
@@ -58,10 +68,10 @@ export default {
 <style scoped="true" lang="scss">
   .range { 
     text-align: center; 
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     padding: 0;
     }
   .col-1 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 </style>

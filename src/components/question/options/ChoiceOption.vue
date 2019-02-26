@@ -1,4 +1,5 @@
 <template>
+<div>
   <ol class="choices">
     <li class="choice"
         v-for="choice in question.choices"
@@ -8,23 +9,28 @@
              :id="`choice-${choice.id}`"
              :name="`choice-${question.id}`"
              v-if="choice.image && choice.image.url"
-             :value="choice.label" 
-             @click="answer(choice.id)"
+             :value="choice.label"
+             :checked="choice.id == selected"
+             @click="updateValue(choice.id)"
              />
       <label :for="`choice-${choice.id}`"
              v-if="!choice.image">
        <input type="radio"
               :id="`choice-${choice.id}`"
               :name="`choice-${question.id}`"
-              :value="choice.label" 
-              @click="answer(choice.id)"
+              :value="choice.id"
+              :checked="choice.id == selected"
+              v-if="!choice.image"
+              @click="updateValue(choice.id)"
               />
         {{ choice.label}}
       </label>
       <label class="icon"
              :for="`choice-${choice.id}`"
              v-if="choice.image && choice.image.url"
-             :style="{backgroundImage: `url(${choice.image.url})`}">
+             :checked="choice.id == selected"
+             :style="{backgroundImage: `url(${choice.image.url})`}"
+             @click="updateValue(choice.id)">
       </label>
       <span class="label"
             v-if="choice.image && choice.image.url">
@@ -32,6 +38,18 @@
       </span>
     </li>
   </ol>
+  <b-row>
+    <b-col cols="6">
+      <div class ="neutral text-center">
+        <input type="checkbox" @click="deselectAll()" :checked="!selected"/>
+        <label>keine Angabe</label>
+      </div>
+    </b-col>
+    <b-col cols="6" class="text-center" v-if="!answered">
+      <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
+    </b-col>
+  </b-row>
+</div>
 </template>
 
 <script lang="ts">
@@ -43,32 +61,34 @@ export default {
   },
   data() {
     return {
-      choice: '',
+      selected: '',
+      answered: false,
     };
   },
   computed: {
     question(this: any) {
-      return this['$store'].getters.getQuestion(this.id);
+      return this.$store.getters.getQuestion(this.id);
     },
   },
   methods: {
-    answer(this: any, selectedItem) {
-      this.choice = selectedItem;
+    updateValue(this: any, selectedItem) {
+      this.selected = selectedItem;
     },
-  },
-  mounted(this: any) {
-    this['$root'].$on('next', (data) => {
-      if (data === 'CHOICE' && this.choice !== '') {
-        // TODO if not answered, don't go to next question
-        this['$store'].dispatch('createAnswerChoice', { question: this.id, choiceID: this.choice});
-      }
-    });
+    deselectAll(this: any) {
+      this.selected = '';
+    },
+    sendAnswer(this: any) {
+      // TODO Send neutral answer
+      this.$store.dispatch('createAnswerChoice', { question: this.id, choiceID: this.selected});
+      this.answered = true;
+      this.$root.$emit('answered');
+    },
   },
 };
 </script>
 
 <style scoped="true" lang="scss">
-@import "../../scss/variables"; 
+@import "../../../scss/variables"; 
   .choices {
     padding: 0;
     display: flex;
@@ -78,7 +98,7 @@ export default {
   }
   input[type="radio"]:checked + label + span { color: $primaryColor; }
   .choice {
-    font-size: 1.5rem;
+    font-size: 1rem;
     text-align: center;
     flex-grow: 1;
     display: flex;
@@ -102,5 +122,8 @@ export default {
       background-position: center;
       background-repeat: no-repeat;
     }
+  }
+  .neutral {
+    font-size: 1rem;
   }
 </style>
