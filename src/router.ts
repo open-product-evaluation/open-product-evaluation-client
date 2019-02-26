@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import store from './store';
 import SurveyList from '@/components/survey/SurveyList.vue';
 import Question from '@/components/question/Question.vue';
+import slaveQuestion from '@/components/question/SlaveQuestion.vue';
 
 Vue.use(Router);
 
@@ -17,6 +18,11 @@ const router =  new Router({
       path: '/survey/:cID',
       name: 'question',
       component: Question,
+    },
+    {
+      path: '/join/:cID/',
+      name: 'join',
+      component: slaveQuestion,
     },
   ],
 });
