@@ -17,6 +17,7 @@
     "apollo-upload-client": "^9.1.0",
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
+    "subscriptions-transport-ws": "^0.9.15",
     "v-img": "^0.2.0",
     "vue": "^2.6.7",
     "vue-apexcharts": "^1.2.9",

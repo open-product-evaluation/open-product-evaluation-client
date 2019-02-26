@@ -100,7 +100,26 @@ const getSurvey = (domain: string) => apiClient.query(
           },
 });
 
+const onDomainUpdate = (domain: string) => apiClient.subscribe(
+  {
+    query: gql`
+    subscription onDomainUpdate($domainID: HashID!) {
+      domainUpdate(domainID: $domainID) {
+        event
+        domain {
+          id
+          activeQuestion { id  }
+        }
+      }
+    }`,
+    variables: {
+      domainID: domain,
+    },
+  },
+);
+
 export default {
   getSurvey,
   getAllSurveys,
+  onDomainUpdate,
 };

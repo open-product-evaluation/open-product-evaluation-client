@@ -1,8 +1,10 @@
 import { ApolloClient } from 'apollo-client';
-import { ApolloLink, Observable } from 'apollo-link';
+import { ApolloLink, Observable, split } from 'apollo-link';
+import { getMainDefinition } from 'apollo-utilities';
 import { createUploadLink } from 'apollo-upload-client';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
-import { onError } from 'apollo-link-error'
+import { onError } from 'apollo-link-error';
+import { SubscriptionClient } from 'subscriptions-transport-ws';
 /* import introspectionQueryResultData from './fragments.json'; */
 
 /**
@@ -78,8 +80,27 @@ const requestLink = new ApolloLink((operation, forward) => new Observable((obser
 }));
 
 const errorLink = onError(({ graphQLErrors }) => {
-    if (graphQLErrors) graphQLErrors.map(({ message }) => console.log(message))
-})
+    if (graphQLErrors) { graphQLErrors.map(({ message }) => console.log(message)); }
+});
+
+const wsLink: any = new SubscriptionClient(process.env.VUE_APP_SUBSCRIPTION, {
+    reconnect: true,
+    lazy: true,
+    connectionParams: () => {
+      return { Authorization: `Bearer ${localStorage.getItem('currentToken')}` };
+    },
+});
+
+const link = split(
+    // split based on operation type
+    ({ query }) => {
+      const { kind, operation } = getMainDefinition(query);
+      return kind === 'OperationDefinition' && operation === 'subscription';
+    },
+    wsLink,
+    requestLink,
+);
+
 
 export default new ApolloClient({
     cache: new InMemoryCache({ fragmentMatcher }),
