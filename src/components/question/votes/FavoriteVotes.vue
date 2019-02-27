@@ -1,5 +1,6 @@
 <template>
 <div class="chartDiagramm">
+<h5>Keine Angabe: {{neutral}}</h5>
 <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
@@ -17,6 +18,7 @@ export default {
   },
   data() {
       return {
+        neutral: 0,
         chartOptions: {
           chart: {
             id: 'vuechartChoice',
@@ -81,7 +83,8 @@ export default {
                     y: this.countInArray(this.votes, element.id),
                 });
             });
-            this.$data.series = [{
+            this.neutral = this.countInArray(this.votes, null);
+            this.series = [{
                 data: result,
             }];
         },
