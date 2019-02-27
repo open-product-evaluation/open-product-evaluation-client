@@ -4,7 +4,8 @@
   <draggable v-model="question.items"
              @start="drag = true"
              @end="drag = false"
-             class="options row">
+             class="options row"
+             :onchange="selected = true">
     <div :class="((question.items.length%2)===0) ? 'col-lg-6' : 'col-lg-4'"
           v-for="(item, index) in question.items" 
           :key="item.id">
@@ -20,11 +21,11 @@
     <b-row>
       <b-col cols="6">
         <div class ="text-center">
-          <input type="checkbox"/>
+          <input type="checkbox" @click="deselectAll()"/>
           <label>keine Angabe</label>
         </div>
       </b-col>
-      <b-col cols="6" class="text-center" v-if="!answered" @click="updateValue()">
+      <b-col cols="6" class="text-center" v-if="!answered">
         <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
       </b-col>
     </b-row>
@@ -44,6 +45,7 @@ export default {
   },
   data() {
     return {
+      selected: true,
       answered: false,
     };
   },
@@ -53,22 +55,27 @@ export default {
     },
   },
   methods: {
-    getAnswers(this: any): string[] {
-      // Build array for rankingItems
-      // [1,...,n] -> n is best
-      const favoriteArray: string[] = [];
-      this.question.items.forEach( (element) => {
-        favoriteArray.push(element.id);
-      });
-      return favoriteArray;
+    deselectAll(this: any) {
+      this.selected = null;
+    },
+    getAnswers(this: any) {
+      if (this.selected === null ) {
+        return null;
+      } else {
+        // Build array for rankingItems
+        // [1,...,n] -> n is best
+        const favoriteArray: string[] = [];
+        this.question.items.forEach( (element) => {
+          favoriteArray.push(element.id);
+        });
+        return favoriteArray;
+      }
+
     },
     sendAnswer(this: any) {
       this.$store.dispatch('createAnswerRanking', { question: this.id, rankingID: this.getAnswers() });
       this.answered = true;
       this.$root.$emit('answered');
-    },
-    updateValue() {
-      // TODO change answere
     },
   },
 };

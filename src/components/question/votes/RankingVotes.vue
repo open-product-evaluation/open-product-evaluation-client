@@ -1,5 +1,6 @@
 <template>
 <div class="chartDiagramm">
+<h5>Keine Angabe: {{neutral}}</h5>
 <apexchart type="heatmap" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
@@ -17,6 +18,7 @@ export default {
   },
   data() {
       return {
+        neutral: 0,
         chartOptions: {
           chart: {
             id: 'vuechartChoice',
@@ -43,6 +45,15 @@ export default {
         this.getVotesDiagramm();
     },
     methods: {
+        countNeutral(this: any) {
+            let counterNeutral = 0;
+            this.votes.forEach( (vote) => {
+                if (vote[0].rankedItems == null) {
+                    counterNeutral++;
+                }
+            });
+            return counterNeutral;
+        },
         countInArray(this: any, id, index) {
             let counter = 0;
             this.votes.forEach( (vote) => {
@@ -73,7 +84,8 @@ export default {
                     data: this.getElement(element.id),
                 });
             });
-            this.$data.series = series;
+            this.series = series;
+            this.neutral = this.countNeutral();
         },
     },
 };
