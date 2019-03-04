@@ -6,37 +6,6 @@
       <h5> Suche dir eine Umfrage aus oder Suche hier: </h5>
     </div>
 
-    <!--
-<b-carousel id="carouselCards"
-      controls
-      indicators
-      img-width="1024"
-      img-height="480"
-      :interval="0"
-      v-model="pageIndex"
-    >
-      <b-carousel-slide img-blank v-for="page in pageAll" :key="page">
-        <b-card-group deck>
-          <b-card no-body v-for="survey in currentPageSurveys" :key="survey.id" >
-            <b-card-header v-if="survey.activeSurvey.previewImage && survey.activeSurvey.previewImage.url">
-             <img v-img width="100%"/>
-            </b-card-header>
-          <b-card-body style="color: #333333">
-            <b-card-title> {{survey.activeSurvey.title}} </b-card-title>
-            <b-card-text> {{survey.activeSurvey.description}} </b-card-text>
-            <b-button @click="startSurvey(survey.id)">Starten</b-button>
-          </b-card-body>
-        </b-card>
-      </b-card-group>
-      </b-carousel-slide>
-    </b-carousel>
-    <p class="mt-4">
-      Slide #: {{ pageIndex }}<br />
-      Sliding: {{ pageAll }}
-    </p>
-
--->
-
     <b-row align-v="center">
       <b-col cols="1" align-self="center">
         <label v-if="pages > 1">
@@ -48,7 +17,7 @@
 
       <b-col cols="10" align-self="center">
         <transition :name="animation" >
-          <b-card-group deck :key="pageIndex" :style="{display: dis}">
+          <b-card-group deck :key="pageIndex">
             <b-card no-body v-for="survey in currentPageSurveys" :key="survey.id">
             <b-card-header v-if="survey.activeSurvey.previewImage && survey.activeSurvey.previewImage.url">
               <img v-img width="100%"/>
@@ -93,7 +62,7 @@ export default {
     return {
       splittedSurveys: [],
       pages: 0,
-      maxCards: 2,
+      maxCards: 3,
       pageIndex: 0,
       animation: null,
     }
@@ -115,10 +84,12 @@ export default {
       this.createPages();
       return this.splittedSurveys[this.pageIndex];
     },
-    /*pageAll(this: any) {
+  },
+  mounted() {
+    window.onresize = () => {
+      this.pageIndex = 0;
       this.createPages();
-      return this.pages;
-    },*/
+    }
   },
   methods: {
     // Update Client
@@ -131,8 +102,19 @@ export default {
       this.$router.push({name: 'question', params: {cID: domainID}});
     },
     createPages(this: any) {
+      //Check WindowWidth for maxCards/page
+      switch (true) {
+        case (window.innerWidth < 720): 
+          this.maxCards = 1; 
+          break;
+        case (window.innerWidth >= 720 && window.innerWidth<= 1140): 
+          this.maxCards = 2; 
+          break;
+        default: this.maxCards = 3;
+      }
       // Count all Pages
       this.pages = 0;
+      this.splittedSurveys = [];
       for (let i = 0; i < this.surveys.length; i = i + this.maxCards) {
         // Seperate Pages
         this.splittedSurveys[this.pages] = this.surveys.slice(i,i + this.maxCards);
@@ -141,15 +123,15 @@ export default {
     },
     goto(this: any, value){
       value > 0 ? this.animation="next" : this.animation="prev";
-        if (this.pageIndex + value < 0 ) {
+      switch (true) {
+        case ((this.pageIndex + value) < 0): 
           this.pageIndex = this.pages - 1;
-        }
-        else if (this.pageIndex + value >= this.pages) {
+          break;
+        case ( (this.pageIndex + value) >= this.pages): 
           this.pageIndex = 0;
-        }
-        else {
-          this.pageIndex += value;
-        }
+          break;
+        default: this.pageIndex += value;
+      }
     },
   },
 };
@@ -202,11 +184,8 @@ input[type="button"] {
 .card-header {
   padding: 0;
 }
-#carouselCards {
-   background: #aaaaaa;
-}
 
-.next-leave-to, .prev-leave-to {
+.next-leave-to {
   transform: translateX(-20px);
   transition: all .7s;
   opacity: 0;
