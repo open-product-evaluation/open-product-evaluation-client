@@ -76,25 +76,6 @@ export default {
 
 <style scoped="true" lang="scss">
 @import "../../../scss/variables"; 
-  .image {
-    width: 100%;
-    padding-top: 100%;
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-  }
-  .rank {
-    display: flex;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    font-size: 2rem;
-    color: $primaryColor;
-  }
   .rankingLabel {
     display: flex;
     justify-content: center;
