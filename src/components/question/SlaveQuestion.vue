@@ -11,12 +11,16 @@
               <step-indicator :current="activeQuestion" :total="survey.questions.length"></step-indicator>
           </div>
 
-          <div class="question" v-if="answered"> 
+          <div class="question" v-if="answered && activeQuestion!=survey.questions.length-1"> 
             <h5>Bitte warten Sie auf die nächste Frage!</h5>
           </div>
 
           <div class="question" v-if="activeQuestion==-1"> 
             <h5>Die Umfrage hat noch nicht begonnen!</h5>
+          </div>
+
+          <div class="question" v-if="activeQuestion==survey.questions.length-1"> 
+            <h5>Vielen Dank fürs teilnehmen!</h5>
           </div>
 
           <div class="question" v-if="survey.questions

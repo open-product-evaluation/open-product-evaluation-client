@@ -9,17 +9,24 @@
         </b-card-header>
 
         <b-card-body>
-        <b-row>
+        <b-row >
           <b-col md="1"/>
           <b-col md="10">
+          <div class="question" v-if="index == -1"> 
+            <h5>Bitte starten Sie die Umfrage!</h5>
+            <qrcode :value="joinLink" :options="{ width: 500 }"></qrcode>
+          </div>
+
+          
           <!-- TODO Choose progressBar oder ProgressSteps --> 
-          <div class="stepper">
+          <div class="stepper" v-if="index > -1">
               <step-indicator :current="index" :total="survey.questions.length"></step-indicator>
           </div>
 
           <div class="question" v-if="survey.questions
                                       && survey.questions.length
-                                      && survey.questions.length > 0">
+                                      && survey.questions.length > 0
+                                      && index > -1">
             <!-- display question title and description -->
             <questionMeta :id="survey.questions[index].id"></questionMeta>
 
@@ -53,7 +60,8 @@
       <div class="votes" v-if="survey.questions
                                       && survey.questions.length
                                       && survey.questions.length > 0 
-                                      && answered">
+                                      && answered
+                                      && index > -1">
           <h5> Bisheriges Ergebnis </h5>
           <choiceVotes :id="survey.questions[index].id"
                     v-if="survey.questions[index].type === 'CHOICE'">
@@ -102,6 +110,7 @@ import LikeDislikeVotes from '@/components/question/votes/LikeDislikeVotes.vue';
 import RegulatorVotes from '@/components/question/votes/RegulatorVotes.vue';
 import RankingVotes from '@/components/question/votes/RankingVotes.vue';
 import StepIndicator from 'vue-step-indicator';
+import VueQrcode from '@chenfengyuan/vue-qrcode';
 
 export default {
   name: 'MasterQuestion',
@@ -121,12 +130,13 @@ export default {
     likeDislikeVotes: LikeDislikeVotes,
     regulatorVotes: RegulatorVotes,
     rankingVotes: RankingVotes,
+    qrcode: VueQrcode,
   },
   data() {
     return {
-      index: 0,
+      index: -1,
       counter: 0,
-      answered: false,
+      answered: true,
     };
   },
   created(this: any) {
@@ -150,7 +160,10 @@ export default {
     },
     votes(this: any) {
       return this.$store.getters.getVotes;
-    }
+    },
+    joinLink(this: any) {
+      return window.location.protocol + '//' + window.location.host + '/#/join/' + this.$route.params.cID;
+    },
   },
   methods: {
     displayItems(type) {
@@ -158,13 +171,13 @@ export default {
     },
     next(this: any) {
         (this.index < this.survey.questions.length - 1) ? (this.index++) : this.$router.push({name: 'surveyList'});
-        this.$root.$emit('next', this.survey.questions[this.index - 1].type);
+        if(this.index - 1 > 0) { this.$root.$emit('next', this.survey.questions[this.index - 1].type); }
         this.counter = Math.floor(this.index / this.survey.questions.length * 100);
         this.answered = false;
         this.$store.dispatch('updateActiveQuestion', {
           domainID: this.$route.params.cID,
           questionID: this.survey.questions[this.index].id,
-        })
+        });
     },
     showResults(this: any){
       this.answered = true;
