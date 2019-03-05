@@ -4,6 +4,7 @@ import Client from '@/api/client';
 import Survey from '@/api/survey';
 import Question from '@/api/question';
 import Votes from '@/api/votes';
+import Domain from '@/api/domain';
 
 Vue.use(Vuex);
 
@@ -12,12 +13,12 @@ const state = {
   surveys: [],
   currentSurvey: {
     questions: [],
-    votes: [],
+    votes: []
   },
+  answers: [],
   domain: {
     activeQuestion: -1,
-  },
-  test: [],
+  }
 };
 
 const getters = {
@@ -25,12 +26,14 @@ const getters = {
   getSurveys: () => state.surveys || [],
   getSurvey: () => state.currentSurvey,
   getQuestion: () => (questionID) => state.currentSurvey.questions.find( (question: any) => question.id === questionID),
+  getQuestionIndex: () => (questionID) => state.currentSurvey.questions.findIndex( 
+      (question: any) => question.id === questionID),
   getActiveQuestion: () => state.domain.activeQuestion,
   getVotes: () => state.currentSurvey.votes,
   getVote: () => (questionID) => {
     return filterVotes(questionID);
   },
-  getTest: () => state.test,
+  getAnswers: () => (questionID) => state.answers.filter( (answer: any) => answer.question === questionID),
 };
 
 const mutations = {
@@ -47,6 +50,7 @@ const mutations = {
   },
   currentSurvey(states, payload) {
     states.currentSurvey = payload;
+    states.answers = [];
   },
   setSurveys(states, payload) {
     states.surveys = payload;
@@ -59,6 +63,9 @@ const mutations = {
   },
   setActiveQuestion(states, index) {
     states.domain.activeQuestion = index;
+  },
+  addAnswer(states, payload) {
+    states.answers.push(payload.answer);
   },
 };
 
@@ -162,18 +169,37 @@ const actions = {
       // TODO:  Do something with response?
     });
   },
-  subscribeDomain({ commit }, {domainID}) {
+  subscribeDomain(store, {domainID}) {
     // subscription is not saved in store because of mutation problems
     // gets passed back to component
-    const subscription = Survey.onDomainUpdate(domainID);
+    const subscription = Domain.onDomainUpdate(domainID);
     const v = subscription.subscribe({
       next(data) {
         if (!data.errors) {
           // completely retarded implementation, but ... https://github.com/apollographql/apollo-client/issues/1909
           // ... also, once in store it is frozen again.
-          const activeSurveyID = data.data.domainUpdate.domain.activeSurvey.id;
-          console.log(activeSurveyID);
-          // commit('setActiveQuestion', JSON.parse(JSON.stringify(data.data.newVote.vote)))
+          const activeQuestion = data.data.domainUpdate.domain.activeQuestion;
+          if (activeQuestion){
+            const index = store.getters.getQuestionIndex(activeQuestion.id);
+            store.commit('setActiveQuestion', index);
+          }
+        } else {
+          console.log(data.errors);
+        }
+      },
+    });
+    return v;
+  },
+  subscribeAnswers(store, {domainID}) {
+    // subscription is not saved in store because of mutation problems
+    // gets passed back to component
+    const subscription = Domain.onAnswer(domainID);
+    const v = subscription.subscribe({
+      next(data) {
+        if (!data.errors) {
+          // completely retarded implementation, but ... https://github.com/apollographql/apollo-client/issues/1909
+          // ... also, once in store it is frozen again.
+          store.commit('addAnswer', data.data.answerUpdate);
         } else {
           console.log(data.errors);
         }
@@ -185,6 +211,11 @@ const actions = {
     // component passes subscription via payload
     payload.then((data) => data.unsubscribe());
   },
+  updateActiveQuestion(store, {domainID, questionID}) {
+    return Domain.updateActiveQuestion( domainID, questionID)
+    .then((data) => {
+    });
+  }
 };
 
 export default new Vuex.Store({

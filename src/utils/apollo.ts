@@ -83,11 +83,11 @@ const errorLink = onError(({ graphQLErrors }) => {
     if (graphQLErrors) { graphQLErrors.map(({ message }) => console.log(message)); }
 });
 
-const wsLink: any = new SubscriptionClient(process.env.VUE_APP_SUBSCRIPTION, {
+const wsLink: any = new SubscriptionClient('ws://localhost:3000', {
     reconnect: true,
     lazy: true,
     connectionParams: () => {
-      return { Authorization: `Bearer ${localStorage.getItem('currentToken')}` };
+    return { Authorization: `Bearer ${localStorage.getItem('currentToken')}` };
     },
 });
 
@@ -106,7 +106,7 @@ export default new ApolloClient({
     cache: new InMemoryCache({ fragmentMatcher }),
     link: ApolloLink.from([
         errorLink,
-        requestLink,
+        link,
         createUploadLink({
             uri: 'http://localhost:3000/graphql',
         }),
