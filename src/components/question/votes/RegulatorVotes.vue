@@ -9,15 +9,12 @@
 
 <script lang="ts">
 import VueApexCharts from 'vue-apexcharts';
+import { mapGetters } from 'vuex';
+import BaseVotes from './BaseVotes.vue';
 
 export default {
   name: 'RegulatorVotes',
-  components: {
-      apexchart: VueApexCharts,
-  },
-  props: {
-    id: String,
-  },
+  extends: BaseVotes,
   data() {
       return {
         chartOptions: {
@@ -72,17 +69,6 @@ export default {
         avg: 0,
       };
     },
-    computed: {
-        votes(this: any) {
-            return this.$store.getters.getVote(this.id);
-        },
-        question(this: any) {
-            return this.$store.getters.getQuestion(this.id);
-        },
-    },
-    created(this: any) {
-        this.getVotesDiagramm();
-    },
     methods: {
         valuesOfVotes(this: any): number[] {
             const values: number[] = [];
@@ -94,7 +80,10 @@ export default {
             return values;
         },
         getVotesDiagramm(this: any) {
-            const votes = this.valuesOfVotes();
+            let votes = this.valuesOfVotes();
+            if (this.answers) {
+                votes = votes.concat(this.answers.map((answer: any) => answer.rating));
+            }
             const result: any[] = [];
             let min = this.question.min;
             do {
@@ -114,10 +103,3 @@ export default {
     },
 };
 </script>
-
-<style scoped="true" lang="scss">
-.chartDiagramm {
-    margin: 0 auto; 
-    width: 60%;
-}
-</style>

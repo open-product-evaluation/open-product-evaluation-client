@@ -6,15 +6,11 @@
 
 <script lang="ts">
 import VueApexCharts from 'vue-apexcharts';
+import BaseVotes from './BaseVotes.vue';
 
 export default {
   name: 'RankingVotes',
-  components: {
-      apexchart: VueApexCharts,
-  },
-  props: {
-    id: String,
-  },
+  extends: BaseVotes,
   data() {
       return {
         chartOptions: {
@@ -31,23 +27,19 @@ export default {
         series: [],
       };
     },
-    computed: {
-        votes(this: any) {
-            return this.$store.getters.getVote(this.id);
-        },
-        question(this: any) {
-            return this.$store.getters.getQuestion(this.id);
-        },
-    },
-    created(this: any) {
-        this.getVotesDiagramm();
-    },
     methods: {
         countInArray(this: any, id, index) {
             let counter = 0;
             this.votes.forEach( (vote) => {
                 if (vote[0].rankedItems != null) {
                     if (vote[0].rankedItems[index] === id) {
+                        counter++;
+                    }
+                }
+            });
+            this.answers.forEach(answer => {
+                if (answer.rankedItems != null) {
+                    if (answer.rankedItems[index] === id) {
                         counter++;
                     }
                 }

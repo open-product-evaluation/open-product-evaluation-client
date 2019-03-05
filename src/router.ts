@@ -3,7 +3,8 @@ import Router from 'vue-router';
 import store from './store';
 import SurveyList from '@/components/survey/SurveyList.vue';
 import Question from '@/components/question/Question.vue';
-import slaveQuestion from '@/components/question/SlaveQuestion.vue';
+import SlaveQuestion from '@/components/question/SlaveQuestion.vue';
+import MasterQuestion from '@/components/question/MasterQuestion.vue';
 
 Vue.use(Router);
 
@@ -22,7 +23,12 @@ const router =  new Router({
     {
       path: '/join/:cID/',
       name: 'join',
-      component: slaveQuestion,
+      component: SlaveQuestion,
+    },
+    {
+      path: '/master/:cID/',
+      name: 'master',
+      component: MasterQuestion,
     },
   ],
 });
