@@ -3,9 +3,6 @@
       <b-card no-body>
         <b-card-header>
           <h3>{{ survey.title }}</h3>
-          <p class="description">
-            {{ survey.description }}
-          </p>
         </b-card-header>
 
         <b-card-body>
@@ -197,9 +194,6 @@ export default {
 
 h3 {
   margin: 40px 0 0;
-}
-.description {
-  font-size: 1.25rem;
 }
 .progress {
   font-size: 1rem;

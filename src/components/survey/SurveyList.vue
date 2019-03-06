@@ -1,13 +1,12 @@
 <template>
   <div class="surveycards">
     <div class="header">
-      <p> OPE </p>
       <h2> Umfragen </h2>
       <h5> Suche dir eine Umfrage aus oder Suche hier: </h5>
     </div>
 
     <b-row align-v="center">
-      <b-col cols="1" align-self="center">
+      <b-col cols="1" >
         <label v-if="pages > 1">
             <input type="button"
                 @click="goto(-1)"/>
@@ -15,21 +14,27 @@
             </label>
         </b-col>
 
-      <b-col cols="10" align-self="center">
+      <b-col cols="10">
+        <b-row class="row_cards">
         <transition :name="animation" >
           <b-card-group deck :key="pageIndex">
-            <b-card no-body v-for="survey in currentPageSurveys" :key="survey.id">
-            <b-card-header v-if="survey.activeSurvey.previewImage && survey.activeSurvey.previewImage.url">
-              <img v-img width="100%"/>
-            </b-card-header>
-            <b-card-body>
-              <b-card-title> {{survey.activeSurvey.title}} </b-card-title>
-              <b-card-text> {{survey.activeSurvey.description}} </b-card-text>
-              <b-button @click="startSurvey(survey.id)">Starten</b-button>
-            </b-card-body>
-            </b-card>
+                <b-col cols="12" sm="6" lg="4" v-for="survey in currentPageSurveys" :key="survey.id">
+                  <b-card class="shadow bg-white rounded" no-body>
+                  <b-card-header v-if="survey.activeSurvey.previewImage && survey.activeSurvey.previewImage.url">
+                    <img class="rounded-top" v-img width="100%" alt="Kein Bild" :src="survey.activeSurvey.previewImage.url"/>
+                  </b-card-header>
+                  <b-card-body>
+                    <b-card-title> {{survey.activeSurvey.title}} </b-card-title>
+                    <b-card-text> {{survey.activeSurvey.description}} </b-card-text>
+                  </b-card-body>
+                  <b-card-footer>
+                    <b-button @click="startSurvey(survey.id)">Starten</b-button>
+                    </b-card-footer>
+                  </b-card>
+                </b-col>
           </b-card-group>
         </transition>
+         </b-row>
         
         
       <div class="card-pagination" v-if="pages > 1">
@@ -42,7 +47,7 @@
       
     </div>
         </b-col>
-      <b-col cols="1" align-self="center">
+      <b-col cols="1">
         <label v-if="pages > 1">
             <input type="button"
                 @click="goto(1)"/>
@@ -65,6 +70,7 @@ export default {
       maxCards: 3,
       pageIndex: 0,
       animation: null,
+      isSmall: true,
     }
   },
   created(this: any) {
@@ -103,11 +109,12 @@ export default {
     },
     createPages(this: any) {
       //Check WindowWidth for maxCards/page
+      console.log(window.innerWidth);
       switch (true) {
-        case (window.innerWidth < 720): 
+        case (window.innerWidth <= 590): 
           this.maxCards = 1; 
           break;
-        case (window.innerWidth >= 720 && window.innerWidth<= 1140): 
+        case (window.innerWidth > 590 && window.innerWidth<= 1006): 
           this.maxCards = 2; 
           break;
         default: this.maxCards = 3;
@@ -145,11 +152,12 @@ export default {
 h3 {
   margin: 40px 0 0;
 }
-.card-deck {
-  margin: 0 15px;
-}
 .header {
-  margin: 3rem 0;
+  padding: 2rem 0;
+}
+.row_cards {
+  width: 100%; 
+  margin: 0;
 }
 .card-pagination {
   display: flex;
@@ -158,7 +166,8 @@ h3 {
   padding: 30px;
 }
 .page-index {
-  margin-left: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
   width: 50px;
   height: 3px;
   background: #aaaaaa;
@@ -169,8 +178,8 @@ h3 {
   height: 4px;
 }
 .icon {
-  width: 55px;
-  height: 55px;
+  width: 3rem;
+  height: 3rem;
   color: #aaaaaa;
 }
 input[type="button"] {
@@ -181,10 +190,28 @@ input[type="button"] {
   width: 60px;
   height: 60px;
 }
-.card-header {
+.card-text {
+  text-align: left;
+  word-wrap: break-word;
+}
+.card-body {
+  padding: 1rem;
+  overflow: scroll;
+}
+.card-title {
+  font-size:1.1rem;
+}
+.card-deck .card, .card-deck {
+  height: 70vh;
+  margin: 0;
+  width: 100%;
+}
+.col-10 {
+  height: 80vh;
+}
+.col-1, .col-10, .card-header {
   padding: 0;
 }
-
 .next-leave-to {
   transform: translateX(-20px);
   transition: all .7s;
