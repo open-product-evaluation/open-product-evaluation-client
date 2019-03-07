@@ -11,6 +11,7 @@
         class="mb-2">
         <p class="card-text"> {{survey.activeSurvey.description}}</p>
         <b-button @click="startSurvey(survey.id)">Starten</b-button>
+        <b-button @click="startLive(survey.id)">Im Live-Modus starten</b-button>
       </b-card>
     </div>
   </div>
@@ -45,6 +46,14 @@ export default {
       });
       this.$router.push({name: 'question', params: {cID: domainID}});
     },
+    startLive(this: any, domainID) {
+      const client = localStorage.getItem('client');
+      this.$store.dispatch('updateClient', {
+        id: client,
+        domainId: domainID,
+      });
+      this.$router.push({name: 'master', params: {cID: domainID}});
+    },
   },
 };
 
@@ -54,5 +63,8 @@ export default {
 <style scoped>
 h3 {
   margin: 40px 0 0;
+}
+.btn {
+  margin: 1em;
 }
 </style>
