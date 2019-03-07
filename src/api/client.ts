@@ -47,6 +47,30 @@ const createTemporaryClient = (domainID: string) => apiClient.mutate(
 });
 
 /**
+ * @description login a Permanent Client
+ */
+const loginClient = (code: string, ownerEmail: string) => apiClient.mutate(
+    {
+        mutation : gql`
+        mutation addNewClient ($code: String!, $email: String!){
+            loginClient(data: { code: $code, email: $email})
+            {
+            client{
+                id
+                name
+                creationDate
+            }
+            token
+            code
+        }
+    }`,
+    variables: {
+        code,
+        email: ownerEmail,
+    },
+});
+
+/**
  * @description delete Client
  * @param clientId
  */
@@ -96,4 +120,5 @@ export default {
     updateClient,
     deleteClient,
     createTemporaryClient,
+    loginClient,
 };
