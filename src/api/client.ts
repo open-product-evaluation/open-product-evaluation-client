@@ -1,13 +1,37 @@
 import gql from 'graphql-tag';
 import apiClient from '@/utils/apollo';
 /**
- * @description create new Client
+ * @description create new Permanent Client
  */
-const createClient = (clientName: string) => apiClient.mutate(
+const createPermanentClient = (clientName: string, ownerEmail: string) => apiClient.mutate(
     {
         mutation : gql`
-        mutation addNewClient ($name: String!){
-            createClient(data: { name: $name})
+        mutation addNewClient ($name: String!, $email: String!){
+            createPermanentClient(data: { name: $name, email: $email})
+            {
+            client{
+                id
+                name
+                creationDate
+            }
+            token
+            code
+        }
+    }`,
+    variables: {
+        name: clientName,
+        email: ownerEmail,
+    },
+});
+
+/**
+ * @description create new Temporary Client
+ */
+const createTemporaryClient = (domainID: string) => apiClient.mutate(
+    {
+        mutation : gql`
+        mutation addNewClient ($domainID: HashID!){
+            createTemporaryClient(data: { domainID: $domainID})
             {
             client{
                 id
@@ -18,7 +42,7 @@ const createClient = (clientName: string) => apiClient.mutate(
         }
     }`,
     variables: {
-        name: clientName,
+        domainID,
     },
 });
 
@@ -68,7 +92,8 @@ const updateClient = (clientId: string, domain: string) => apiClient.mutate(
 );
 
 export default {
-    createClient,
+    createPermanentClient,
     updateClient,
     deleteClient,
+    createTemporaryClient,
 };
