@@ -1,6 +1,7 @@
 <template>
 <div class ="chart">
     <h5> Durchschnitt: {{ avg }}</h5>
+    <h5>Keine Angabe: {{neutral}}</h5>
     <div class="chartDiagramm" >
     <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
     </div>
@@ -70,6 +71,7 @@ export default {
             data: [],
         }],
         avg: 0,
+        neutral: 0,
       };
     },
     computed: {
@@ -105,11 +107,13 @@ export default {
                 });
                 min += this.question.stepSize;
             } while (min <= this.question.max);
-            this.$data.series = [{
+            const nullVotes = votes;
+            this.neutral = nullVotes.filter((v) => ( v === null)).length;
+            this.series = [{
                 data: result,
             }];
             this.avg = ((votes.reduce((sum, a) => sum + a)) / votes.length).toFixed(2);
-            this.$data.chartOptions.xaxis.tickAmount = result.length - 1;
+            this.chartOptions.xaxis.tickAmount = result.length - 1;
         },
     },
 };

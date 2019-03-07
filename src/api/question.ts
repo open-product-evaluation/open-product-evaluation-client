@@ -5,7 +5,7 @@ import apiClient from '@/utils/apollo';
 const choiseAnswer = (question: string, choiceID: string) => apiClient.mutate(
     {
         mutation : gql`
-        mutation($questionID: HashID!, $choice: HashID!){
+        mutation($questionID: HashID!, $choice: HashID){
             setAnswer(data: {
                 questionID: $questionID
                 choice: $choice
@@ -27,7 +27,7 @@ const choiseAnswer = (question: string, choiceID: string) => apiClient.mutate(
 const likeAnswer = (question: string, likeID: boolean) => apiClient.mutate(
     {
         mutation : gql`
-        mutation($questionID: HashID!, $liked: Boolean!){
+        mutation($questionID: HashID!, $liked: Boolean){
             setAnswer(data: {
                 questionID: $questionID
                 liked: $liked
@@ -49,7 +49,7 @@ const likeAnswer = (question: string, likeID: boolean) => apiClient.mutate(
 const likeDislikeAnswer = (question: string, likeID: boolean) => apiClient.mutate(
     {
         mutation : gql`
-        mutation($questionID: HashID!, $liked: Boolean!){
+        mutation($questionID: HashID!, $liked: Boolean){
             setAnswer(data: {
                 questionID: $questionID
                 liked: $liked
@@ -71,7 +71,7 @@ const likeDislikeAnswer = (question: string, likeID: boolean) => apiClient.mutat
 const favoriteAnswer = (question: string, favoriteID: boolean) => apiClient.mutate(
     {
         mutation : gql`
-        mutation($questionID: HashID!, $favoriteItem: HashID!){
+        mutation($questionID: HashID!, $favoriteItem: HashID){
             setAnswer(data: {
                 questionID: $questionID
                 favoriteItem: $favoriteItem
@@ -93,7 +93,7 @@ const favoriteAnswer = (question: string, favoriteID: boolean) => apiClient.muta
 const regulatorAnswer = (question: string, ratingID: number) => apiClient.mutate(
     {
         mutation : gql`
-        mutation($questionID: HashID!, $rating: Float!){
+        mutation($questionID: HashID!, $rating: Float){
             setAnswer(data: {
                 questionID: $questionID
                 rating: $rating

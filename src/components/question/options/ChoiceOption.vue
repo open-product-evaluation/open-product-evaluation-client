@@ -61,7 +61,7 @@ export default {
   },
   data() {
     return {
-      selected: '',
+      selected: null,
       answered: false,
     };
   },
@@ -75,10 +75,9 @@ export default {
       this.selected = selectedItem;
     },
     deselectAll(this: any) {
-      this.selected = '';
+      this.selected = null;
     },
     sendAnswer(this: any) {
-      // TODO Send neutral answer
       this.$store.dispatch('createAnswerChoice', { question: this.id, choiceID: this.selected});
       this.answered = true;
       this.$root.$emit('answered');

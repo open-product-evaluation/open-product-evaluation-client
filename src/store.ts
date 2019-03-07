@@ -58,7 +58,7 @@ const mutations = {
 const actions = {
   updateClient(context, payload) {
     Client.updateClient(payload.id, payload.domainId)
-    .then((data) => {
+    .then((data: any) => {
       context.commit('updateClient', data.data !== undefined ? data.data.updateClient : null);
     });
   },
@@ -68,7 +68,7 @@ const actions = {
       localStorage.removeItem('currentToken');
       localStorage.removeItem('client');
       Client.createClient( payload.name )
-      .then((data) => {
+      .then((data: any) => {
         context.commit('createClient', data.data !== undefined ? data.data.createClient : null);
         resolve(data.data);
       },

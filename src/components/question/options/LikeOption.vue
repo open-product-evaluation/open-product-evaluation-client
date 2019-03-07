@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     updateValue(this: any, liked) {
-      this.liked === true ? this.liked = false : this.liked = true;
+      this.liked === true ? this.liked = null : this.liked = true;
     },
     deselectAll(this: any) {
       this.liked = null;

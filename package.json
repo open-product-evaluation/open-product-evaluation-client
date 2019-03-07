@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@types/apollo-upload-client": "^8.1.1",
+    "@types/graphql": "^14.0.7",
     "apexcharts": "^3.5.0",
     "apollo-cache-inmemory": "^1.4.3",
     "apollo-client": "^2.4.13",
