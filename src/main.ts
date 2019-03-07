@@ -9,7 +9,6 @@ import VueImg from 'v-img';
 import Icon from 'vue-awesome';
 
 
-
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(VueImg);

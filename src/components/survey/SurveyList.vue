@@ -109,7 +109,6 @@ export default {
     },
     createPages(this: any) {
       //Check WindowWidth for maxCards/page
-      console.log(window.innerWidth);
       switch (true) {
         case (window.innerWidth <= 590): 
           this.maxCards = 1; 
