@@ -38,6 +38,9 @@ const getters = {
 
 const mutations = {
   createClient(states, payload) {
+    if (payload.code) {
+      localStorage.setItem('clientCode', payload.code);
+    }
     if (payload.token) {
       localStorage.setItem('currentToken', payload.token);
     }
@@ -76,14 +79,30 @@ const actions = {
       context.commit('updateClient', data.data !== undefined ? data.data.updateClient : null);
     });
   },
-  createClient(context, payload) {
+  createPermanentClient(context, payload) {
     return new Promise( (resolve, reject) => {
       // console.error(payload.data['errors'][0].message);
       localStorage.removeItem('currentToken');
       localStorage.removeItem('client');
-      Client.createClient( payload.name )
+      localStorage.removeItem('clientCode');
+      Client.createPermanentClient( payload.name, payload.clientOwner )
       .then((data: any) => {
-        context.commit('createClient', data.data !== undefined ? data.data.createClient : null);
+        context.commit('createClient', data.data !== undefined ? data.data.createPermanentClient : null);
+        resolve(data.data);
+      },
+      (error) => {
+        reject(error);
+      });
+    });
+  },
+  createTemporaryClient(context, payload) {
+    return new Promise( (resolve, reject) => {
+      localStorage.removeItem('currentToken');
+      localStorage.removeItem('client');
+      localStorage.removeItem('clientCode');
+      Client.createTemporaryClient( payload.domainID )
+      .then((data: any) => {
+        context.commit('createClient', data.data !== undefined ? data.data.createTemporaryClient : null);
         resolve(data.data);
       },
       (error) => {
@@ -99,7 +118,7 @@ const actions = {
             context.commit('setSurveys', data.data !== undefined ? data.data.domains : null);
         } else {
           // Token has expired
-          this.dispatch('createClient', { name: 'DeviceName' })
+          this.dispatch('createClient', { name: 'DeviceName', email: 'jane@doe.com' })
           .then( () => {
               Survey.getAllSurveys()
               .then( (result: any) => {
