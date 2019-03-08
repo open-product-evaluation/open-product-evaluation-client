@@ -6,7 +6,7 @@
         <b-card-header>
            <img v-if="item.image && item.image.url" style="max-width: 100%;" v-img :src="`${item.image.url}`">
         </b-card-header>
-        <b-button variant="primary" @click="select($event, item.id)"> {{ item.label }}</b-button>
+        <b-button class="primaryBtn" @click="select($event, item.id)"> {{ item.label }}</b-button>
       </b-card>
     </div>
   </div>
@@ -16,9 +16,6 @@
           <input type="checkbox" :checked="selected==''" @click="deselectAll()"/>
           <label>keine Angabe</label>
         </div>
-      </b-col>
-      <b-col cols="6" class="text-center" v-if="!answered">
-        <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
       </b-col>
     </b-row>
   </div>
@@ -54,6 +51,14 @@ export default {
       this.answered = true;
       this.$root.$emit('answered');
     },
+  },
+  beforeDestroy(this: any) {
+    this.$eventBus.$off();
+  },
+  mounted(this: any) {
+    this.$eventBus.$on('answer', (data) => {
+      this.sendAnswer();
+    });
   },
 };
 </script>

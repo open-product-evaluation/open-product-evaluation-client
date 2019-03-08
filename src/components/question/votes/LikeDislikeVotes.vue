@@ -20,6 +20,9 @@ export default {
         series: [],
         chartOptions: {
             labels: ['Liked', 'Disliked', 'Neutral'],
+            theme: {
+              palette: 'palette4',
+            },
             dataLabels: {
                 formatter(val) {
                     return Math.round(val) +  ' %';

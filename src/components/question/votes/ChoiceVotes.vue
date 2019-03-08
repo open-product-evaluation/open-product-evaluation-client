@@ -22,6 +22,9 @@ export default {
             id: 'vuechartChoice',
             toolbar: { show: false },
           },
+          theme: {
+              palette: 'palette4',
+          },
           dataLabels: {
             style: {
                 fontSize: '1.25rem',

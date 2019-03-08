@@ -45,9 +45,6 @@
         <label>keine Angabe</label>
       </div>
     </b-col>
-    <b-col cols="6" class="text-center" v-if="!answered">
-      <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
-    </b-col>
   </b-row>
 </div>
 </template>
@@ -83,6 +80,14 @@ export default {
       this.answered = true;
       this.$root.$emit('answered');
     },
+  },
+  beforeDestroy(this: any) {
+    this.$eventBus.$off('answer');
+  },
+  mounted(this: any) {
+    this.$eventBus.$on('answer', () => {
+      this.sendAnswer();
+    });
   },
 };
 </script>

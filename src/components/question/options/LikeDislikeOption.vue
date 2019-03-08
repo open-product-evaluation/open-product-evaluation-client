@@ -61,9 +61,6 @@
         <label>keine Angabe</label>
       </div>
     </b-col>
-    <b-col cols="6" class="text-center" v-if="!answered">
-      <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
-    </b-col>
   </b-row>
 </div>
 </template>
@@ -98,6 +95,14 @@ export default {
       this.$root.$emit('answered');
     },
   },
+  beforeDestroy(this: any) {
+    this.$eventBus.$off();
+  },
+  mounted(this: any) {
+    this.$eventBus.$on('answer', (data) => {
+      this.sendAnswer();
+    });
+  },
 };
 </script>
 
@@ -117,14 +122,10 @@ export default {
   .like-checkbox input[type="checkbox"], .dislike-checkbox input[type="checkbox"] {
     display: none;
   }
-.like-checkbox input[type="checkbox"]:checked ~ .icon
-{
-    color: $primaryColor;
-}
-.dislike-checkbox input[type="checkbox"]:checked ~ .icon
-{
-    color: $primaryColor;
-}
+  input[type="checkbox"]:checked ~ .icon, input[type="checkbox"]:hover ~ .icon
+  {
+      color: $primaryColor;
+  }
   .like, .dislike {
     text-align: center;
     flex-grow: 1;
@@ -140,6 +141,7 @@ export default {
       height: 2.5rem;
       background-position: center;
       background-repeat: no-repeat;
+      color: $secondaryBackgroundColor;
     }
   }
 </style>

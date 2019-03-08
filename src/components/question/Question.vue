@@ -1,8 +1,8 @@
 <template>
     <div class="container">
-      <b-card no-body>
+      <b-card no-body class="shadow bg-white rounded">
         <b-card-header>
-          <h3>{{ survey.title }}</h3>
+          <h4>{{ survey.title }}</h4>
         </b-card-header>
 
         <b-card-body>
@@ -10,10 +10,15 @@
           <b-col md="1"/>
           <b-col md="10">
           <!-- TODO Choose progressBar oder ProgressSteps --> 
-          <div class="stepper">
-              <step-indicator :current="index" :total="survey.questions.length"></step-indicator>
+          <div class="stepper" v-if="survey.questions && survey.questions.length <= 20">
+              <step-indicator current-color='#ffaa11' :current="index" :total="survey.questions.length"></step-indicator>
           </div>
-
+          <div class="progress" v-if="survey.questions && survey.questions.length >20">
+            <b-progress :max="100">
+              <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
+              </b-progress-bar>
+            </b-progress>
+          </div>
           <div class="question" v-if="survey.questions
                                       && survey.questions.length
                                       && survey.questions.length > 0">
@@ -56,19 +61,6 @@
             </favorite>
           </div>
         </b-col>
-
-        <b-col cols="1" class="btn_col"
-                v-if="answered">
-          <label class="next_btn" 
-                v-if="index !== survey.questions.length - 1">
-            <input type="button"
-                @click="next"/>
-            <v-icon variant="primary" class="icon" name="arrow-alt-circle-right" ></v-icon>
-            </label>
-          <b-btn variant="secondary" @click="next"
-                  v-if="index == survey.questions.length -1">Start
-          </b-btn>
-        </b-col>
       </b-row>
       <div class="votes" v-if="survey.questions
                                       && survey.questions.length
@@ -97,10 +89,14 @@
         </div>
       </b-card-body>
       <b-card-footer>
-        <b-progress :max="100">
-          <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
-          </b-progress-bar>
-        </b-progress>
+          <b-btn class="primaryBtn" @click="next"
+                  v-if="answered && index !== survey.questions.length - 1">Weiter
+          </b-btn>
+          <b-btn class="primaryBtn" @click="next"
+                  v-if="answered && index == survey.questions.length -1">Start
+          </b-btn>
+          <b-btn class="primaryBtn" v-if="!answered" @click="answer">Antworten</b-btn>
+
       </b-card-footer>
     </b-card>
   </div>
@@ -148,6 +144,7 @@ export default {
       index: 0,
       counter: 0,
       answered: false,
+      counting: 0,
     };
   },
   created(this: any) {
@@ -180,6 +177,9 @@ export default {
         this.counter = Math.floor(this.index / this.survey.questions.length * 100);
         this.answered = false;
     },
+    answer(this: any) {
+      this.$eventBus.$emit('answer');
+    }
   },
   mounted(this: any) {
     this.$root.$on('answered', () => {
@@ -190,10 +190,20 @@ export default {
 </script>
 <style src="vue-step-indicator/dist/vue-step-indicator.css"></style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-h3 {
-  margin: 40px 0 0;
+<style scoped lang="scss">
+@import "../../scss/variables.scss"; 
+.container {
+  margin-top: 3rem; 
+}
+.card {
+  height: 80vh;
+}
+.step-indicators.step-indicator{
+  color: $primaryColor;
+  border-color: $primaryColor;
+}
+.step-indicators-line{
+  background: $secondaryBackgroundColor;
 }
 .progress {
   font-size: 1rem;
@@ -204,6 +214,9 @@ h3 {
 }
 .stepper {
   margin-bottom: 1rem;
+}
+.card-header h4 {
+  margin-top: 0.5rem;
 }
 .btn_col {
   margin-top: auto;

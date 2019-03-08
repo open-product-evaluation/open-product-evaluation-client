@@ -28,6 +28,9 @@ export default {
           dataLabels: {
                 offsetY: 10,
           },
+          theme: {
+              palette: 'palette4',
+          },
           plotOptions: {
               bar: {
                   columnWidth: '70%',

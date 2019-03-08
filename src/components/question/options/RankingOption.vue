@@ -24,9 +24,6 @@
           <label>keine Angabe</label>
         </div>
       </b-col>
-      <b-col cols="6" class="text-center" v-if="!answered" @click="updateValue()">
-        <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
-      </b-col>
     </b-row>
 </div>
 </template>
@@ -71,6 +68,14 @@ export default {
       // TODO change answere
     },
   },
+  beforeDestroy(this: any) {
+    this.$eventBus.$off();
+  },
+  mounted(this: any) {
+    this.$eventBus.$on('answer', (data) => {
+      this.sendAnswer();
+    });
+  },
 };
 </script>
 
@@ -80,7 +85,6 @@ export default {
     display: flex;
     justify-content: center;
     font-size: 2rem;
-    color: $primaryColor;
   }
   .card-header {
     padding: 0;

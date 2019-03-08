@@ -28,7 +28,7 @@
                     <b-card-text> {{survey.activeSurvey.description}} </b-card-text>
                   </b-card-body>
                   <b-card-footer>
-                    <b-button @click="startSurvey(survey.id)">Starten</b-button>
+                    <b-button class="primaryBtn" @click="startSurvey(survey.id)">Starten</b-button>
                     </b-card-footer>
                   </b-card>
                 </b-col>
@@ -147,12 +147,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import "../../scss/variables"; 
-
 h3 {
   margin: 40px 0 0;
 }
 .header {
-  padding: 2rem 0;
+  padding: 1.5rem 0;
 }
 .row_cards {
   width: 100%; 
@@ -169,7 +168,7 @@ h3 {
   margin-right: 5px;
   width: 50px;
   height: 3px;
-  background: #aaaaaa;
+  background: $secondaryBackgroundColor;
 }
 .page-index.active {
   background: $primaryColor;
@@ -179,7 +178,7 @@ h3 {
 .icon {
   width: 3rem;
   height: 3rem;
-  color: #aaaaaa;
+  color: $secondaryBackgroundColor;
 }
 input[type="button"] {
   display: none;
@@ -200,8 +199,11 @@ input[type="button"] {
 .card-title {
   font-size:1.1rem;
 }
+.card-footer {
+  padding: 0.5rem 1.25rem;
+}
 .card-deck .card, .card-deck {
-  height: 70vh;
+  height: 65vh;
   margin: 0;
   width: 100%;
 }

@@ -24,5 +24,13 @@ export default {
   text-align: center;
   color: #2c3e50;
   background-color: $backgroundColor;
+  height: -webkit-fill-available;
+}
+.primaryBtn {
+  background-color: $secondaryBackgroundColor;
+}
+.primaryBtn.btn-secondary:hover {
+  background-color: $primaryColor;
+  border-color: $primaryColor;
 }
 </style>
