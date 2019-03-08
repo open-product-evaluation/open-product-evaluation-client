@@ -12,7 +12,7 @@ export default {
   components: {
     appHeader: Header,
   },
-}
+};
 </script>
 
 <style lang="scss">

@@ -183,7 +183,7 @@ export default {
     },
     answer(this: any) {
       this.$eventBus.$emit('answer');
-    }
+    },
   },
   mounted(this: any) {
     this.$root.$on('answered', () => {

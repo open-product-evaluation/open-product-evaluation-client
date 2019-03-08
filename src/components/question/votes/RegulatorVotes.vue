@@ -116,7 +116,7 @@ export default {
     margin: 0 auto; 
     width: 60%;
 }
-@media (min-width: 576px) {
+@media (max-width: 576px) {
 .chartDiagramm {
     width: 80%;
 }

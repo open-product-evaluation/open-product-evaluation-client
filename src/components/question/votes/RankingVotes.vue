@@ -51,7 +51,7 @@ export default {
                     }
                 }
             });
-            this.answers.forEach(answer => {
+            this.answers.forEach( (answer) => {
                 if (answer.rankedItems != null) {
                     if (answer.rankedItems[index] === id) {
                         counter++;
@@ -91,7 +91,7 @@ export default {
     margin: 0 auto; 
     width: 50%;
 }
-@media (min-width: 576px) {
+@media (max-width: 576px) {
 .chartDiagramm {
     width: 80%;
 }

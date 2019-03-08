@@ -72,7 +72,7 @@ export default {
       pageIndex: 0,
       animation: null,
       isSmall: true,
-    }
+    };
   },
   created(this: any) {
       this.$store.dispatch('getSurveys').then((result) => {
@@ -92,11 +92,11 @@ export default {
       return this.splittedSurveys[this.pageIndex];
     },
   },
-  mounted() {
+  mounted(this: any) {
     window.onresize = () => {
       this.pageIndex = 0;
       this.createPages();
-    }
+    };
   },
   methods: {
     // Update Client
@@ -117,13 +117,13 @@ export default {
       this.$router.push({name: 'master', params: {cID: domainID}});
     },
     createPages(this: any) {
-      //Check WindowWidth for maxCards/page
+      // Check WindowWidth for maxCards/page
       switch (true) {
-        case (window.innerWidth <= 590): 
-          this.maxCards = 1; 
+        case (window.innerWidth <= 590):
+          this.maxCards = 1;
           break;
-        case (window.innerWidth > 590 && window.innerWidth<= 1006): 
-          this.maxCards = 2; 
+        case (window.innerWidth > 590 && window.innerWidth <= 1006):
+          this.maxCards = 2;
           break;
         default: this.maxCards = 3;
       }
@@ -132,17 +132,17 @@ export default {
       this.splittedSurveys = [];
       for (let i = 0; i < this.surveys.length; i = i + this.maxCards) {
         // Seperate Pages
-        this.splittedSurveys[this.pages] = this.surveys.slice(i,i + this.maxCards);
+        this.splittedSurveys[this.pages] = this.surveys.slice(i, i + this.maxCards);
         this.pages++;
       }
     },
-    goto(this: any, value){
-      value > 0 ? this.animation="next" : this.animation="prev";
+    goto(this: any, value) {
+      value > 0 ? this.animation = 'next' : this.animation = 'prev';
       switch (true) {
-        case ((this.pageIndex + value) < 0): 
+        case ((this.pageIndex + value) < 0):
           this.pageIndex = this.pages - 1;
           break;
-        case ( (this.pageIndex + value) >= this.pages): 
+        case ( (this.pageIndex + value) >= this.pages):
           this.pageIndex = 0;
           break;
         default: this.pageIndex += value;
