@@ -29,6 +29,7 @@
                   </b-card-body>
                   <b-card-footer>
                     <b-button class="primaryBtn" @click="startSurvey(survey.id)">Starten</b-button>
+                    <b-button @click="startLive(survey.id)">Im Live-Modus starten</b-button>
                     </b-card-footer>
                   </b-card>
                 </b-col>
@@ -106,6 +107,14 @@ export default {
         domainId: domainID,
       });
       this.$router.push({name: 'question', params: {cID: domainID}});
+    },
+    startLive(this: any, domainID) {
+      const client = localStorage.getItem('client');
+      this.$store.dispatch('updateClient', {
+        id: client,
+        domainId: domainID,
+      });
+      this.$router.push({name: 'master', params: {cID: domainID}});
     },
     createPages(this: any) {
       //Check WindowWidth for maxCards/page
@@ -242,6 +251,7 @@ input[type="button"] {
 .row {
   margin: 0;
 }
-
-
+.btn {
+  margin: 1em;
+}
 </style>

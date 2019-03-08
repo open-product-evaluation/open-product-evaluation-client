@@ -1,6 +1,7 @@
 <template>
 <div class ="chart">
     <h5> Durchschnitt: {{ avg }}</h5>
+    <h5>Keine Angabe: {{neutral}}</h5>
     <div class="chartDiagramm" >
     <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
     </div>
@@ -9,15 +10,12 @@
 
 <script lang="ts">
 import VueApexCharts from 'vue-apexcharts';
+import { mapGetters } from 'vuex';
+import BaseVotes from './BaseVotes.vue';
 
 export default {
   name: 'RegulatorVotes',
-  components: {
-      apexchart: VueApexCharts,
-  },
-  props: {
-    id: String,
-  },
+  extends: BaseVotes,
   data() {
       return {
         chartOptions: {
@@ -73,18 +71,8 @@ export default {
             data: [],
         }],
         avg: 0,
+        neutral: 0,
       };
-    },
-    computed: {
-        votes(this: any) {
-            return this.$store.getters.getVote(this.id);
-        },
-        question(this: any) {
-            return this.$store.getters.getQuestion(this.id);
-        },
-    },
-    created(this: any) {
-        this.getVotesDiagramm();
     },
     methods: {
         valuesOfVotes(this: any): number[] {
@@ -97,7 +85,10 @@ export default {
             return values;
         },
         getVotesDiagramm(this: any) {
-            const votes = this.valuesOfVotes();
+            let votes = this.valuesOfVotes();
+            if (this.answers) {
+                votes = votes.concat(this.answers.map((answer: any) => answer.rating));
+            }
             const result: any[] = [];
             let min = this.question.min;
             do {
@@ -108,11 +99,13 @@ export default {
                 });
                 min += this.question.stepSize;
             } while (min <= this.question.max);
-            this.$data.series = [{
+            const nullVotes = votes;
+            this.neutral = nullVotes.filter((v) => ( v === null)).length;
+            this.series = [{
                 data: result,
             }];
             this.avg = ((votes.reduce((sum, a) => sum + a)) / votes.length).toFixed(2);
-            this.$data.chartOptions.xaxis.tickAmount = result.length - 1;
+            this.chartOptions.xaxis.tickAmount = result.length - 1;
         },
     },
 };

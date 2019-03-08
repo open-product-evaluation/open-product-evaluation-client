@@ -22,7 +22,7 @@
     <b-row>
       <b-col cols="6">
         <div class ="text-center">
-          <input type="checkbox"/>
+          <input type="checkbox" @click="deselectAll()"/>
           <label>keine Angabe</label>
         </div>
       </b-col>
@@ -42,17 +42,23 @@ export default {
   props: {
     id: String,
   },
+  created(this: any) {
+    this.value = this.question.default;
+  },
   computed: {
     question(this: any) {
       return this.$store.getters.getQuestion(this.id);
     },
   },
   methods: {
+    deselectAll(this: any) {
+      this.value = null;
+    },
     updateValue(this: any, event) {
       this.value = event.target.value;
     },
     sendAnswer(this: any) {
-      const rating = (this.value != null) ? parseFloat(this.value) : 0;
+      const rating = (this.value != null) ? parseFloat(this.value) : null;
       this.$store.dispatch('createAnswerRegulator', { question: this.id, ratingID: rating });
       this.answered = true;
       this.$root.$emit('answered');

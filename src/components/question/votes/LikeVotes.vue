@@ -6,15 +6,11 @@
 
 <script lang="ts">
 import VueApexCharts from 'vue-apexcharts';
+import BaseVotes from './BaseVotes.vue';
 
 export default {
   name: 'LikeVotes',
-  components: {
-      apexchart: VueApexCharts,
-  },
-  props: {
-    id: String,
-  },
+  extends: BaseVotes,
   data() {
       return {
         series: [],
@@ -37,14 +33,6 @@ export default {
         },
       };
     },
-  computed: {
-    votes(this: any) {
-        return this.$store.getters.getVote(this.id);
-    },
-  },
-  created(this: any) {
-      this.getVotesDiagramm();
-  },
   methods: {
    countInArray(this: any, votes) {
        let counter = 0;
@@ -57,6 +45,12 @@ export default {
                 }
            });
        });
+       this.answers.forEach( (element) => {
+               max++;
+               if (element.liked === true) {
+                   counter ++;
+                }
+        });
        return [(counter / max) * 100, ((max - counter) / max) * 100];
    },
    getVotesDiagramm(this: any) {

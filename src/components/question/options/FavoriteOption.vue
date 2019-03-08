@@ -14,7 +14,7 @@
   <b-row>
       <b-col cols="6">
         <div class ="text-center">
-          <input type="checkbox" :checked="selected==''" @click="deselectAll()"/>
+          <input type="checkbox" :checked="selected==null" @click="deselectAll()"/>
           <label>keine Angabe</label>
         </div>
       </b-col>
@@ -30,7 +30,7 @@ export default {
   },
   data() {
     return {
-      selected: '',
+      selected: null,
       answered: false,
     };
   },
@@ -45,7 +45,7 @@ export default {
       this.selected = id;
     },
     deselectAll(this: any) {
-      this.selected = '';
+      this.selected = null;
     },
     sendAnswer(this: any) {
       this.$store.dispatch('createAnswerFavorite', { question: this.id, favoriteID: this.selected});

@@ -20,7 +20,7 @@
     <b-row>
       <b-col cols="6">
         <div class ="text-center">
-          <input type="checkbox"/>
+          <input type="checkbox" @click="deselectAll()"/>
           <label>keine Angabe</label>
         </div>
       </b-col>
@@ -41,6 +41,7 @@ export default {
   },
   data() {
     return {
+      selected: true,
       answered: false,
     };
   },
@@ -50,22 +51,27 @@ export default {
     },
   },
   methods: {
-    getAnswers(this: any): string[] {
-      // Build array for rankingItems
-      // [1,...,n] -> n is best
-      const favoriteArray: string[] = [];
-      this.question.items.forEach( (element) => {
-        favoriteArray.push(element.id);
-      });
-      return favoriteArray;
+    deselectAll(this: any) {
+      this.selected = null;
+    },
+    getAnswers(this: any) {
+      if (this.selected === null ) {
+        return null;
+      } else {
+        // Build array for rankingItems
+        // [1,...,n] -> n is best
+        const favoriteArray: string[] = [];
+        this.question.items.forEach( (element) => {
+          favoriteArray.push(element.id);
+        });
+        return favoriteArray;
+      }
+
     },
     sendAnswer(this: any) {
       this.$store.dispatch('createAnswerRanking', { question: this.id, rankingID: this.getAnswers() });
       this.answered = true;
       this.$root.$emit('answered');
-    },
-    updateValue() {
-      // TODO change answere
     },
   },
   beforeDestroy(this: any) {

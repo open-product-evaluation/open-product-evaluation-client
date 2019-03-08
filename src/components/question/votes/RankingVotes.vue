@@ -1,22 +1,20 @@
 <template>
 <div class="chartDiagramm">
+<h5>Keine Angabe: {{neutral}}</h5>
 <apexchart type="heatmap" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
 
 <script lang="ts">
 import VueApexCharts from 'vue-apexcharts';
+import BaseVotes from './BaseVotes.vue';
 
 export default {
   name: 'RankingVotes',
-  components: {
-      apexchart: VueApexCharts,
-  },
-  props: {
-    id: String,
-  },
+  extends: BaseVotes,
   data() {
       return {
+        neutral: 0,
         chartOptions: {
           chart: {
             id: 'vuechartChoice',
@@ -34,23 +32,28 @@ export default {
         series: [],
       };
     },
-    computed: {
-        votes(this: any) {
-            return this.$store.getters.getVote(this.id);
-        },
-        question(this: any) {
-            return this.$store.getters.getQuestion(this.id);
-        },
-    },
-    created(this: any) {
-        this.getVotesDiagramm();
-    },
     methods: {
+        countNeutral(this: any) {
+            let counterNeutral = 0;
+            this.votes.forEach( (vote) => {
+                if (vote[0].rankedItems == null) {
+                    counterNeutral++;
+                }
+            });
+            return counterNeutral;
+        },
         countInArray(this: any, id, index) {
             let counter = 0;
             this.votes.forEach( (vote) => {
                 if (vote[0].rankedItems != null) {
                     if (vote[0].rankedItems[index] === id) {
+                        counter++;
+                    }
+                }
+            });
+            this.answers.forEach(answer => {
+                if (answer.rankedItems != null) {
+                    if (answer.rankedItems[index] === id) {
                         counter++;
                     }
                 }
@@ -76,7 +79,8 @@ export default {
                     data: this.getElement(element.id),
                 });
             });
-            this.$data.series = series;
+            this.series = series;
+            this.neutral = this.countNeutral();
         },
     },
 };

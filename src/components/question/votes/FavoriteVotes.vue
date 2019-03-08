@@ -1,22 +1,20 @@
 <template>
 <div class="chartDiagramm">
+<h5>Keine Angabe: {{neutral}}</h5>
 <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
 
 <script lang="ts">
 import VueApexCharts from 'vue-apexcharts';
+import BaseVotes from './BaseVotes.vue';
 
 export default {
   name: 'FavoriteVotes',
-  components: {
-      apexchart: VueApexCharts,
-  },
-  props: {
-    id: String,
-  },
+  extends: BaseVotes,
   data() {
       return {
+        neutral: 0,
         chartOptions: {
           chart: {
             id: 'vuechartChoice',
@@ -53,17 +51,6 @@ export default {
         }],
       };
     },
-    computed: {
-        votes(this: any) {
-            return this.$store.getters.getVote(this.id);
-        },
-        question(this: any) {
-            return this.$store.getters.getQuestion(this.id);
-        },
-    },
-    created(this: any) {
-        this.getVotesDiagramm();
-    },
     methods: {
         countInArray(this: any, votes, id) {
             let counter = 0;
@@ -73,6 +60,11 @@ export default {
                         counter ++;
                     }
                 });
+            });
+            this.answers.forEach( (element) => {
+                if (element.favoriteItem === id) {
+                    counter ++;
+                }
             });
             return counter;
         },
@@ -84,7 +76,8 @@ export default {
                     y: this.countInArray(this.votes, element.id),
                 });
             });
-            this.$data.series = [{
+            this.neutral = this.countInArray(this.votes, null);
+            this.series = [{
                 data: result,
             }];
         },
