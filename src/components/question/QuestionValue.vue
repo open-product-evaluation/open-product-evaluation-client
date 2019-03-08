@@ -2,7 +2,7 @@
   <div class="meta">
     <h5>{{ question.value }}</h5>
 
-    <p class="description">
+    <p class="description" v-if=" question.description">
       {{ question.description }}
     </p>
   </div>

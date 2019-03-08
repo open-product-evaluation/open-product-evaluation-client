@@ -225,11 +225,11 @@ input[type="button"] {
 }
 .next-enter-active{
   transition: all .5s ease;
-  transition-delay: .6s;
+  transition-delay: .8s;
 }
 .prev-enter-active{
   transition: all .5s ease;
-  transition-delay: .6s;
+  transition-delay: .8s;
 }
 .next-enter {
   transform: translateX(10px);

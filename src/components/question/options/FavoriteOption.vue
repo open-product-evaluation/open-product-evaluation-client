@@ -1,12 +1,13 @@
 <template>
 <div>
   <div style="display: inline-flex;">
-  <div v-for="item in question.items" :key="item.id" :class="((question.items.length%2)===0) ? 'col-lg-6' : 'col-lg-4'">
-      <b-card :class="{ selected: selected === item.id}">
-        <b-card-header>
-           <img v-if="item.image && item.image.url" style="max-width: 100%;" v-img :src="`${item.image.url}`">
-        </b-card-header>
+  <div v-for="item in question.items" :key="item.id" :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'">
+      <b-card no-body :class="{ selected: selected === item.id}"
+          header-tag="header">
+        <img v-if="item.image && item.image.url" slot="header" style="max-width:100%" v-img :src="`${item.image.url}`">
+        <b-card-footer>
         <b-button class="primaryBtn" @click="select($event, item.id)"> {{ item.label }}</b-button>
+        </b-card-footer>
       </b-card>
     </div>
   </div>
@@ -93,5 +94,8 @@ export default {
   }
   .card-header {
     padding: 0;
+  }
+  .card, .card-footer {
+    height: 100%;
   }
 </style>

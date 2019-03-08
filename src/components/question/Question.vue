@@ -6,19 +6,18 @@
         </b-card-header>
 
         <b-card-body>
-        <b-row>
-          <b-col md="1"/>
-          <b-col md="10">
-          <!-- TODO Choose progressBar oder ProgressSteps --> 
-          <div class="stepper" v-if="survey.questions && survey.questions.length <= 20">
-              <step-indicator current-color='#ffaa11' :current="index" :total="survey.questions.length"></step-indicator>
-          </div>
-          <div class="progress" v-if="survey.questions && survey.questions.length >20">
+            <div class="progress" v-if="survey.questions && survey.questions.length > 20">
             <b-progress :max="100">
               <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
               </b-progress-bar>
             </b-progress>
           </div>
+
+        <b-row>
+          <div class="stepper" v-if="survey.questions && survey.questions.length <= 20">
+              <step-indicator current-color='#ffaa11' :current="index" :total="survey.questions.length"></step-indicator>
+          </div>
+          
           <div class="question" v-if="survey.questions
                                       && survey.questions.length
                                       && survey.questions.length > 0">
@@ -60,7 +59,6 @@
                       v-if="survey.questions[index].type === 'FAVORITE'">
             </favorite>
           </div>
-        </b-col>
       </b-row>
       <div class="votes" v-if="survey.questions
                                       && survey.questions.length
@@ -192,11 +190,14 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import "../../scss/variables.scss"; 
+.question{
+  width: 100%;
+}
 .container {
   margin-top: 3rem; 
 }
-.card {
-  height: 80vh;
+.row {
+  margin: 0;
 }
 .step-indicators.step-indicator{
   color: $primaryColor;
@@ -208,12 +209,18 @@ export default {
 .progress {
   font-size: 1rem;
   height: max-content;
+  width: 100%;
+  border-radius: 0;
 }
 .progress-bar {
   height: 1.5rem;
+  background: $secondaryBackgroundColor;
+  opacity: 0.5;
+  color: $primaryColor
 }
 .stepper {
-  margin-bottom: 1rem;
+  margin: 1rem 0;
+  width: 100%;
 }
 .card-header h4 {
   margin-top: 0.5rem;
