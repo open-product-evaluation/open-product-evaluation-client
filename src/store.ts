@@ -166,9 +166,11 @@ export default new Vuex.Store({
 
 function filterVotes(questionID) {
   const result: string[] = [];
-  state.currentSurvey.votes.map( (vote) => {
-    result.push(filterCurrentQuestionsVotes(vote, (questionID)));
-  });
+  if (state.currentSurvey.votes !== undefined && state.currentSurvey.votes !== null) {
+    state.currentSurvey.votes.map( (vote) => {
+      result.push(filterCurrentQuestionsVotes(vote, (questionID)));
+    });
+  }
   return result;
 }
 

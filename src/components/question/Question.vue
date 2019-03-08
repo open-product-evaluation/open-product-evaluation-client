@@ -60,7 +60,13 @@
             </favorite>
           </div>
       </b-row>
-      <div class="votes" v-if="survey.questions
+      <b-row align-h="center" class="collab">
+        <b-button class="primaryBtn" v-if="answered && survey.votes != null" v-b-toggle.votesCollab>
+        <span class="when-opened">Schließe Ergebnis</span> <span class="when-closed">Öffne Ergebnis</span>
+      </b-button>
+      </b-row>
+        <b-collapse id="votesCollab">
+          <div class="votes" v-if="survey.questions
                                       && survey.questions.length
                                       && survey.questions.length > 0 
                                       && answered">
@@ -85,6 +91,7 @@
                     v-if="survey.questions[index].type === 'RANKING'">
           </rankingVotes>
         </div>
+        </b-collapse>
       </b-card-body>
       <b-card-footer>
           <b-btn class="primaryBtn" @click="next"
@@ -94,7 +101,6 @@
                   v-if="answered && index == survey.questions.length -1">Start
           </b-btn>
           <b-btn class="primaryBtn" v-if="!answered" @click="answer">Antworten</b-btn>
-
       </b-card-footer>
     </b-card>
   </div>
@@ -199,6 +205,9 @@ export default {
 .row {
   margin: 0;
 }
+.card-body {
+  padding-bottom: 0;
+}
 .step-indicators.step-indicator{
   color: $primaryColor;
   border-color: $primaryColor;
@@ -230,10 +239,11 @@ export default {
 }
 .votes {
   border-top: 1px solid rgba(0, 0, 0, 0.125);
-  padding-top: 2rem;
+  padding-top: 1rem;
+  margin-top: 1rem;
 }
-.row {
-  margin-bottom: 1rem;
+.collab {
+  margin-bottom:1rem;
 }
 .next_btn input[type="button"]{
     display: none;
@@ -248,5 +258,9 @@ export default {
   height: 2.5rem;
   background-position: center;
   background-repeat: no-repeat;
+}
+.collapsed > .when-opened,
+:not(.collapsed) > .when-closed {
+  display: none;
 }
 </style>

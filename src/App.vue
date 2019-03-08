@@ -24,7 +24,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   background-color: $backgroundColor;
-  height: -webkit-fill-available;
+  min-height: -webkit-fill-available;
+  height: 100%; 
 }
 .primaryBtn {
   background-color: $secondaryBackgroundColor;

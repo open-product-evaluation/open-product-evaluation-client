@@ -88,9 +88,6 @@ export default {
   }
   .selected {
     border: 3px solid $primaryColor;
-    .oi {
-      display: block;
-    }
   }
   .card-header {
     padding: 0;

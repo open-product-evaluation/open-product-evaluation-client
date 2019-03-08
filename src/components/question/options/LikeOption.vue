@@ -12,6 +12,9 @@
                 :for="`like-${question.id}`"
                 :style="{backgroundImage: `url(${question.likeIcon.url})`}">
           </label>
+           <span class="label">
+          Like
+        </span>
         </div>
         <div v-if="!question.likeIcon">
           <label class="like-checkbox">
@@ -21,11 +24,13 @@
                 :checked="liked==true"
                 @click="updateValue(true)"/>
             <v-icon class="icon" name="thumbs-up" ></v-icon>
-            </label>
-        </div>
-        <span class="label">
+            <span class="label">
           Like
         </span>
+            </label>
+            
+        </div>
+        
       </li>
     </ol>
     <b-row>
@@ -87,16 +92,20 @@ export default {
     list-style: none;
     padding: 0;
   }
-  input[type="checkbox"]:checked+label+span {
+  input[type="checkbox"]:checked+label+span, input[type="checkbox"]:hover+label+span {
     color: $primaryColor;
   }
-.like-checkbox input[type="checkbox"]{
-    display: none;
-}
-.like-checkbox input[type="checkbox"]:checked ~ .icon, .like-checkbox input[type="checkbox"]:hover ~ .icon
-{
-    color: $primaryColor;
-}
+  .like-checkbox input[type="checkbox"]{
+      display: none;
+  }
+  .like-checkbox input[type="checkbox"]:checked ~ .icon, .like-checkbox input[type="checkbox"]:hover ~ .icon
+  {
+      color: $primaryColor;
+  }
+  .like-checkbox input[type="checkbox"]:checked ~ .label, .like-checkbox input[type="checkbox"]:hover ~ .label
+  {
+      color: $primaryColor;
+  }
   .like {
     font-size: 1.25rem;
     text-align: center;
