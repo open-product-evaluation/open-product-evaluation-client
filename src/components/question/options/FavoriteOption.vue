@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div style="display: inline-flex;">
+  <b-row>
   <div v-for="item in question.items" :key="item.id" :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'">
       <b-card no-body :class="{ selected: selected === item.id}"
           header-tag="header">
@@ -10,7 +10,7 @@
         </b-card-footer>
       </b-card>
     </div>
-  </div>
+    </b-row>
   <b-row>
       <b-col cols="6">
         <div class ="text-center">

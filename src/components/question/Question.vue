@@ -200,7 +200,7 @@ export default {
   width: 100%;
 }
 .container {
-  margin-top: 3rem; 
+  margin: 3rem auto; 
 }
 .row {
   margin: 0;

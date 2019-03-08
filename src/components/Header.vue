@@ -13,6 +13,9 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+.row {
+    margin: 0;
+}
 .header {
     background: #637d8d;
     padding: 3px 0;

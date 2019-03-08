@@ -77,9 +77,6 @@ export default {
     font-size: 1rem;
     padding: 0;
     }
-  .col-1 {
-    font-size: 1rem;
-  }
   input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: none;

@@ -2,7 +2,7 @@
   <div class="surveycards">
     <div class="header">
       <h2> Umfragen </h2>
-      <h5> Suche dir eine Umfrage aus oder Suche hier: </h5>
+      <h5> Suche dir eine Umfrage aus</h5>
     </div>
 
     <b-row align-v="center">
@@ -239,5 +239,9 @@ input[type="button"] {
   transform: translateX(-10px);
   opacity: 0;
 }
+.row {
+  margin: 0;
+}
+
 
 </style>
