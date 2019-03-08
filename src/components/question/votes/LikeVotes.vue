@@ -16,6 +16,9 @@ export default {
         series: [],
         chartOptions: {
           labels: ['Liked', 'Neutral'],
+          theme: {
+              palette: 'palette4',
+          },
           dataLabels: {
             formatter(val) {
                 return Math.round(val) +  '%';
@@ -61,5 +64,10 @@ export default {
 .chartDiagramm {
     margin: 0 auto; 
     width: 30%;
+}
+@media (max-width: 576px) {
+.chartDiagramm {
+    width: 80%;
+}
 }
 </style>

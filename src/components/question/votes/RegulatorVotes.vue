@@ -26,6 +26,9 @@ export default {
           dataLabels: {
                 offsetY: 10,
           },
+          theme: {
+              palette: 'palette4',
+          },
           plotOptions: {
               bar: {
                   columnWidth: '70%',
@@ -107,3 +110,15 @@ export default {
     },
 };
 </script>
+
+<style scoped="true" lang="scss">
+.chartDiagramm {
+    margin: 0 auto; 
+    width: 60%;
+}
+@media (max-width: 576px) {
+.chartDiagramm {
+    width: 80%;
+}
+}
+</style>

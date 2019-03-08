@@ -12,6 +12,9 @@
               :for="`like-${question.id}`"
               :style="{backgroundImage: `url(${question.likeIcon.url})`}">
         </label>
+        <span class="label">
+        Like
+      </span>
       </div>
       <div v-if="!question.likeIcon">
         <label class="like-checkbox">
@@ -21,11 +24,11 @@
                 :checked="liked==true"
                 @click="updateValue(true)"/>
             <v-icon class="icon" name="thumbs-up" ></v-icon>
-            </label>
-      </div>
-      <span class="label">
+            <span class="label">
         Like
       </span>
+            </label>
+      </div>
     </li>
     <li class="dislike">
       <div v-if="question.dislikeIcon && question.dislikeIcon.url">>
@@ -38,6 +41,9 @@
               :for="`dislike-${question.id}`"
               :style="{backgroundImage: `url(${question.dislikeIcon.url})`}">
         </label>
+        <span class="label">
+        Dislike
+      </span>
       </div>
       <div v-if="!question.dislikeIcon">
           <label class="dislike-checkbox">
@@ -47,11 +53,12 @@
                 :checked="liked==false"
                 @click="updateValue(false)"/>
             <v-icon class="icon" name="thumbs-down" ></v-icon>
-            </label>
-        </div>
-      <span class="label">
+            <span class="label">
         Dislike
       </span>
+            </label>
+        </div>
+      
     </li>
   </ol>
   <b-row>
@@ -60,9 +67,6 @@
         <input type="checkbox" @click="deselectAll()" :checked="liked==null"/>
         <label>keine Angabe</label>
       </div>
-    </b-col>
-    <b-col cols="6" class="text-center" v-if="!answered">
-      <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
     </b-col>
   </b-row>
 </div>
@@ -98,6 +102,14 @@ export default {
       this.$root.$emit('answered');
     },
   },
+  beforeDestroy(this: any) {
+    this.$eventBus.$off();
+  },
+  mounted(this: any) {
+    this.$eventBus.$on('answer', (data) => {
+      this.sendAnswer();
+    });
+  },
 };
 </script>
 
@@ -117,14 +129,15 @@ export default {
   .like-checkbox input[type="checkbox"], .dislike-checkbox input[type="checkbox"] {
     display: none;
   }
-.like-checkbox input[type="checkbox"]:checked ~ .icon
-{
-    color: $primaryColor;
-}
-.dislike-checkbox input[type="checkbox"]:checked ~ .icon
-{
-    color: $primaryColor;
-}
+  input[type="checkbox"]:checked ~ .icon, input[type="checkbox"]:hover ~ .icon
+  {
+      color: $primaryColor;
+  }
+
+  input[type="checkbox"]:checked ~ .label, input[type="checkbox"]:hover ~ .label
+  {
+      color: $primaryColor;
+  }
   .like, .dislike {
     text-align: center;
     flex-grow: 1;
@@ -140,6 +153,7 @@ export default {
       height: 2.5rem;
       background-position: center;
       background-repeat: no-repeat;
+      color: $secondaryBackgroundColor;
     }
   }
 </style>

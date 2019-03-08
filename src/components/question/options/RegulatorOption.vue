@@ -11,7 +11,7 @@
                :max="question.max"
                :step="question.stepSize"
                v-bind:value="value"
-               @change="updateValue" />
+               @change="updateValue"/>
         <span v-if="value === null" class="value">{{ question.default }}</span>
         <span v-if="value !== null" class="value">{{ value }}</span>
       </div>
@@ -25,9 +25,6 @@
           <input type="checkbox" @click="deselectAll()"/>
           <label>keine Angabe</label>
         </div>
-      </b-col>
-      <b-col cols="6" class="text-center" v-if="!answered">
-        <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
       </b-col>
     </b-row>
   </div>
@@ -67,17 +64,29 @@ export default {
       this.$root.$emit('answered');
     },
   },
+  beforeDestroy(this: any) {
+    this.$eventBus.$off();
+  },
+  mounted(this: any) {
+    this.$eventBus.$on('answer', (data) => {
+      this.sendAnswer();
+    });
+  },
 };
 </script>
 
 
 <style scoped="true" lang="scss">
+@import "../../../scss/variables"; 
   .range { 
     text-align: center; 
-    font-size: 1.25rem;
+    font-size: 1rem;
     padding: 0;
     }
-  .col-1 {
-    font-size: 1.25rem;
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    background: $primaryColor;
   }
+
 </style>

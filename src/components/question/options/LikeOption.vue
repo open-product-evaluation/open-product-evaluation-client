@@ -12,6 +12,9 @@
                 :for="`like-${question.id}`"
                 :style="{backgroundImage: `url(${question.likeIcon.url})`}">
           </label>
+           <span class="label">
+          Like
+        </span>
         </div>
         <div v-if="!question.likeIcon">
           <label class="like-checkbox">
@@ -21,11 +24,13 @@
                 :checked="liked==true"
                 @click="updateValue(true)"/>
             <v-icon class="icon" name="thumbs-up" ></v-icon>
-            </label>
-        </div>
-        <span class="label">
+            <span class="label">
           Like
         </span>
+            </label>
+            
+        </div>
+        
       </li>
     </ol>
     <b-row>
@@ -34,9 +39,6 @@
           <input type="checkbox" @click="deselectAll()" :checked="liked==null"/>
           <label>keine Angabe</label>
         </div>
-      </b-col>
-      <b-col cols="6" class="text-center" v-if="!answered">
-        <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
       </b-col>
     </b-row>
   </div>
@@ -73,6 +75,14 @@ export default {
       this.$root.$emit('answered');
     },
   },
+  beforeDestroy(this: any) {
+    this.$eventBus.$off();
+  },
+  mounted(this: any) {
+    this.$eventBus.$on('answer', (data) => {
+      this.sendAnswer();
+    });
+  },
 };
 </script>
 
@@ -82,16 +92,20 @@ export default {
     list-style: none;
     padding: 0;
   }
-  input[type="checkbox"]:checked+label+span {
+  input[type="checkbox"]:checked+label+span, input[type="checkbox"]:hover+label+span {
     color: $primaryColor;
   }
-.like-checkbox input[type="checkbox"]{
-    display: none;
-}
-.like-checkbox input[type="checkbox"]:checked ~ .icon
-{
-    color: $primaryColor;
-}
+  .like-checkbox input[type="checkbox"]{
+      display: none;
+  }
+  .like-checkbox input[type="checkbox"]:checked ~ .icon, .like-checkbox input[type="checkbox"]:hover ~ .icon
+  {
+      color: $primaryColor;
+  }
+  .like-checkbox input[type="checkbox"]:checked ~ .label, .like-checkbox input[type="checkbox"]:hover ~ .label
+  {
+      color: $primaryColor;
+  }
   .like {
     font-size: 1.25rem;
     text-align: center;
@@ -107,6 +121,7 @@ export default {
       height: 2.5rem;
       background-position: center;
       background-repeat: no-repeat;
+      color: $secondaryBackgroundColor;
     }
   }
 </style>

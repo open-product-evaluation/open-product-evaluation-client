@@ -13,6 +13,10 @@ const getAllSurveys = () => apiClient.query(
                 id
                 description
                 title
+                previewImage {
+                  url
+                  name
+                }
               }
             }
           }`,

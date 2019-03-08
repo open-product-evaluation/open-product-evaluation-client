@@ -4,9 +4,8 @@
   <draggable v-model="question.items"
              @start="drag = true"
              @end="drag = false"
-             class="options row"
-             :onchange="selected = true">
-    <div :class="((question.items.length%2)===0) ? 'col-lg-6' : 'col-lg-4'"
+             class="options row">
+    <div :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'"
           v-for="(item, index) in question.items" 
           :key="item.id">
       <b-card :title="`Platz ${index + 1}`"
@@ -24,9 +23,6 @@
           <input type="checkbox" @click="deselectAll()"/>
           <label>keine Angabe</label>
         </div>
-      </b-col>
-      <b-col cols="6" class="text-center" v-if="!answered">
-        <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
       </b-col>
     </b-row>
 </div>
@@ -78,35 +74,23 @@ export default {
       this.$root.$emit('answered');
     },
   },
+  beforeDestroy(this: any) {
+    this.$eventBus.$off();
+  },
+  mounted(this: any) {
+    this.$eventBus.$on('answer', (data) => {
+      this.sendAnswer();
+    });
+  },
 };
 </script>
 
 <style scoped="true" lang="scss">
 @import "../../../scss/variables"; 
-  .image {
-    width: 100%;
-    padding-top: 100%;
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-  }
-  .rank {
-    display: flex;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    font-size: 2rem;
-    color: $primaryColor;
-  }
   .rankingLabel {
     display: flex;
     justify-content: center;
     font-size: 2rem;
-    color: $primaryColor;
   }
   .card-header {
     padding: 0;

@@ -1,27 +1,37 @@
 <template>
   <div id="app">
+    <appHeader/>
     <router-view/>
   </div>
 </template>
 
-<style>
+<script lang="ts">
+import Header from './components/Header.vue';
+
+export default {
+  components: {
+    appHeader: Header,
+  },
+};
+</script>
+
+<style lang="scss">
+@import "./scss/variables.scss"; 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: $backgroundColor;
+  min-height: -webkit-fill-available;
+  height: 100%; 
 }
-#nav {
-  padding: 30px;
+.primaryBtn {
+  background-color: $secondaryBackgroundColor;
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.primaryBtn.btn-secondary:hover {
+  background-color: $primaryColor;
+  border-color: $primaryColor;
 }
 </style>

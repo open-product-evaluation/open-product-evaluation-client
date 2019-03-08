@@ -1,17 +1,16 @@
 <template>
 <div>
-  <ol class="choices">
-    <li class="choice"
-        v-for="choice in question.choices"
+  <b-row>
+    <b-col class="choice" v-for="choice in question.choices"
         :class="{'no-image': !choice.image }"
         :key="choice.id">
-      <input type="radio"
-             :id="`choice-${choice.id}`"
-             :name="`choice-${question.id}`"
-             v-if="choice.image && choice.image.url"
-             :value="choice.label"
-             :checked="choice.id == selected"
-             @click="updateValue(choice.id)"
+        <input type="radio"
+              :id="`choice-${choice.id}`"
+              :name="`choice-${question.id}`"
+              v-if="choice.image && choice.image.url"
+              :value="choice.label"
+              :checked="choice.id == selected"
+              @click="updateValue(choice.id)"
              />
       <label :for="`choice-${choice.id}`"
              v-if="!choice.image">
@@ -36,8 +35,9 @@
             v-if="choice.image && choice.image.url">
         {{ choice.label }}
       </span>
-    </li>
-  </ol>
+    </b-col>
+  </b-row>
+
   <b-row>
     <b-col cols="6">
       <div class ="neutral text-center">
@@ -45,9 +45,8 @@
         <label>keine Angabe</label>
       </div>
     </b-col>
-    <b-col cols="6" class="text-center" v-if="!answered">
-      <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
-    </b-col>
+  </b-row>
+  <b-row>
   </b-row>
 </div>
 </template>
@@ -83,6 +82,14 @@ export default {
       this.$root.$emit('answered');
     },
   },
+  beforeDestroy(this: any) {
+    this.$eventBus.$off('answer');
+  },
+  mounted(this: any) {
+    this.$eventBus.$on('answer', () => {
+      this.sendAnswer();
+    });
+  },
 };
 </script>
 
@@ -95,6 +102,7 @@ export default {
     list-style: none;
     margin-bottom: 2rem;
   }
+  input[type="radio"]:hover + label + span { color: $primaryColor; }
   input[type="radio"]:checked + label + span { color: $primaryColor; }
   .choice {
     font-size: 1rem;

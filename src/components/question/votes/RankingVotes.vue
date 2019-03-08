@@ -20,6 +20,9 @@ export default {
             id: 'vuechartChoice',
             toolbar: { show: false },
           },
+          theme: {
+              palette: 'palette4',
+          },
           dataLabels: {
             style: {
                 fontSize: '1.25rem',
@@ -48,7 +51,7 @@ export default {
                     }
                 }
             });
-            this.answers.forEach(answer => {
+            this.answers.forEach( (answer) => {
                 if (answer.rankedItems != null) {
                     if (answer.rankedItems[index] === id) {
                         counter++;
@@ -87,5 +90,10 @@ export default {
 .chartDiagramm {
     margin: 0 auto; 
     width: 50%;
+}
+@media (max-width: 576px) {
+.chartDiagramm {
+    width: 80%;
+}
 }
 </style>

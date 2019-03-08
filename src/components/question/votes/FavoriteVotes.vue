@@ -20,6 +20,9 @@ export default {
             id: 'vuechartChoice',
             toolbar: { show: false },
           },
+          theme: {
+              palette: 'palette4',
+          },
           dataLabels: {
             style: {
                 fontSize: '1.25rem',
@@ -86,5 +89,10 @@ export default {
 .chartDiagramm {
     margin: 0 auto; 
     width: 60%;
+}
+@media (max-width: 576px) {
+.chartDiagramm {
+    width: 80%;
+}
 }
 </style>

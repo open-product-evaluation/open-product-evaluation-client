@@ -1,24 +1,22 @@
 <template>
 <div>
-  <div style="display: inline-flex;">
-  <div v-for="item in question.items" :key="item.id" :class="((question.items.length%2)===0) ? 'col-lg-6' : 'col-lg-4'">
-      <b-card :class="{ selected: selected === item.id}">
-        <b-card-header>
-           <img v-if="item.image && item.image.url" style="max-width: 100%;" v-img :src="`${item.image.url}`">
-        </b-card-header>
-        <b-button variant="primary" @click="select($event, item.id)"> {{ item.label }}</b-button>
+  <b-row>
+  <div v-for="item in question.items" :key="item.id" :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'">
+      <b-card no-body :class="{ selected: selected === item.id}"
+          header-tag="header">
+        <img v-if="item.image && item.image.url" slot="header" style="max-width:100%" v-img :src="`${item.image.url}`">
+        <b-card-footer>
+        <b-button class="primaryBtn" @click="select($event, item.id)"> {{ item.label }}</b-button>
+        </b-card-footer>
       </b-card>
     </div>
-  </div>
+    </b-row>
   <b-row>
       <b-col cols="6">
         <div class ="text-center">
           <input type="checkbox" :checked="selected==null" @click="deselectAll()"/>
           <label>keine Angabe</label>
         </div>
-      </b-col>
-      <b-col cols="6" class="text-center" v-if="!answered">
-        <b-button variant="primary" @click="sendAnswer()">ANTWORTEN</b-button>
       </b-col>
     </b-row>
   </div>
@@ -55,6 +53,14 @@ export default {
       this.$root.$emit('answered');
     },
   },
+  beforeDestroy(this: any) {
+    this.$eventBus.$off();
+  },
+  mounted(this: any) {
+    this.$eventBus.$on('answer', (data) => {
+      this.sendAnswer();
+    });
+  },
 };
 </script>
 
@@ -82,11 +88,11 @@ export default {
   }
   .selected {
     border: 3px solid $primaryColor;
-    .oi {
-      display: block;
-    }
   }
   .card-header {
     padding: 0;
+  }
+  .card, .card-footer {
+    height: 100%;
   }
 </style>
