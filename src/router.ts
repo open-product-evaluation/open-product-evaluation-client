@@ -36,9 +36,15 @@ const router =  new Router({
 router.beforeEach((to, from, next) => {
   if ((localStorage.getItem('currentToken') === '' || localStorage.getItem('currentToken') === null) &&
           (localStorage.getItem('client') === '' || localStorage.getItem('client') === null) ) {
-    store.dispatch('createClient', ({ name: 'mobilePhone'})).then((result) => {
-      next();
-    });
+    if (to.name === 'join') {
+      store.dispatch('createTemporaryClient', ({ domainID: to.params.cID})).then((result) => {
+        next();
+      });
+    } else {
+      store.dispatch('createPermanentClient', ({ name: 'mobilePhone', clientOwner: 'jane@doe.com'})).then((result) => {
+        next();
+      });
+    }
   } else {
     next();
   }

@@ -38,6 +38,9 @@ const getters = {
 
 const mutations = {
   createClient(states, payload) {
+    if (payload.code) {
+      localStorage.setItem('clientCode', payload.code);
+    }
     if (payload.token) {
       localStorage.setItem('currentToken', payload.token);
     }
@@ -76,14 +79,46 @@ const actions = {
       context.commit('updateClient', data.data !== undefined ? data.data.updateClient : null);
     });
   },
-  createClient(context, payload) {
+  createPermanentClient(context, payload) {
     return new Promise( (resolve, reject) => {
       // console.error(payload.data['errors'][0].message);
       localStorage.removeItem('currentToken');
       localStorage.removeItem('client');
-      Client.createClient( payload.name )
+      localStorage.removeItem('clientCode');
+      Client.createPermanentClient( payload.name, payload.clientOwner )
       .then((data: any) => {
-        context.commit('createClient', data.data !== undefined ? data.data.createClient : null);
+        context.commit('createClient', data.data !== undefined ? data.data.createPermanentClient : null);
+        resolve(data.data);
+      },
+      (error) => {
+        reject(error);
+      });
+    });
+  },
+  createTemporaryClient(context, payload) {
+    return new Promise( (resolve, reject) => {
+      localStorage.removeItem('currentToken');
+      localStorage.removeItem('client');
+      localStorage.removeItem('clientCode');
+      Client.createTemporaryClient( payload.domainID )
+      .then((data: any) => {
+        context.commit('createClient', data.data !== undefined ? data.data.createTemporaryClient : null);
+        resolve(data.data);
+      },
+      (error) => {
+        reject(error);
+      });
+    });
+  },
+  loginClient(context, payload) {
+    return new Promise( (resolve, reject) => {
+      localStorage.removeItem('currentToken');
+      localStorage.removeItem('client');
+      const code = localStorage.getItem('clientCode') || '';
+      if (code === '') { reject('No valid Code')}
+      Client.loginClient( code, payload.email )
+      .then((data: any) => {
+        context.commit('createClient', data.data !== undefined ? data.data.loginClient : null);
         resolve(data.data);
       },
       (error) => {
@@ -99,16 +134,27 @@ const actions = {
             context.commit('setSurveys', data.data !== undefined ? data.data.domains : null);
         } else {
           // Token has expired
-          this.dispatch('createClient', { name: 'DeviceName' })
-          .then( () => {
-              Survey.getAllSurveys()
-              .then( (result: any) => {
-                context.commit('setSurveys', result.data !== undefined ? result.data.domains : null);
-                resolve(result);
-              });
+
+          // Try to login the Client
+          this.dispatch('loginClient', { email: 'jane@doe.com' }).then( () => {
+            Survey.getAllSurveys()
+            .then( (result: any) => {
+              context.commit('setSurveys', result.data !== undefined ? result.data.domains : null);
+              resolve(result);
+            });
           }, (error) => {
-              reject(error);
-          });
+            // Create new Client
+            this.dispatch('createPermanentClient', { name: 'DeviceName', clientOwner: 'jane@doe.com' })
+            .then( () => {
+                Survey.getAllSurveys()
+                .then( (result: any) => {
+                  context.commit('setSurveys', result.data !== undefined ? result.data.domains : null);
+                  resolve(result);
+                });
+            }, (error) => {
+                reject(error);
+            });
+            });
         }
       });
     });
