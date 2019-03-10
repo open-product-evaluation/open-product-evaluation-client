@@ -15,10 +15,6 @@
             <h5>Bitte warten Sie auf die nächste Frage!</h5>
           </div>
 
-          <div class="question" v-if="activeQuestion==-1"> 
-            <h5>Die Umfrage hat noch nicht begonnen!</h5>
-          </div>
-
           <div class="question" v-if="activeQuestion==survey.questions.length-1"> 
             <h5>Vielen Dank fürs teilnehmen!</h5>
           </div>
@@ -70,10 +66,7 @@
       </b-row>
       </b-card-body>
       <b-card-footer >
-        <b-progress :max="100">
-          <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
-          </b-progress-bar>
-        </b-progress>
+        <b-btn class="primaryBtn" v-if="!answered" @click="answer">Antworten</b-btn>
       </b-card-footer>
     </b-card>
   </div>
@@ -121,13 +114,12 @@ export default {
     return {
       index: 0,
       counter: 0,
-      answered: false,
+      answered: true,
       isSlave: false,
     };
   },
   async created(this: any) {
     const domainID = this.$route.params.cID;
-    this.isSlave = this.$route.name === 'join';
     const client =  localStorage.getItem('client');
     try {
         await this.$store.dispatch('updateClient', {
@@ -166,6 +158,9 @@ export default {
   methods: {
     displayItems(type) {
       return !(type === 'RANKING' || type === 'FAVORITE');
+    },
+    answer(this: any) {
+      this.$eventBus.$emit('answer');
     },
   },
   mounted(this: any) {
