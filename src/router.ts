@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import store from './store';
 import SurveyList from '@/components/survey/SurveyList.vue';
+import CreateClient from '@/components/CreateClient.vue';
+import LoginClient from '@/components/LoginClient.vue';
 import Question from '@/components/question/Question.vue';
 import SlaveQuestion from '@/components/question/SlaveQuestion.vue';
 import MasterQuestion from '@/components/question/MasterQuestion.vue';
@@ -30,10 +32,21 @@ const router =  new Router({
       name: 'master',
       component: MasterQuestion,
     },
+    {
+      path: '/create',
+      name: 'create',
+      component: CreateClient,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginClient,
+    },
   ],
 });
 
 router.beforeEach((to, from, next) => {
+  if (to.name === 'create' || to.name === 'login' ) { next();  return; }
   if ((localStorage.getItem('currentToken') === '' || localStorage.getItem('currentToken') === null) &&
           (localStorage.getItem('client') === '' || localStorage.getItem('client') === null) ) {
     if (to.name === 'join') {
@@ -41,9 +54,10 @@ router.beforeEach((to, from, next) => {
         next();
       });
     } else {
-      store.dispatch('createPermanentClient', ({ name: 'mobilePhone', clientOwner: 'jane@doe.com'})).then((result) => {
+      /* store.dispatch('createPermanentClient', ({ name: 'mobilePhone', clientOwner: 'jane@doe.com'})).then((result) => {
         next();
-      });
+      }); */
+      next('create');
     }
   } else {
     next();

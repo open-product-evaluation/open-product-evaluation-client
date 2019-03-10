@@ -114,9 +114,8 @@ const actions = {
     return new Promise( (resolve, reject) => {
       localStorage.removeItem('currentToken');
       localStorage.removeItem('client');
-      const code = localStorage.getItem('clientCode') || '';
-      if (code === '') { reject('No valid Code')}
-      Client.loginClient( code, payload.email )
+      localStorage.removeItem('clientCode');
+      Client.loginClient( payload.code, payload.email )
       .then((data: any) => {
         context.commit('createClient', data.data !== undefined ? data.data.loginClient : null);
         resolve(data.data);
@@ -134,27 +133,7 @@ const actions = {
             context.commit('setSurveys', data.data !== undefined ? data.data.domains : null);
         } else {
           // Token has expired
-
-          // Try to login the Client
-          this.dispatch('loginClient', { email: 'jane@doe.com' }).then( () => {
-            Survey.getAllSurveys()
-            .then( (result: any) => {
-              context.commit('setSurveys', result.data !== undefined ? result.data.domains : null);
-              resolve(result);
-            });
-          }, (error) => {
-            // Create new Client
-            this.dispatch('createPermanentClient', { name: 'DeviceName', clientOwner: 'jane@doe.com' })
-            .then( () => {
-                Survey.getAllSurveys()
-                .then( (result: any) => {
-                  context.commit('setSurveys', result.data !== undefined ? result.data.domains : null);
-                  resolve(result);
-                });
-            }, (error) => {
-                reject(error);
-            });
-            });
+          reject('invalidToken');
         }
       });
     });

@@ -81,6 +81,7 @@ export default {
       (error) => {
         // console.log(error.message);
         // Authorization failed
+        this.$router.push('login');
       });
   },
   computed: {
