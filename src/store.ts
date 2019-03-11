@@ -1,4 +1,3 @@
-import { Router } from 'vue-router';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Client from '@/api/client';
