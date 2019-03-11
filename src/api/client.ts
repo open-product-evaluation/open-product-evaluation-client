@@ -115,10 +115,35 @@ const updateClient = (clientId: string, domain: string) => apiClient.mutate(
     },
 );
 
+/**
+ * @description subscribe to client Updates
+ * @param clientId
+ */
+const onClientUpdate = (clientId: string) => apiClient.subscribe(
+    { query : gql`
+        subscription clientUpdate ($clientID: HashID!){
+        clientUpdate(
+            clientID: $clientID){
+                    event
+                    changedAttributes
+                    client {
+                        domain {
+                            id
+                        }
+                    }
+            }
+        }`,
+        variables: {
+            clientID: clientId,
+        },
+    },
+);
+
 export default {
     createPermanentClient,
     updateClient,
     deleteClient,
     createTemporaryClient,
     loginClient,
+    onClientUpdate,
 };

@@ -72,6 +72,7 @@ export default {
       pageIndex: 0,
       animation: null,
       isSmall: true,
+      subscription: null,
     };
   },
   created(this: any) {
@@ -83,6 +84,11 @@ export default {
         // Authorization failed
         this.$router.push('login');
       });
+      const clientID = localStorage.getItem('client')
+      this.$store.dispatch('subscribeClient', { clientID }).then( (data) => this.subscription = data)
+  },
+  beforeDestroy(this: any) {
+    this.$store.dispatch('unsubscribe', this.subscription);
   },
   computed: {
     surveys(this: any) {

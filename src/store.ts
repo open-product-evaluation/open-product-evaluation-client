@@ -232,6 +232,34 @@ const actions = {
     });
     return v;
   },
+  subscribeClient(store, {clientID}) {
+    // subscription is not saved in store because of mutation problems
+    // gets passed back to component
+    const subscription = Client.onClientUpdate(clientID);
+    const v = subscription.subscribe({
+      next(data) {
+        if (!data.errors) {
+          // completely retarded implementation, but ... https://github.com/apollographql/apollo-client/issues/1909
+          // ... also, once in store it is frozen again.
+          if(data.data.clientUpdate.event === 'DELETE') {
+            localStorage.removeItem('currentToken');
+            localStorage.removeItem('client');
+            localStorage.removeItem('clientCode');
+            location.reload();
+            console.log('delete')
+          } else if (data.data.clientUpdate.changedAttributes
+              && data.data.clientUpdate.changedAttributes.includes('domain')
+              && data.data.clientUpdate.client.domain === null) {
+            // Client removed from domain
+            location.href = '/';
+          }
+        } else {
+          console.log(data.errors);
+        }
+      },
+    });
+    return v;
+  },
   unsubscribe(context, payload) {
     // component passes subscription via payload
     payload.unsubscribe();
