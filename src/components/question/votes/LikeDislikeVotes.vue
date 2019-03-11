@@ -15,7 +15,7 @@ export default {
       return {
         series: [],
         chartOptions: {
-            labels: ['Liked', 'Disliked', 'Neutral'],
+            labels: ['Liked', 'Disliked', 'Abstention'],
             theme: {
               palette: 'palette4',
             },

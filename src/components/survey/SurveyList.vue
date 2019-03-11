@@ -1,8 +1,9 @@
 <template>
   <div class="surveycards">
     <div class="header">
-      <h2> Umfragen </h2>
-      <h5> Suche dir eine Umfrage aus</h5>
+      <h2>Surveys</h2>
+      <h5>Choose a survey</h5>
+      <h7>You can answer it directly by using the <b>"Start"</b>-button OR begin a survey in <b>Live mode</b> to receive a QR-Code and control the survey.</h7>
     </div>
 
     <b-row align-v="center">
@@ -21,15 +22,15 @@
                 <b-col cols="12" sm="6" lg="4" v-for="survey in currentPageSurveys" :key="survey.id">
                   <b-card class="shadow bg-white rounded" no-body>
                   <b-card-header v-if="survey.activeSurvey.previewImage && survey.activeSurvey.previewImage.url">
-                    <img class="rounded-top" v-img width="100%" alt="Kein Bild" :src="survey.activeSurvey.previewImage.url"/>
+                    <img class="rounded-top" v-img width="100%" :src="survey.activeSurvey.previewImage.url"/>
                   </b-card-header>
                   <b-card-body>
                     <b-card-title> {{survey.activeSurvey.title}} </b-card-title>
                     <b-card-text> {{survey.activeSurvey.description}} </b-card-text>
                   </b-card-body>
                   <b-card-footer>
-                    <b-button class="primaryBtn" @click="startSurvey(survey.id)">Starten</b-button>
-                    <b-button @click="startLive(survey.id)">Im Live-Modus starten</b-button>
+                    <b-button class="primaryBtn" @click="startSurvey(survey.id)">Start</b-button>
+                    <b-button @click="startLive(survey.id)">Live mode</b-button>
                     </b-card-footer>
                   </b-card>
                 </b-col>

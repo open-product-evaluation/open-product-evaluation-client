@@ -1,7 +1,7 @@
 <template>
 <div class ="chart">
-    <h5> Durchschnitt: {{ avg }}</h5>
-    <h5>Keine Angabe: {{neutral}}</h5>
+    <h5> Average: {{ avg }} </h5>
+    <h5> Number of abstentions: {{neutral}}</h5>
     <div class="chartDiagramm" >
     <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
     </div>
@@ -49,19 +49,19 @@ export default {
                   show: true,
               },
               title: {
-                  text: 'Anzahl',
+                  text: 'Number of votes',
               },
           },
           xaxis: {
               title: {
-                  text: 'Wert',
+                  text: 'Values',
               },
           },
           tooltip: {
                 y: {
                     title: {
                         formatter(val) {
-                            return 'Anzahl';
+                            return 'Number of votes';
                         },
                     },
                 },
