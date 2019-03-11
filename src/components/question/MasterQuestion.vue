@@ -36,26 +36,6 @@
             </questionItems>
           </div>
         </b-col>
-        <b-col cols="1" class="btn_col"
-                v-if="!answered">
-          <label class="next_btn">
-            <input type="button"
-                @click="showResults"/>
-            <v-icon variant="primary" class="icon" name="arrow-alt-circle-right" ></v-icon>
-            </label>
-        </b-col>
-        <b-col cols="1" class="btn_col"
-                v-if="answered">
-          <label class="next_btn" 
-                v-if="index !== survey.questions.length - 1">
-            <input type="button"
-                @click="next"/>
-            <v-icon variant="primary" class="icon" name="arrow-alt-circle-right" ></v-icon>
-            </label>
-          <b-btn variant="secondary" @click="next"
-                  v-if="index == survey.questions.length -1">Start
-          </b-btn>
-        </b-col>
       </b-row>
       <div class="votes" v-if="survey.questions
                                       && survey.questions.length
@@ -84,10 +64,26 @@
         </div>
       </b-card-body>
       <b-card-footer>
-        <b-progress :max="100">
-          <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
-          </b-progress-bar>
-        </b-progress>
+        <b-col cols="1" class="btn_col"
+                v-if="!answered">
+          <label class="next_btn">
+            <input type="button"
+                @click="showResults"/>
+            <v-icon variant="primary" class="icon" name="arrow-alt-circle-right" ></v-icon>
+            </label>
+        </b-col>
+        <b-col cols="1" class="btn_col"
+                v-if="answered">
+          <label class="next_btn" 
+                v-if="index !== survey.questions.length - 1">
+            <input type="button"
+                @click="next"/>
+            <v-icon variant="primary" class="icon" name="arrow-alt-circle-right" ></v-icon>
+            </label>
+          <b-btn variant="secondary" @click="next"
+                  v-if="index == survey.questions.length -1">Start
+          </b-btn>
+        </b-col>
       </b-card-footer>
     </b-card>
   </div>
@@ -137,13 +133,14 @@ export default {
       index: -1,
       counter: 0,
       answered: true,
+      subscribtion: null,
     };
   },
   created(this: any) {
     const domainID = this.$route.params.cID;
     this.$store.dispatch('subscribeAnswers', {
           domainID,
-    });
+    }).then((data) => this.subscription = data);
     this.$store.dispatch('getSurvey', {
         domain: domainID,
     }).then((data) => {
@@ -153,6 +150,9 @@ export default {
       }, (error) => {
         console.log(error.message);
       });
+  },
+  beforeDestroy(this: any) {
+    this.$store.dispatch('unsubscribe', this.subscription);
   },
   computed: {
     survey(this: any) {
@@ -206,7 +206,7 @@ h3 {
   margin-bottom: 1rem;
 }
 .btn_col {
-  margin-top: auto;
+  margin: auto;
 }
 .votes {
   border-top: 1px solid rgba(0, 0, 0, 0.125);

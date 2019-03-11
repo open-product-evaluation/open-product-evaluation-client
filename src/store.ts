@@ -232,9 +232,9 @@ const actions = {
     });
     return v;
   },
-  unsubscribeDomain(context, payload) {
+  unsubscribe(context, payload) {
     // component passes subscription via payload
-    payload.then((data) => data.unsubscribe());
+    payload.unsubscribe();
   },
   updateActiveQuestion(store, {domainID, questionID}) {
     return Domain.updateActiveQuestion( domainID, questionID)
