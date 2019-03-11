@@ -1,6 +1,6 @@
 <template>
 <div class="chartDiagramm" >
-<h5>Keine Angabe: {{neutral}}</h5>
+<h7> Number of abstentions: {{neutral}}</h7>
 <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
@@ -33,7 +33,7 @@ export default {
                   show: true,
               },
               title: {
-                  text: 'Anzahl',
+                  text: 'Number of votes',
               },
           },
           tooltip: {

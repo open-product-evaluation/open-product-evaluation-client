@@ -42,7 +42,7 @@
     <b-col cols="6">
       <div class ="neutral text-center">
         <input type="checkbox" @click="deselectAll()" :checked="!selected"/>
-        <label>keine Angabe</label>
+        <label> Abstain from voting</label>
       </div>
     </b-col>
   </b-row>

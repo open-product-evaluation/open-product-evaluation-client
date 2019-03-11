@@ -1,6 +1,6 @@
 <template>
 <div class="chartDiagramm">
-<h5>Keine Angabe: {{neutral}}</h5>
+<h7> Number of abstentions: {{neutral}}</h7>
 <apexchart type="heatmap" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
@@ -64,7 +64,7 @@ export default {
             const result: any[] = [];
             for (let i = 0; i < this.question.items.length; i++) {
                 result.push({
-                    x: 'Platz: ' + (i + 1),
+                    x: 'Position #' + (i + 1),
                     y: this.countInArray(id, i),
                 });
             }

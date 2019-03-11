@@ -62,7 +62,7 @@
       </b-row>
       <b-row align-h="center" class="collab">
         <b-button class="primaryBtn" v-if="answered && survey.votes != null" v-b-toggle.votesCollab>
-        <span class="when-opened">Schließe Ergebnis</span> <span class="when-closed">Öffne Ergebnis</span>
+        <span class="when-opened">Hide votes</span> <span class="when-closed">Show votes</span>
       </b-button>
       </b-row>
         <b-collapse id="votesCollab">
@@ -70,7 +70,7 @@
                                       && survey.questions.length
                                       && survey.questions.length > 0 
                                       && answered">
-          <h5> Bisheriges Ergebnis </h5>
+          <h5>Previous votes</h5>
           <!-- display  Votes -->
           <choiceVotes :id="survey.questions[index].id"
                     v-if="survey.questions[index].type === 'CHOICE'">
@@ -95,12 +95,12 @@
       </b-card-body>
       <b-card-footer>
           <b-btn class="primaryBtn" @click="next"
-                  v-if="answered && index !== survey.questions.length - 1">Weiter
+                  v-if="answered && index !== survey.questions.length - 1">Next
           </b-btn>
           <b-btn class="primaryBtn" @click="next"
                   v-if="answered && index == survey.questions.length -1">Start
           </b-btn>
-          <b-btn class="primaryBtn" v-if="!answered" @click="answer">Antworten</b-btn>
+          <b-btn class="primaryBtn" v-if="!answered" @click="answer">Answer</b-btn>
       </b-card-footer>
     </b-card>
   </div>
