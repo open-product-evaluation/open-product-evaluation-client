@@ -83,6 +83,8 @@ export default {
         // Authorization failed
         this.$router.push('login');
       });
+      const clientID = localStorage.getItem('client')
+      this.$store.dispatch('subscribeClient',{ clientID })
   },
   computed: {
     surveys(this: any) {
