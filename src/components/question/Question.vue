@@ -1,24 +1,24 @@
 <template>
-    <div class="container">
+    <div class="container" style="width: 80%">
       <b-card no-body class="shadow bg-white rounded">
         <b-card-header>
           <h4>{{ survey.title }}</h4>
         </b-card-header>
 
-        <b-card-body>
-            <div class="progress" v-if="survey.questions && survey.questions.length > 20">
+        <b-card-body class="py-0">
+            <div class="progress w-100" v-if="survey.questions && survey.questions.length > 20">
             <b-progress :max="100">
               <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
               </b-progress-bar>
             </b-progress>
           </div>
 
-        <b-row>
-          <div class="stepper" v-if="survey.questions && survey.questions.length <= 20">
+        <b-row class="m-0">
+          <div class="w-100 my-3" v-if="survey.questions && survey.questions.length <= 20">
               <step-indicator current-color='#ffaa11' :current="index" :total="survey.questions.length"></step-indicator>
           </div>
           
-          <div class="question" v-if="survey.questions
+          <div class="w-100" v-if="survey.questions
                                       && survey.questions.length
                                       && survey.questions.length > 0">
             <!-- display question title and description -->
@@ -60,7 +60,7 @@
             </favorite>
           </div>
       </b-row>
-      <b-row align-h="center" class="collab">
+      <b-row align-h="center" class="m-0 mb-2" style="height: 40px">
         <b-button class="primaryBtn" v-if="answered && survey.votes != null" v-b-toggle.votesCollab>
         <span class="when-opened">Hide votes</span> <span class="when-closed">Show votes</span>
       </b-button>
@@ -196,17 +196,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import "../../scss/variables.scss"; 
-.question{
-  width: 100%;
-}
 .container {
   margin: 3rem auto; 
-}
-.row {
-  margin: 0;
-}
-.card-body {
-  padding-bottom: 0;
 }
 .step-indicators.step-indicator{
   color: $primaryColor;
@@ -218,7 +209,6 @@ export default {
 .progress {
   font-size: 1rem;
   height: max-content;
-  width: 100%;
   border-radius: 0;
 }
 .progress-bar {
@@ -226,10 +216,6 @@ export default {
   background: $secondaryBackgroundColor;
   opacity: 0.5;
   color: $primaryColor
-}
-.stepper {
-  margin: 1rem 0;
-  width: 100%;
 }
 .card-header h4 {
   margin-top: 0.5rem;
@@ -241,9 +227,6 @@ export default {
   border-top: 1px solid rgba(0, 0, 0, 0.125);
   padding-top: 1rem;
   margin-top: 1rem;
-}
-.collab {
-  margin-bottom:1rem;
 }
 .next_btn input[type="button"]{
     display: none;

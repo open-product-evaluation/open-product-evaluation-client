@@ -29,6 +29,7 @@ export default {
 }
 .primaryBtn {
   background-color: $secondaryBackgroundColor;
+  min-width: 8rem;
 }
 .primaryBtn.btn-secondary:hover {
   background-color: $primaryColor;

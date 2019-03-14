@@ -38,15 +38,13 @@
     </b-col>
   </b-row>
 
-  <b-row>
-    <b-col cols="6">
-      <div class ="neutral text-center">
-        <input type="checkbox" @click="deselectAll()" :checked="!selected"/>
-        <label> Abstain from voting</label>
-      </div>
-    </b-col>
-  </b-row>
-  <b-row>
+  <b-row class="ml-2">
+    <b-check
+    type="info"
+      id="neutral"
+      @click="deselectAll()"
+      :checked="!selected">
+      Abstain from voting</b-check>
   </b-row>
 </div>
 </template>
@@ -119,18 +117,16 @@ export default {
     }
     input { display: none;}
     .icon {
-      display: block;
       cursor: pointer;
-      width: 2.5rem;
-      margin-bottom: 0.5rem;
+      width: 4rem;
       background-size: contain;
-      margin: 0 auto 0.5rem;
-      height: 2.5rem;
+      margin: 0;
+      height: 4rem;
       background-position: center;
       background-repeat: no-repeat;
     }
   }
-  .neutral {
-    font-size: 1rem;
+  #neutral:active{
+    width:100px;
   }
 </style>
