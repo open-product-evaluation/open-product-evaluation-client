@@ -5,7 +5,7 @@
       <b-card no-body :class="{ selected: selected === item.id}"
           header-tag="header"
           class="h-100 shadow bg-white">
-        <img v-if="item.image && item.image.url" slot="header" style="max-width:100%" v-img :src="`${item.image.url}`">
+        <img v-if="item.image && item.image.url" slot="header" class="w-100 h-100 images" v-img :src="`${item.image.url}`">
         <b-card-body class="p-2">
         <b-button class="primaryBtn" @click="select($event, item.id)"> {{ item.label }}</b-button>
         </b-card-body>
@@ -72,8 +72,9 @@ export default {
     display: block;
     border: 3px solid #FFFFFF;
   }
-  img {
+  .images {
     height: 100%;
+    width: 100%;
     object-fit: fill;
   }
   .selected {
@@ -84,7 +85,7 @@ export default {
     max-height: 35vh;
   }
   @media (min-width: 960px) {
-img {
+.images {
     object-fit: contain;
     }
 }

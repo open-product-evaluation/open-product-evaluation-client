@@ -1,7 +1,7 @@
 <template>
 <div>
 <div class="drag">
-
+<!--
   <draggable v-model="question.items"
              @start="drag = true"
              @end="drag = false"
@@ -28,45 +28,38 @@
       <p>Platz {{index + 1}}</p> 
   </div>
   </div>
-
-<div class="dragzone">
-    <div class="dragger" draggable="true" 
+-->
+<b-row class="dragzone d-flex mb-3">
+    <b-col draggable="true" 
     v-for="(item, index) in question.items" :key="index"
     @dragstart="onDragStart($event, item, index)" 
     @dragend="onDragEnd($event)"
     >
-      <b-card no-body class="shadow bg-white">
+      <b-card no-body class="h-100 dragCards shadow bg-white">
           <b-card-header>
-            <img style="max-width: 100%;"  v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
+            <img class="w-100 h-100"  v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
           </b-card-header>
           <b-card-text>
             {{item.label}}
             </b-card-text>
       </b-card>
-    </div>
-  </div>
+    </b-col>
+  </b-row>
 
-<div  v-for="(item, index) in position" :key="index">
-  <div class="dropzone" @drop.prevent="onDrop(index, $event)"
-    @dragover.prevent="">
-    <div class="dragger" draggable="true" v-bind="item">
-      <b-card no-body class="shadow bg-white" v-if="item.label">
+<b-row>
+  <b-col v-for="(item, index) in position" :key="index" class="dragger p-0" draggable="true" v-bind="item" @drop.prevent="onDrop(index, $event)"
+    @dragover.prevent="onOver(index)" @dragleave.prevent="onDragLeave(index)">
+      <b-card no-body class="h-100 dropCards shadow bg-white" v-if="item.label">
           <b-card-header>
-            <img style="max-width: 100%;"  v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
+            <img class="w-100 h-100"  v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
           </b-card-header>
           <b-card-text>
             {{item.label}}
             </b-card-text>
       </b-card>
-      <b-card no-body class="shadow bg-white" v-if="!item.label">
-          <b-card-text>
-            {{item.name}}
-            </b-card-text>
-      </b-card>
-    </div>
-  </div>
-  </div>
-
+      <p class="h-100 emptyCard" v-if="item.name" :id="'text'+index">{{item.name}}</p>
+  </b-col>
+  </b-row>
 
 </div>
     <b-row>
@@ -122,7 +115,7 @@ export default {
   },
   methods: {
     onDragStart: function (ev, item, index) {
-      ev.dataTransfer.setData('text/plain',null)
+      ev.dataTransfer.setData('text/plain',null);
       this.dragedItem = {item, index}
     },
     onDragEnd: function (this: any, ev) {
@@ -130,8 +123,17 @@ export default {
     },
     onDrop: function (this: any, index, ev) {
       this.position[index] = this.dragedItem.item;
-      console.log("", this.position);
-      this.question.items.splice(this.dragedItem.index, 1)
+      this.question.items.splice(this.dragedItem.index, 1);
+      let element= document.getElementById('text'+index);
+      element!=null ? element.style.backgroundColor="#ffffff" : null;
+    },
+    onOver: function (this: any, index) {
+      let element= document.getElementById('text'+index);
+      element!=null ? element.style.backgroundColor="#ffaa66" : null;
+    },
+    onDragLeave: function (this: any, index) {
+      let element= document.getElementById('text'+index);
+      element!=null ? element.style.backgroundColor="#eef1f5" : null;
     },
     deselectAll(this: any) {
       this.selected = null;
@@ -174,9 +176,13 @@ export default {
     justify-content: center;
     font-size: 2rem;
   }
-  .card-header {
+  .dragCards .card-header {
     padding: 0;
-    max-width: 100%;
+    height: 20vh;
+  }
+  .dropCards .card-header {
+    padding: 0;
+    height: 10vh;
   }
 
   .dragzone {
@@ -185,18 +191,16 @@ export default {
 }
 
 .dragger {
-  width: 50px;
-  height: 50px;
   text-align: center;
-  border: 1px solid gray;
+  border: 1px dashed gray;
+  height: 15vh;
+  width: 15vh;
+  display: table;
 }
-
-.dropzone {
-  width: 800px;
-  height: 100px;
-  background: green;
-  padding: 10px;
-  display:flex;
-  flex-direction: row;
+.emptyCard {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  background: $backgroundColor;
 }
 </style>

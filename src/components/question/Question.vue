@@ -1,5 +1,5 @@
 <template>
-    <div class="container" style="width: 80%">
+    <div class="question">
       <b-card no-body class="shadow bg-white rounded">
         <b-card-header>
           <h4>{{ survey.title }}</h4>
@@ -196,8 +196,19 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import "../../scss/variables.scss"; 
-.container {
-  margin: 3rem auto; 
+  @media (min-width: 540px) {
+  .question {
+    width: 80%;
+    }
+}
+@media (max-width: 540px) {
+  .question {
+    width: 100%;
+    }
+}
+.question {
+  margin: 3rem auto;
+  object-fit: contain; 
 }
 .step-indicators.step-indicator{
   color: $primaryColor;
