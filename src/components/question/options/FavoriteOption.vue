@@ -1,7 +1,11 @@
 <template>
 <div>
   <b-row class="px-3">
-  <div v-for="item in question.items" :key="item.id" :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'" class="p-2">
+  <b-col v-for="item in question.items" 
+  :key="item.id" 
+  :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'" 
+  cols="6"
+  class="p-2">
       <b-card no-body :class="{ selected: selected === item.id}"
           header-tag="header"
           class="h-100 shadow bg-white">
@@ -10,7 +14,7 @@
         <b-button class="primaryBtn" @click="select($event, item.id)"> {{ item.label }}</b-button>
         </b-card-body>
       </b-card>
-    </div>
+    </b-col>
     </b-row>
   <b-row>
       <b-col cols="6">
@@ -82,7 +86,7 @@ export default {
   }
   .card-header {
     padding: 0;
-    max-height: 35vh;
+    height: 35vh;
   }
   @media (min-width: 960px) {
 .images {

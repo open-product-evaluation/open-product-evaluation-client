@@ -39,7 +39,6 @@
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
     "typescript": "^3.3.3333",
-    "vue-template-compiler": "^2.6.7",
-    "vuedraggable": "^2.18.1"
+    "vue-template-compiler": "^2.6.7"
   }
 }

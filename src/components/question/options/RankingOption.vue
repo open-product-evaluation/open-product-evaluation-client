@@ -1,43 +1,18 @@
 <template>
 <div>
 <div class="drag">
-<!--
-  <draggable v-model="question.items"
-             @start="drag = true"
-             @end="drag = false"
-             class="d-flex">
-    <div :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'"
-          v-for="(item) in question.items" 
-          :key="item.id">
-      <b-card no-body class="shadow bg-white">
-          <b-card-header>
-            <img style="max-width: 100%;"  v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
-          </b-card-header>
-          <b-card-text>
-            {{item.label}}
-            </b-card-text>
-      </b-card>
-    </div>
-  </draggable>
-
-<div class="d-flex">
-  <div :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'"
-          v-for="(item, index) in question.items" 
-          :key="item.id"
-          class="p-0">
-      <p>Platz {{index + 1}}</p> 
-  </div>
-  </div>
--->
-<b-row class="dragzone d-flex mb-3">
+<b-row class="dragzone d-flex mb-3 mx-2">
     <b-col draggable="true" 
-    v-for="(item, index) in question.items" :key="index"
+    v-for="(item, index) in allItems" :key="index"
     @dragstart="onDragStart($event, item, index)" 
     @dragend="onDragEnd($event)"
+    :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'"
+    cols="6"
+    class="p-2"
     >
       <b-card no-body class="h-100 dragCards shadow bg-white">
           <b-card-header>
-            <img class="w-100 h-100"  v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
+            <img class="w-100 h-100 imagePrev"  v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
           </b-card-header>
           <b-card-text>
             {{item.label}}
@@ -46,12 +21,12 @@
     </b-col>
   </b-row>
 
-<b-row>
-  <b-col v-for="(item, index) in position" :key="index" class="dragger p-0" draggable="true" v-bind="item" @drop.prevent="onDrop(index, $event)"
+<b-row class="mx-2">
+  <b-col v-for="(item, index) in position" :key="index" class="dragger p-0 mx-2" draggable="true" v-bind="item" @drop.prevent="onDrop(index, $event)"
     @dragover.prevent="onOver(index)" @dragleave.prevent="onDragLeave(index)">
       <b-card no-body class="h-100 dropCards shadow bg-white" v-if="item.label">
           <b-card-header>
-            <img class="w-100 h-100"  v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
+            <img class="imageVote w-100 h-100" v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
           </b-card-header>
           <b-card-text>
             {{item.label}}
@@ -62,25 +37,31 @@
   </b-row>
 
 </div>
-    <b-row>
+    <b-row class="my-2">
       <b-col cols="6">
         <div class ="text-center">
           <input type="checkbox" @click="deselectAll()"/>
           <label> Abstain from voting</label>
         </div>
       </b-col>
+      <b-col cols="6">
+        <b-btn class="primaryBtn" style="min-width: auto" @click="preset">Reset</b-btn>
+      </b-col>
     </b-row>
+    <b-modal centered 
+    ref="warningModal" 
+    hide-footer 
+    title="Warning">
+      <div class="d-block text-center">
+        <h3>The answer is incomplete!</h3>
+      </div>
+    </b-modal>
 </div>
 </template>
 
 <script lang="ts">
-import draggable from 'vuedraggable';
-
 export default {
   name: 'RankingOption',
-  components: {
-    draggable,
-  },
   props: {
     id: String,
   },
@@ -88,6 +69,7 @@ export default {
     return {
       selected: true,
       answered: false,
+      allItems: [],
       dragedItem: {},
       droppedItem: [],
       position: [],
@@ -95,10 +77,10 @@ export default {
   },
   watch: {
     dragedItem(this: any) {
-      this.question.items.reduce((pre, cur) => {
-        return pre
-      }, {})
-    }
+      this.allItems.reduce((pre, cur) => {
+        return pre;
+      }, {});
+    },
   },
   computed: {
     question(this: any) {
@@ -106,34 +88,39 @@ export default {
     },
   },
   created(this: any) {
-      for (let i=0; i<this.question.items.length; i++) {
-            this.position.push({
-              'name': 'Position #'+ i,
-            })
-      }
-      return this.position; 
+    this.preset();
   },
   methods: {
-    onDragStart: function (ev, item, index) {
-      ev.dataTransfer.setData('text/plain',null);
-      this.dragedItem = {item, index}
+    preset(this: any) {
+      this.position = [];
+      for (let i = 0; i < this.question.items.length; i++) {
+            this.position.push({
+              name: 'Position #' + (i + 1),
+            });
+      }
+      this.allItems = this.question.items.slice();
+      return this.position;
     },
-    onDragEnd: function (this: any, ev) {
-      this.dragedItem = {}
+    onDragStart(this: any, ev, item, index) {
+      ev.dataTransfer.setData('text/plain', null);
+      this.dragedItem = {item, index};
     },
-    onDrop: function (this: any, index, ev) {
+    onDragEnd(this: any, ev) {
+      this.dragedItem = {};
+    },
+    onDrop(this: any, index, ev) {
       this.position[index] = this.dragedItem.item;
-      this.question.items.splice(this.dragedItem.index, 1);
-      let element= document.getElementById('text'+index);
-      element!=null ? element.style.backgroundColor="#ffffff" : null;
+      this.allItems.splice(this.dragedItem.index, 1);
+      let element = document.getElementById('text' + index);
+      if (element != null) element.style.backgroundColor = '#ffffff';
     },
-    onOver: function (this: any, index) {
-      let element= document.getElementById('text'+index);
-      element!=null ? element.style.backgroundColor="#ffaa66" : null;
+    onOver(this: any, index) {
+      let element = document.getElementById('text' + index);
+      if (element != null) element.style.backgroundColor = '#ffaa66';
     },
-    onDragLeave: function (this: any, index) {
-      let element= document.getElementById('text'+index);
-      element!=null ? element.style.backgroundColor="#eef1f5" : null;
+    onDragLeave(this: any, index) {
+      let element = document.getElementById('text' + index);
+      if (element != null) element.style.backgroundColor = '#eef1f5';
     },
     deselectAll(this: any) {
       this.selected = null;
@@ -145,12 +132,11 @@ export default {
         // Build array for rankingItems
         // [1,...,n] -> n is best
         const favoriteArray: string[] = [];
-        this.question.items.forEach( (element) => {
-          favoriteArray.push(element.id);
+        this.position.forEach( (element) => {
+          favoriteArray.unshift(element.id);
         });
         return favoriteArray;
       }
-
     },
     sendAnswer(this: any) {
       this.$store.dispatch('createAnswerRanking', { question: this.id, rankingID: this.getAnswers() });
@@ -163,7 +149,12 @@ export default {
   },
   mounted(this: any) {
     this.$eventBus.$on('answer', (data) => {
-      this.sendAnswer();
+      // Check if all positions have an item
+      if (this.allItems.length === 0 || this.selected == null) {
+        this.sendAnswer();
+      } else {
+        this.$refs.warningModal.show();
+      }
     });
   },
 };
@@ -171,11 +162,6 @@ export default {
 
 <style scoped="true" lang="scss">
 @import "../../../scss/variables"; 
-  .rankingLabel {
-    display: flex;
-    justify-content: center;
-    font-size: 2rem;
-  }
   .dragCards .card-header {
     padding: 0;
     height: 20vh;
@@ -184,12 +170,10 @@ export default {
     padding: 0;
     height: 10vh;
   }
-
   .dragzone {
   display:flex;
   flex-direction: row;
 }
-
 .dragger {
   text-align: center;
   border: 1px dashed gray;
@@ -202,5 +186,20 @@ export default {
   text-align: center;
   vertical-align: middle;
   background: $backgroundColor;
+}
+.imageVote {
+    object-fit: contain;
+    }
+
+@media (min-width: 720px) {
+.imagePrev
+ {
+    object-fit: contain;
+    }
+}
+@media (max-width: 720px) {
+.imagePrev {
+    object-fit: fill;
+    }
 }
 </style>

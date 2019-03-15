@@ -1,8 +1,9 @@
 <template>
-  <div class="row items d-flex"
+  <b-row class="items d-flex"
        v-if="question.items && question.items.length > 0">
-    <div :class="(question.items.length===1) ? 'col-md-12' : ((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'"
+    <b-col :class="(question.items.length===1) ? 'col-md-12' : ((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'"
          v-for="(item, i) in question.items"
+         cols="6"
          :key="`${item.id}`+i">
       <b-card 
           header-tag="header"
@@ -10,8 +11,8 @@
         <img v-if="item.image && item.image.url" slot="header" class="w-100 h-100" v-img :src="`${item.image.url}`">
         <b-card-text>{{item.label}}</b-card-text>
       </b-card>
-    </div>
-  </div>
+    </b-col>
+  </b-row>
 </template>
 
 <script lang="ts">

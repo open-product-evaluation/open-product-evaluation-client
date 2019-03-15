@@ -199,15 +199,16 @@ export default {
   @media (min-width: 540px) {
   .question {
     width: 80%;
+    margin: 3rem auto;
     }
 }
 @media (max-width: 540px) {
   .question {
     width: 100%;
+    margin: 0 auto;
     }
 }
 .question {
-  margin: 3rem auto;
   object-fit: contain; 
 }
 .step-indicators.step-indicator{
