@@ -1,6 +1,6 @@
 <template>
 <div class="chartDiagramm" >
-<h7> Number of abstentions: {{neutral}}</h7>
+<h5> Number of abstentions: {{neutral}}</h5>
 <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>

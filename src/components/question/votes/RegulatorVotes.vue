@@ -86,26 +86,28 @@ export default {
         },
         getVotesDiagramm(this: any) {
             let votes = this.valuesOfVotes();
-            if (this.answers) {
-                votes = votes.concat(this.answers.map((answer: any) => answer.rating));
+            if (votes.length > 0) {
+                if (this.answers) {
+                    votes = votes.concat(this.answers.map((answer: any) => answer.rating));
+                }
+                const result: any[] = [];
+                let min = this.question.min;
+                do {
+                    const tmpVotes = votes;
+                    result.push({
+                        x: min.toString(),
+                        y: tmpVotes.filter((v) => (v === min)).length,
+                    });
+                    min += this.question.stepSize;
+                } while (min <= this.question.max);
+                const nullVotes = votes;
+                this.neutral = nullVotes.filter((v) => ( v === null)).length;
+                this.series = [{
+                    data: result,
+                }];
+                this.avg = ((votes.reduce((sum, a) => sum + a)) / votes.length).toFixed(2);
+                this.chartOptions.xaxis.tickAmount = result.length - 1;
             }
-            const result: any[] = [];
-            let min = this.question.min;
-            do {
-                const tmpVotes = votes;
-                result.push({
-                    x: min.toString(),
-                    y: tmpVotes.filter((v) => (v === min)).length,
-                });
-                min += this.question.stepSize;
-            } while (min <= this.question.max);
-            const nullVotes = votes;
-            this.neutral = nullVotes.filter((v) => ( v === null)).length;
-            this.series = [{
-                data: result,
-            }];
-            this.avg = ((votes.reduce((sum, a) => sum + a)) / votes.length).toFixed(2);
-            this.chartOptions.xaxis.tickAmount = result.length - 1;
         },
     },
 };

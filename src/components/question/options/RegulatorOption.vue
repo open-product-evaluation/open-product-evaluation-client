@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <div class="row">
-      <div class="col-1">
+      <div class="col-1 px-0">
         {{ question.min }}
       </div>
       <div class="col-10 range">
@@ -15,7 +15,7 @@
         <span v-if="value === null" class="value">{{ question.default }}</span>
         <span v-if="value !== null" class="value">{{ value }}</span>
       </div>
-      <div class="col-1">
+      <div class="col-1 px-0">
         {{ question.max }}
       </div>
     </div>

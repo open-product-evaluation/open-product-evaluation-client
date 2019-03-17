@@ -3,10 +3,10 @@
     <div class="header">
       <h2>Surveys</h2>
       <h5>Choose a survey</h5>
-      <h7>You can answer it directly by using the <b>"Start"</b>-button OR begin a survey in <b>Live mode</b> to receive a QR-Code and control the survey.</h7>
+      <p>You can answer it directly by using the <b>"Start"</b>-button OR begin a survey in <b>Live mode</b> to receive a QR-Code and control the survey.</p>
     </div>
 
-    <b-row align-v="center">
+    <b-row align-v="center" class="m-0">
       <b-col cols="1" >
         <label v-if="pages > 1">
             <input type="button"
@@ -16,21 +16,23 @@
         </b-col>
 
       <b-col cols="10">
-        <b-row class="row_cards">
+        <b-row class="m-0 w-100">
         <transition :name="animation" >
           <b-card-group deck :key="pageIndex">
                 <b-col cols="12" sm="6" lg="4" v-for="survey in currentPageSurveys" :key="survey.id">
                   <b-card class="shadow bg-white rounded" no-body>
                   <b-card-header v-if="survey.activeSurvey.previewImage && survey.activeSurvey.previewImage.url">
-                    <img class="rounded-top" v-img width="100%" :src="survey.activeSurvey.previewImage.url"/>
+                    <img class="rounded-top previewImage" v-img  :src="survey.activeSurvey.previewImage.url"/>
                   </b-card-header>
                   <b-card-body>
                     <b-card-title> {{survey.activeSurvey.title}} </b-card-title>
                     <b-card-text> {{survey.activeSurvey.description}} </b-card-text>
                   </b-card-body>
                   <b-card-footer>
-                    <b-button class="primaryBtn" @click="startSurvey(survey.id)">Start</b-button>
-                    <b-button @click="startLive(survey.id)">Live mode</b-button>
+                    <b-button-group class="d-flex">
+                      <b-button class="primaryBtn w-100" @click="startSurvey(survey.id)">Start</b-button>
+                      <b-button class="primaryBtn borderBtn w-100" @click="startLive(survey.id)">Live mode</b-button>
+                    </b-button-group>
                     </b-card-footer>
                   </b-card>
                 </b-col>
@@ -72,7 +74,6 @@ export default {
       maxCards: 3,
       pageIndex: 0,
       animation: null,
-      isSmall: true,
       subscription: null,
     };
   },
@@ -130,7 +131,7 @@ export default {
         case (window.innerWidth <= 590):
           this.maxCards = 1;
           break;
-        case (window.innerWidth > 590 && window.innerWidth <= 1006):
+        case (window.innerWidth > 590 && window.innerWidth <= 991):
           this.maxCards = 2;
           break;
         default: this.maxCards = 3;
@@ -164,15 +165,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import "../../scss/variables"; 
-h3 {
-  margin: 40px 0 0;
-}
 .header {
   padding: 1.5rem 0;
-}
-.row_cards {
-  width: 100%; 
-  margin: 0;
 }
 .card-pagination {
   display: flex;
@@ -216,8 +210,9 @@ input[type="button"] {
 .card-title {
   font-size:1.1rem;
 }
-.card-footer {
-  padding: 0.5rem 1.25rem;
+.previewImage {
+  max-height: 10rem;
+  width: auto;
 }
 .card-deck .card, .card-deck {
   height: 65vh;
@@ -229,6 +224,9 @@ input[type="button"] {
 }
 .col-1, .col-10, .card-header {
   padding: 0;
+}
+.borderBtn {
+  border-left-color: $borderColor;
 }
 .next-leave-to {
   transform: translateX(-20px);
@@ -255,11 +253,5 @@ input[type="button"] {
 .prev-enter {
   transform: translateX(-10px);
   opacity: 0;
-}
-.row {
-  margin: 0;
-}
-.btn {
-  margin: 1em;
 }
 </style>

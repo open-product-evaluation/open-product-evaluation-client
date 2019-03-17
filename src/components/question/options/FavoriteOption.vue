@@ -1,15 +1,20 @@
 <template>
 <div>
-  <b-row>
-  <div v-for="item in question.items" :key="item.id" :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'">
+  <b-row class="px-3">
+  <b-col v-for="item in question.items" 
+  :key="item.id" 
+  :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'" 
+  cols="6"
+  class="p-2">
       <b-card no-body :class="{ selected: selected === item.id}"
-          header-tag="header">
-        <img v-if="item.image && item.image.url" slot="header" style="max-width:100%" v-img :src="`${item.image.url}`">
-        <b-card-footer>
+          header-tag="header"
+          class="h-100 shadow bg-white">
+        <img v-if="item.image && item.image.url" slot="header" class="w-100 h-100 images" v-img :src="`${item.image.url}`">
+        <b-card-body class="p-2">
         <b-button class="primaryBtn" @click="select($event, item.id)"> {{ item.label }}</b-button>
-        </b-card-footer>
+        </b-card-body>
       </b-card>
-    </div>
+    </b-col>
     </b-row>
   <b-row>
       <b-col cols="6">
@@ -71,28 +76,21 @@ export default {
     display: block;
     border: 3px solid #FFFFFF;
   }
-  .image {
+  .images {
+    height: 100%;
     width: 100%;
-    padding-top: 100%;
-    background-size: cover;
-    .oi {
-      position: absolute;
-      display: none;
-      top: 50%;
-      left: 50%;
-      margin-left: -1rem;
-      margin-top: -1rem;
-      font-size: 2rem;
-      color: $primaryColor;
-    }
+    object-fit: fill;
   }
   .selected {
     border: 3px solid $primaryColor;
   }
   .card-header {
     padding: 0;
+    height: 35vh;
   }
-  .card, .card-footer {
-    height: 100%;
-  }
+  @media (min-width: 960px) {
+.images {
+    object-fit: contain;
+    }
+}
 </style>

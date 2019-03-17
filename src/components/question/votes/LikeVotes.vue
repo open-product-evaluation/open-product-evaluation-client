@@ -15,7 +15,7 @@ export default {
       return {
         series: [],
         chartOptions: {
-          labels: ['Liked', 'Abstention'],
+          labels: ['Like', 'Abstention'],
           theme: {
               palette: 'palette4',
           },
@@ -24,7 +24,7 @@ export default {
                 return Math.round(val) +  '%';
             },
             style: {
-                fontSize: '1.25rem',
+                fontSize: '1rem',
             },
           },
           legend: {
