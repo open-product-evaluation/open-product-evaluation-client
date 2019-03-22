@@ -27,13 +27,14 @@ export default {
   min-height: -webkit-fill-available;
   height: 100%; 
 }
-.primaryBtn {
-  background-color: $secondaryBackgroundColor;
-  min-width: 8rem;
+.btn-primaryBtn {
+  background-color: $secondaryBackgroundColor !important;
+  min-width: 8rem !important;
+  color: white !important;
 }
-.primaryBtn.btn-secondary:hover {
-  background-color: $primaryColor;
-  border-color: $primaryColor;
+.btn-primaryBtn:hover {
+  background-color: $primaryColor !important;
+  border-color: $primaryColor !important;
 }
 .neutral > input, .radio > input{
   height: 1.25rem;

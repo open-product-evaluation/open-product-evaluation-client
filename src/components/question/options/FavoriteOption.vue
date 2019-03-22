@@ -11,7 +11,7 @@
           class="h-100 shadow bg-white">
         <img v-if="item.image && item.image.url" slot="header" class="w-100 h-100 images" v-img :src="`${item.image.url}`">
         <b-card-body class="p-2">
-        <b-button class="primaryBtn" @click="select($event, item.id)"> {{ item.label }}</b-button>
+        <b-button variant="primaryBtn" @click="select($event, item.id)"> {{ item.label }}</b-button>
         </b-card-body>
       </b-card>
     </b-col>

@@ -3,7 +3,6 @@
        v-if="question.items && question.items.length > 0">
     <b-col :class="(question.items.length===1) ? 'col-md-12' : ((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'"
          v-for="(item, i) in question.items"
-         cols="6"
          :key="`${item.id}`+i">
       <b-card 
           header-tag="header"

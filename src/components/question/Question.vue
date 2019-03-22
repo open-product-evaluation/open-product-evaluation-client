@@ -6,7 +6,7 @@
         </b-card-header>
 
         <b-card-body class="py-0">
-            <div class="progress w-100" v-if="survey.questions && survey.questions.length > 20">
+            <div class="progress w-100" v-if="survey.questions && survey.questions.length > 8">
             <b-progress :max="100">
               <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
               </b-progress-bar>
@@ -14,7 +14,7 @@
           </div>
 
         <b-row class="m-0">
-          <div class="w-100 my-3" v-if="survey.questions && survey.questions.length <= 20">
+          <div class="w-100 my-3" v-if="survey.questions && survey.questions.length <= 8">
               <step-indicator current-color='#ffaa11' :current="index" :total="survey.questions.length"></step-indicator>
           </div>
           
@@ -61,7 +61,7 @@
           </div>
       </b-row>
       <b-row align-h="center" class="m-0 mb-2" style="height: 40px">
-        <b-button class="primaryBtn" v-if="answered && survey.votes != null" v-b-toggle.votesCollab>
+        <b-button variant="primaryBtn" v-if="answered && survey.votes != null" v-b-toggle.votesCollab>
         <span class="when-opened">Hide votes</span> <span class="when-closed">Show votes</span>
       </b-button>
       </b-row>
@@ -94,13 +94,13 @@
         </b-collapse>
       </b-card-body>
       <b-card-footer>
-          <b-btn class="primaryBtn" @click="next"
+          <b-btn variant="primaryBtn" @click="next"
                   v-if="answered && index !== survey.questions.length - 1">Next
           </b-btn>
-          <b-btn class="primaryBtn" @click="next"
+          <b-btn variant="primaryBtn" @click="next"
                   v-if="answered && index == survey.questions.length -1">Start
           </b-btn>
-          <b-btn class="primaryBtn" v-if="!answered" @click="answer">Answer</b-btn>
+          <b-btn variant="primaryBtn" v-if="!answered" @click="answer">Answer</b-btn>
       </b-card-footer>
     </b-card>
   </div>
@@ -232,16 +232,10 @@ export default {
 .card-header h4 {
   margin-top: 0.5rem;
 }
-.btn_col {
-  margin-top: auto;
-}
 .votes {
   border-top: 1px solid rgba(0, 0, 0, 0.125);
   padding-top: 1rem;
   margin-top: 1rem;
-}
-.next_btn input[type="button"]{
-    display: none;
 }
 .icon {
   display: block;

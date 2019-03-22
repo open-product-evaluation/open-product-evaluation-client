@@ -43,7 +43,7 @@
     </b-row>
     <b-row>
       <b-col cols="6">
-        <b-btn class="primaryBtn" style="min-width: auto" @click="preset">Reset</b-btn>
+        <b-btn variant="primaryBtn" style="min-width: auto" @click="preset">Reset</b-btn>
       </b-col>
     </b-row>
     <b-modal centered 
