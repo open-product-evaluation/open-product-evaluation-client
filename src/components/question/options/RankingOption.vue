@@ -1,55 +1,64 @@
 <template>
 <div>
-<div class="drag">
-<b-row class="dragzone d-flex mb-3 mx-2">
-    <b-col draggable="true" 
-    v-for="(item, index) in allItems" :key="index"
-    @dragstart="onDragStart($event, item, index)" 
-    @dragend="onDragEnd($event)"
-    :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'"
-    class="p-2"
-    >
-      <b-card no-body class="h-100 dragCards shadow bg-white">
-          <b-card-header v-if="item.image && item.image.url">
-            <img class="w-100 h-100 imagePrev desktop"  v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
-          </b-card-header>
-          <b-card-text>
-            {{item.label}}
-            </b-card-text>
-            <b-button @click="choseItem($event, item, index, choosePosition)" class="mobileBtn p-0"> Pos #{{choosePosition+1}}</b-button>
-      </b-card>
-    </b-col>
-
-
-
-  </b-row>
-
-<b-row class="mx-2">
-  <b-col v-for="(item, index) in position" :key="index" class="dragger p-0 mx-2" draggable="true" v-bind="item" @drop.prevent="onDrop(index, $event)"
-    @dragover.prevent="onOver(index)" @dragleave.prevent="onDragLeave(index)">
-      <b-card no-body class="h-100 dropCards shadow bg-white" v-if="item.label">
-          <b-card-header v-if="item.image && item.image.url">
-            <img class="imageVote w-100 h-100" v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
-          </b-card-header>
-          <b-card-text>
-            <p> {{item.label}} </p>
-            <p> Position #{{index+1}} </p>
-            </b-card-text>
-      </b-card>
-      <p class="h-100 emptyCard" v-if="item.name" :id="'text'+index">{{item.name}}</p>
-  </b-col>
-  </b-row>
-
-</div>
-    <b-row class="mx-2 neutral" align-h="end">
-          <input type="checkbox" :checked="selected==null" @click="deselectAll()"/>
-          <label> abstain from voting</label>
-    </b-row>
-    <b-row>
-      <b-col cols="6">
-        <b-btn variant="primaryBtn" style="min-width: auto" @click="preset">Reset</b-btn>
-      </b-col>
-    </b-row>
+  <div class="drag">
+    <b-row class="dragzone d-flex mb-3 mx-2">
+        <b-col draggable="true" 
+        v-for="(item, index) in allItems" :key="index"
+        @dragstart="onDragStart($event, item, index)" 
+        @dragend="onDragEnd($event)"
+        :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'"
+        class="p-2"
+        >
+          <b-card no-body class="h-100 dragCards shadow bg-white">
+              <b-card-header v-if="item.image && item.image.url">
+                <img class="w-100 h-100 imagePrev desktop"  v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
+              </b-card-header>
+              <b-card-text>
+                {{item.label}}
+                </b-card-text>
+                <b-button @click="choseItem($event, item, index, choosePosition)" class="mobileBtn p-0"> Pos #{{choosePosition+1}}</b-button>
+          </b-card>
+        </b-col>
+      </b-row>
+      <b-row class="mx-2">
+        <b-col v-for="(item, index) in position" 
+          :key="index" 
+          class="dragger p-0 mx-2" 
+          draggable="true" v-bind="item" 
+          @drop.prevent="onDrop(index, $event)"
+          @dragover.prevent="onOver(index)" 
+          @dragleave.prevent="onDragLeave(index)">
+            <b-card no-body 
+            class="h-100 dropCards shadow bg-white" 
+            v-if="item.label">
+                <b-card-header v-if="item.image && item.image.url">
+                  <img class="imageVote w-100 h-100" 
+                  v-if="item.image && item.image.url" 
+                  v-img 
+                  :src="`${item.image.url}`">
+                </b-card-header>
+                <b-card-text>
+                  <p> {{item.label}} </p>
+                  <p> Position #{{index+1}} </p>
+                  </b-card-text>
+            </b-card>
+            <p class="h-100 emptyCard" v-if="item.name" :id="'text'+index">{{item.name}}</p>
+        </b-col>
+        </b-row>
+      </div>
+      <b-row class="mx-2 neutral" align-h="end">
+            <input type="checkbox" 
+            :checked="selected==null" 
+            @click="deselectAll()"/>
+            <label> abstain from voting</label>
+      </b-row>
+      <b-row>
+        <b-col cols="6">
+          <b-btn variant="primaryBtn" 
+          style="min-width: auto" 
+          @click="preset">Reset</b-btn>
+        </b-col>
+      </b-row>
     <b-modal centered 
     ref="warningModal" 
     hide-footer 
@@ -58,7 +67,7 @@
         <h3>The answer is incomplete!</h3>
       </div>
     </b-modal>
-</div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -120,6 +129,7 @@ export default {
       let element = document.getElementById('text' + index);
       if (element != null) element.style.backgroundColor = '#ffffff';
     },
+    /** Change color if element over dropzone */
     onOver(this: any, index) {
       let element = document.getElementById('text' + index);
       if (element != null) element.style.backgroundColor = '#ffaa66';

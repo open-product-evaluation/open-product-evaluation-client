@@ -1,8 +1,11 @@
 <template>
-<div class="chartDiagramm" >
-<h5> Number of abstentions: {{neutral}}</h5>
-<apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
-</div>
+    <div class="chartDiagramm" >
+    <h5 v-if="votes.length === 0"> No votes submitted. </h5>
+    <span v-if="votes.length > 0">
+        <h5> Number of abstentions: {{neutral}}</h5>
+        <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
+    </span>
+    </div>
 </template>
 
 <script lang="ts">
@@ -70,17 +73,20 @@ export default {
         },
         getVotesDiagramm(this: any) {
             const result: any[] = [];
-            this.question.choices.forEach( (element) => {
-                result.push({
-                    x: element.label,
-                    y: this.countInArray(this.votes, element.id),
+            if (this.votes.length > 0) {
+                this.question.choices.forEach( (element) => {
+                    result.push({
+                        x: element.label,
+                        y: this.countInArray(this.votes, element.id),
+                    });
                 });
-            });
-            // Neutral answers
-            this.neutral = this.countInArray(this.votes, null);
-            this.series = [{
-                data: result,
-            }];
+                // Neutral answers
+                this.neutral = this.countInArray(this.votes, null);
+                this.series = [{
+                    data: result,
+                }];
+            }
+            
         },
     },
 };
@@ -89,11 +95,11 @@ export default {
 <style scoped="true" lang="scss">
 .chartDiagramm {
     margin: 0 auto; 
-    width: 50%;
+    width: 80%;
 }
 @media (max-width: 576px) {
 .chartDiagramm {
-    width: 80%;
+    width: 100%;
     }
 }
 </style>

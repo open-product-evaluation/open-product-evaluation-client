@@ -1,7 +1,10 @@
 <template>
 <div class="chartDiagramm">
-<h5> Number of abstentions: {{neutral}}</h5>
-<apexchart type="heatmap" :options="chartOptions" :series="series"></apexchart>
+<h5 v-if="votes.length === 0"> No votes submitted. </h5>
+<span v-if="votes.length > 0">
+    <h5> Number of abstentions: {{neutral}}</h5>
+    <apexchart type="heatmap" :options="chartOptions" :series="series"></apexchart>
+</span>
 </div>
 </template>
 
@@ -89,11 +92,11 @@ export default {
 <style scoped="true" lang="scss">
 .chartDiagramm {
     margin: 0 auto; 
-    width: 50%;
+    width: 80%;
 }
 @media (max-width: 576px) {
 .chartDiagramm {
-    width: 80%;
+    width: 100%;
 }
 }
 </style>

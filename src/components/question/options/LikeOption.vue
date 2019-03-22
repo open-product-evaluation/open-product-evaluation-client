@@ -25,12 +25,10 @@
                 @click="updateValue(true)"/>
             <v-icon class="icon" name="thumbs-up" ></v-icon>
             <span class="label">
-          Like
-        </span>
-            </label>
-            
+            Like
+            </span>
+          </label>
         </div>
-        
       </li>
     </ol>
     <b-row class="mx-2 neutral" align-h="end">
