@@ -16,13 +16,9 @@
       </b-card>
     </b-col>
     </b-row>
-  <b-row>
-      <b-col cols="6">
-        <div class ="text-center">
+  <b-row class="mx-2 neutral" align-h="end">
           <input type="checkbox" :checked="selected==null" @click="deselectAll()"/>
           <label> abstain from voting</label>
-        </div>
-      </b-col>
     </b-row>
   </div>
 </template>

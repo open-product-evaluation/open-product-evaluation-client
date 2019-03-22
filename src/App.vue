@@ -35,4 +35,12 @@ export default {
   background-color: $primaryColor;
   border-color: $primaryColor;
 }
+.neutral > input, .radio > input{
+  height: 1.25rem;
+  width: 1.25rem;
+  margin-right: 5px;
+}
+.neutral {
+  margin-top: .5rem;
+}
 </style>

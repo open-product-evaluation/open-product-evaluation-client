@@ -37,13 +37,11 @@
   </b-row>
 
 </div>
-    <b-row class="my-2">
-      <b-col cols="6">
-        <div class ="text-center">
-          <input type="checkbox" @click="deselectAll()"/>
-          <label> Abstain from voting</label>
-        </div>
-      </b-col>
+    <b-row class="mx-2 neutral" align-h="end">
+          <input type="checkbox" :checked="selected==null" @click="deselectAll()"/>
+          <label> abstain from voting</label>
+    </b-row>
+    <b-row>
       <b-col cols="6">
         <b-btn class="primaryBtn" style="min-width: auto" @click="preset">Reset</b-btn>
       </b-col>
@@ -67,7 +65,7 @@ export default {
   },
   data() {
     return {
-      selected: true,
+      selected: null,
       answered: false,
       allItems: [],
       dragedItem: {},
@@ -99,6 +97,7 @@ export default {
             });
       }
       this.allItems = this.question.items.slice();
+      this.selected=null;
       return this.position;
     },
     onDragStart(this: any, ev, item, index) {
@@ -107,6 +106,7 @@ export default {
     },
     onDragEnd(this: any, ev) {
       this.dragedItem = {};
+      this.selected=true;
     },
     onDrop(this: any, index, ev) {
       this.position[index] = this.dragedItem.item;

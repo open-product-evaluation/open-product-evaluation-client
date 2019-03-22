@@ -1,7 +1,7 @@
 <template>
 <div>
   <b-row>
-    <b-col class="choice" v-for="choice in question.choices"
+    <b-col class="choice radio" v-for="choice in question.choices"
         :class="{'no-image': !choice.image }"
         :key="choice.id">
         <input type="radio"
@@ -38,14 +38,10 @@
     </b-col>
   </b-row>
 
-  <b-row class="ml-2">
-    <b-check
-    type="info"
-      id="neutral"
-      @click="deselectAll()"
-      :checked="!selected">
-      Abstain from voting</b-check>
-  </b-row>
+  <b-row class="mx-2 neutral" align-h="end">
+          <input type="checkbox" :checked="selected==null" @click="deselectAll()"/>
+          <label> abstain from voting</label>
+    </b-row>
 </div>
 </template>
 
@@ -113,7 +109,7 @@ export default {
     &.no-image {
       flex-direction: row;
       label { margin-bottom: 0;}
-      input { display: inline; margin-right: 5px; }
+      input { display: inline; }
     }
     input { display: none;}
     .icon {
@@ -125,8 +121,5 @@ export default {
       background-position: center;
       background-repeat: no-repeat;
     }
-  }
-  #neutral:active{
-    width:100px;
   }
 </style>
