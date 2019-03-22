@@ -7,29 +7,33 @@
     @dragstart="onDragStart($event, item, index)" 
     @dragend="onDragEnd($event)"
     :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'"
-    cols="6"
     class="p-2"
     >
       <b-card no-body class="h-100 dragCards shadow bg-white">
-          <b-card-header>
-            <img class="w-100 h-100 imagePrev"  v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
+          <b-card-header v-if="item.image && item.image.url">
+            <img class="w-100 h-100 imagePrev desktop"  v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
           </b-card-header>
           <b-card-text>
             {{item.label}}
             </b-card-text>
+            <b-button @click="choseItem($event, item, index, choosePosition)" class="mobileBtn p-0"> Pos #{{choosePosition+1}}</b-button>
       </b-card>
     </b-col>
+
+
+
   </b-row>
 
 <b-row class="mx-2">
   <b-col v-for="(item, index) in position" :key="index" class="dragger p-0 mx-2" draggable="true" v-bind="item" @drop.prevent="onDrop(index, $event)"
     @dragover.prevent="onOver(index)" @dragleave.prevent="onDragLeave(index)">
       <b-card no-body class="h-100 dropCards shadow bg-white" v-if="item.label">
-          <b-card-header>
+          <b-card-header v-if="item.image && item.image.url">
             <img class="imageVote w-100 h-100" v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
           </b-card-header>
           <b-card-text>
-            {{item.label}}
+            <p> {{item.label}} </p>
+            <p> Position #{{index+1}} </p>
             </b-card-text>
       </b-card>
       <p class="h-100 emptyCard" v-if="item.name" :id="'text'+index">{{item.name}}</p>
@@ -71,6 +75,7 @@ export default {
       dragedItem: {},
       droppedItem: [],
       position: [],
+      choosePosition: 0,
     };
   },
   watch: {
@@ -91,6 +96,7 @@ export default {
   methods: {
     preset(this: any) {
       this.position = [];
+      this.choosePosition = 0;
       for (let i = 0; i < this.question.items.length; i++) {
             this.position.push({
               name: 'Position #' + (i + 1),
@@ -122,9 +128,18 @@ export default {
       let element = document.getElementById('text' + index);
       if (element != null) element.style.backgroundColor = '#eef1f5';
     },
+    /* Only available on mobile */ 
+    choseItem(this: any, $event, item, index, position) {
+      this.selected = true;
+      this.position[position] = item;
+      this.allItems.splice(index, 1);
+      this.choosePosition += 1;
+    },
     deselectAll(this: any) {
       this.selected = null;
     },
+
+    /** Get votes and change sequence of votes for Server */
     getAnswers(this: any) {
       if (this.selected === null ) {
         return null;
@@ -149,7 +164,9 @@ export default {
   },
   mounted(this: any) {
     this.$eventBus.$on('answer', (data) => {
-      // Check if all positions have an item
+      /** Check if all positions have an item 
+       * If not, open modal to inform user
+      */
       if (this.allItems.length === 0 || this.selected == null) {
         this.sendAnswer();
       } else {
@@ -192,14 +209,19 @@ export default {
     }
 
 @media (min-width: 720px) {
-.imagePrev
- {
-    object-fit: contain;
-    }
+  .imagePrev {
+      object-fit: contain;
+      }
+  .mobileBtn{
+    display: none;
+  }
 }
 @media (max-width: 720px) {
-.imagePrev {
+  .imagePrev {
     object-fit: fill;
-    }
+  }
+  .mobileBtn {
+    display: block;
+  }
 }
 </style>
