@@ -72,6 +72,7 @@ export default {
     deselectAll(this: any) {
       this.selected = null;
     },
+    // send event to root, next question can be presented
     sendAnswer(this: any) {
       this.$store.dispatch('createAnswerChoice', { question: this.id, choiceID: this.selected});
       this.answered = true;

@@ -27,15 +27,15 @@ export default {
   data() {
       return {
           message: '',
-      }
+      };
   },
   methods: {
       goHome(this: any) {
           // Open Modal if User answers a survey
-          if (this.$route.name == 'question' || this.$route.name == 'join') {
+          if (this.$route.name === 'question' || this.$route.name === 'join') {
             this.message = 'Your votes will not be saved!';
             this.$refs.warningModal.show();
-          } else if (this.$route.name == 'master') {
+          } else if (this.$route.name === 'master') {
             this.message = 'Are you sure you want to quit?';
             this.$refs.warningModal.show();
           }
@@ -43,11 +43,11 @@ export default {
       hideModal(this: any) {
           this.$refs.warningModal.hide();
       },
-      changeRouteHome(this: any){
+      changeRouteHome(this: any) {
           this.$refs.warningModal.hide();
           this.$router.replace('/');
-      }
-  }
+      },
+  },
 };
 </script>
 <style scoped lang="scss">

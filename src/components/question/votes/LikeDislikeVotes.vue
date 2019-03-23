@@ -64,7 +64,7 @@ export default {
        return [ (counterLike / max) * 100, (counterDislike / max) * 100, (neutral / max) * 100 ];
    },
    getVotesDiagramm(this: any) {
-       if (this.votes.length > 0 || this.votes.length > 0) {
+       if (this.votes.length > 0 || this.answers.length > 0) {
             this.$data.series = this.countInArray(this.votes);
         }
     },

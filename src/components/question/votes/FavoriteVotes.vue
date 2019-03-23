@@ -72,7 +72,7 @@ export default {
             return counter;
         },
         getVotesDiagramm(this: any) {
-            if (this.votes.length > 0 || this.votes.length > 0) {
+            if (this.answers.length > 0 || this.votes.length > 0) {
                 const result: any[] = [];
                 this.question.items.forEach( (element) => {
                     result.push({
@@ -85,7 +85,6 @@ export default {
                     data: result,
                 }];
             }
-            
         },
     },
 };

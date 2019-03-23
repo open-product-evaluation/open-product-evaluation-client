@@ -31,7 +31,7 @@
       </div>
     </li>
     <li class="dislike">
-      <div v-if="question.dislikeIcon && question.dislikeIcon.url">>
+      <div v-if="question.dislikeIcon && question.dislikeIcon.url">
         <input type="radio"
               :id="`dislike-${question.id}`"
               :name="`likedislike-${question.id}`" 

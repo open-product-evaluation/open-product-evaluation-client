@@ -108,7 +108,7 @@ export default {
             });
       }
       this.allItems = this.question.items.slice();
-      this.selected=null;
+      this.selected = null;
       return this.position;
     },
     onDragStart(this: any, ev, item, index) {
@@ -117,24 +117,24 @@ export default {
     },
     onDragEnd(this: any, ev) {
       this.dragedItem = {};
-      this.selected=true;
+      this.selected = true;
     },
     onDrop(this: any, index, ev) {
       this.position[index] = this.dragedItem.item;
       this.allItems.splice(this.dragedItem.index, 1);
-      let element = document.getElementById('text' + index);
-      if (element != null) element.style.backgroundColor = '#ffffff';
+      const element = document.getElementById('text' + index);
+      if (element != null) {element.style.backgroundColor = '#ffffff'; }
     },
-    /** Change color if element over dropzone */
+    /* Change color if element over dropzone */
     onOver(this: any, index) {
-      let element = document.getElementById('text' + index);
-      if (element != null) element.style.backgroundColor = '#ffaa66';
+      const element = document.getElementById('text' + index);
+      if (element != null) {element.style.backgroundColor = '#ffaa66'; }
     },
     onDragLeave(this: any, index) {
-      let element = document.getElementById('text' + index);
-      if (element != null) element.style.backgroundColor = '#eef1f5';
+      const element = document.getElementById('text' + index);
+      if (element != null) {element.style.backgroundColor = '#eef1f5'; }
     },
-    /* Only available on mobile */ 
+    /* Only available on mobile */
     choseItem(this: any, $event, item, index, position) {
       this.selected = true;
       this.position[position] = item;
@@ -170,9 +170,7 @@ export default {
   },
   mounted(this: any) {
     this.$eventBus.$on('answer', (data) => {
-      /** Check if all positions have an item 
-       * If not, open modal to inform user
-      */
+      // Check if all positions have an item.  If not, open modal to inform user
       if (this.allItems.length === 0 || this.selected == null) {
         this.sendAnswer();
       } else {
@@ -228,6 +226,9 @@ export default {
   }
   .mobileBtn {
     display: block;
+  }
+  .col-md-6 {
+    min-width: 50%;
   }
 }
 .resetBtn {

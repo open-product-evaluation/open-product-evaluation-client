@@ -57,7 +57,7 @@ export default {
        return [(counter / max) * 100, ((max - counter) / max) * 100];
    },
    getVotesDiagramm(this: any) {
-       if (this.votes.length > 0 || this.votes.length > 0) {
+       if (this.votes.length > 0 || this.answers.length > 0) {
             this.$data.series = this.countInArray(this.votes);
        }
     },

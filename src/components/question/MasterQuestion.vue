@@ -187,14 +187,13 @@ export default {
       // Last Question to Home
         (this.index < this.survey.questions.length - 1) ? (this.index++) : this.$router.push({name: 'surveyList'});
       // show next question
-        if(this.index - 1 > 0) { this.$root.$emit('next', this.survey.questions[this.index - 1].type); }
         this.counter = Math.floor(this.index / this.survey.questions.length * 100);
         this.$store.dispatch('updateActiveQuestion', {
           domainID: this.$route.params.cID,
           questionID: this.survey.questions[this.index].id,
         });
     },
-  }
+  },
 };
 </script>
 <style src="vue-step-indicator/dist/vue-step-indicator.css"></style>

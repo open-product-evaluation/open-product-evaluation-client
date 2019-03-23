@@ -192,10 +192,10 @@ export default {
     next(this: any) {
         if (this.index < this.survey.questions.length - 1) {
           this.$eventBus.$emit('answer');
-          this.$root.$emit('next', this.survey.questions[this.index].type);
           this.counter = Math.floor(this.index / this.survey.questions.length * 100);
           this.index++;
         } else {
+          this.$eventBus.$emit('answer');
           this.$router.push({name: 'surveyList'});
         }
     },

@@ -87,7 +87,7 @@ export default {
         },
         getVotesDiagramm(this: any) {
             let votes = this.valuesOfVotes();
-            if (votes.length > 0 || this.votes.length > 0) {
+            if (votes.length > 0 || this.answers.length > 0) {
                 if (this.answers) {
                     votes = votes.concat(this.answers.map((answer: any) => answer.rating));
                 }

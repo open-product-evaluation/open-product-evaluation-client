@@ -54,7 +54,7 @@ export default {
       this.value = event.target.value;
     },
     sendAnswer(this: any) {
-      const rating = (this.value != null) ? parseFloat(this.value) : null;
+      const rating = (this.value != null) ? parseInt(this.value) : null;
       this.$store.dispatch('createAnswerRegulator', { question: this.id, ratingID: rating });
       this.answered = true;
       this.$root.$emit('answered');

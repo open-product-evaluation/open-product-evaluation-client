@@ -83,8 +83,8 @@ export default {
         // Authorization failed
         this.$router.push('login');
       });
-      const clientID = localStorage.getItem('client')
-      this.$store.dispatch('subscribeClient', { clientID }).then( (data) => this.subscription = data)
+      const clientID = localStorage.getItem('client');
+      this.$store.dispatch('subscribeClient', { clientID }).then( (data) => this.subscription = data);
   },
   beforeDestroy(this: any) {
     this.$store.dispatch('unsubscribe', this.subscription);
