@@ -1,91 +1,109 @@
 <template>
-    <div class="container">
-      <b-card no-body>
+  <div class="container">
+      <b-card no-body class="shadow bg-white rounded">
         <b-card-header>
-          <h3>{{ survey.title }}</h3>
+          <h4>{{ survey.title }}</h4>
           <p class="description">
             {{ survey.description }}
           </p>
         </b-card-header>
 
-        <b-card-body>
-        <b-row >
-          <b-col md="1"/>
-          <b-col md="10">
-          <div class="question" v-if="index == -1"> 
-            <h5>Bitte starten Sie die Umfrage!</h5>
+        <!-- QR-Code -->
+        <b-card-body v-if="index == -1">
+                    <div class="question" > 
+            <h5>You can join the survey now!</h5>
             <qrcode :value="joinLink" :options="{ width: 500 }"></qrcode>
           </div>
+        </b-card-body>
 
-          
-          <!-- TODO Choose progressBar oder ProgressSteps --> 
-          <div class="stepper" v-if="index > -1">
-              <step-indicator :current="index" :total="survey.questions.length"></step-indicator>
-          </div>
-
-          <div class="question" v-if="survey.questions
+      <b-tabs card v-if="index > -1">
+      <!-- Question -->
+      <b-tab no-body title="Question" active>
+        <b-card-body class="py-0">
+            <div class="progress w-100" v-if="index > -1 && survey.questions && survey.questions.length > 8">
+              <b-progress :max="100">
+                <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
+                </b-progress-bar>
+              </b-progress>
+            </div>
+            <b-row class="m-0">
+              <div class="w-100 my-3" v-if="index > -1 && survey.questions && survey.questions.length <= 8">
+                <step-indicator current-color='#ffaa11' :current="index" :total="survey.questions.length"></step-indicator>
+              </div>
+              <div class="w-100" v-if="survey.questions
                                       && survey.questions.length
                                       && survey.questions.length > 0
                                       && index > -1">
-            <!-- display question title and description -->
-            <questionMeta :id="survey.questions[index].id"></questionMeta>
+              <!-- display question title and description -->
+              <questionMeta :id="survey.questions[index].id"></questionMeta>
 
             <!-- display question items -->
-            <questionItems :id="survey.questions[index].id"
-                  v-if="displayItems(survey.questions[index].type)">
+            <questionItems :id="survey.questions[index].id">
             </questionItems>
+            </div>
+            </b-row>
+        </b-card-body>
+      </b-tab>
+
+      <!-- Votes -->
+      <b-tab no-body title="Votes">
+        <b-card-body class="py-0">
+          <div class="progress w-100" v-if="survey.questions && survey.questions.length > 8">
+              <b-progress :max="100">
+                <b-progress-bar :value="counter" show-progress :label="`${counter}%`">
+                </b-progress-bar>
+              </b-progress>
           </div>
-        </b-col>
-      </b-row>
-      <div class="votes" v-if="survey.questions
+          <b-row class="m-0">
+              <div class="w-100 my-3" v-if="survey.questions && survey.questions.length <= 8">
+                <step-indicator current-color='#ffaa11' :current="index" :total="survey.questions.length"></step-indicator>
+              </div>
+              <div class="w-100" v-if="survey.questions
                                       && survey.questions.length
-                                      && survey.questions.length > 0 
-                                      && answered
-                                      && index > -1">
-          <h5> Bisheriges Ergebnis </h5>
-          <choiceVotes :id="survey.questions[index].id"
-                    v-if="survey.questions[index].type === 'CHOICE'">
-          </choiceVotes>
-          <favoriteVotes :id="survey.questions[index].id"
-                    v-if="survey.questions[index].type ==='FAVORITE'">
-          </favoriteVotes>
-          <likeVotes :id="survey.questions[index].id"
-                    v-if="survey.questions[index].type === 'LIKE'">
-          </likeVotes>
-          <likeDislikeVotes :id="survey.questions[index].id"
-                    v-if="survey.questions[index].type === 'LIKEDISLIKE'">
-          </likeDislikeVotes>
-          <regulatorVotes :id="survey.questions[index].id"
-                    v-if="survey.questions[index].type === 'REGULATOR'">
-          </regulatorVotes>
-          <rankingVotes :id="survey.questions[index].id"
-                    v-if="survey.questions[index].type === 'RANKING'">
-          </rankingVotes>
-        </div>
-      </b-card-body>
-      <b-card-footer>
-        <b-col cols="1" class="btn_col"
-                v-if="!answered">
-          <label class="next_btn">
-            <input type="button"
-                @click="showResults"/>
-            <v-icon variant="primary" class="icon" name="arrow-alt-circle-right" ></v-icon>
-            </label>
-        </b-col>
-        <b-col cols="1" class="btn_col"
-                v-if="answered">
-          <label class="next_btn" 
-                v-if="index !== survey.questions.length - 1">
-            <input type="button"
-                @click="next"/>
-            <v-icon variant="primary" class="icon" name="arrow-alt-circle-right" ></v-icon>
-            </label>
-          <b-btn variant="secondary" @click="next"
-                  v-if="index == survey.questions.length -1">Start
-          </b-btn>
-        </b-col>
-      </b-card-footer>
-    </b-card>
+                                      && survey.questions.length > 0">
+              <!-- display question title and description -->
+              <questionMeta :id="survey.questions[index].id"></questionMeta>
+              </div>
+          </b-row>
+          <div class="votes" v-if="survey.questions
+                                        && survey.questions.length
+                                        && survey.questions.length > 0 
+                                        && index > -1">
+            <h3>Previous votes</h3>
+            <!-- display  Votes -->
+            <choiceVotes :id="survey.questions[index].id"
+                      v-if="survey.questions[index].type === 'CHOICE'">
+            </choiceVotes>
+            <favoriteVotes :id="survey.questions[index].id"
+                      v-if="survey.questions[index].type ==='FAVORITE'">
+            </favoriteVotes>
+            <likeVotes :id="survey.questions[index].id"
+                      v-if="survey.questions[index].type === 'LIKE'">
+            </likeVotes>
+            <likeDislikeVotes :id="survey.questions[index].id"
+                      v-if="survey.questions[index].type === 'LIKEDISLIKE'">
+            </likeDislikeVotes>
+            <regulatorVotes :id="survey.questions[index].id"
+                      v-if="survey.questions[index].type === 'REGULATOR'">
+            </regulatorVotes>
+            <rankingVotes :id="survey.questions[index].id"
+                      v-if="survey.questions[index].type === 'RANKING'">
+            </rankingVotes>
+          </div>
+        </b-card-body>
+      </b-tab>
+    </b-tabs>
+    <b-card-footer>
+        <b-btn variant="primaryBtn" class="float-right" @click="next" v-if="index >=0 && index !== survey.questions.length -1">Next
+        </b-btn>
+      <b-btn variant="primaryBtn" @click="next"
+          v-if="index == survey.questions.length -1"> Finish
+      </b-btn>
+      <b-btn variant="primaryBtn" @click="next"
+          v-if="index == -1"> Start
+      </b-btn>
+    </b-card-footer>
+  </b-card>
   </div>
 </template>
 
@@ -132,7 +150,6 @@ export default {
     return {
       index: -1,
       counter: 0,
-      answered: true,
       subscribtion: null,
     };
   },
@@ -166,22 +183,17 @@ export default {
     },
   },
   methods: {
-    displayItems(type) {
-      return !(type === 'RANKING' || type === 'FAVORITE');
-    },
     next(this: any) {
+      // Last Question to Home
         (this.index < this.survey.questions.length - 1) ? (this.index++) : this.$router.push({name: 'surveyList'});
+      // show next question
         if(this.index - 1 > 0) { this.$root.$emit('next', this.survey.questions[this.index - 1].type); }
         this.counter = Math.floor(this.index / this.survey.questions.length * 100);
-        this.answered = false;
         this.$store.dispatch('updateActiveQuestion', {
           domainID: this.$route.params.cID,
           questionID: this.survey.questions[this.index].id,
         });
     },
-    showResults(this: any){
-      this.answered = true;
-    }
   }
 };
 </script>
@@ -202,12 +214,6 @@ h3 {
 .progress-bar {
   height: 1.5rem;
 }
-.stepper {
-  margin-bottom: 1rem;
-}
-.btn_col {
-  margin: auto;
-}
 .votes {
   border-top: 1px solid rgba(0, 0, 0, 0.125);
   padding-top: 2rem;
@@ -215,18 +221,16 @@ h3 {
 .row {
   margin-bottom: 1rem;
 }
-.next_btn input[type="button"]{
-    display: none;
+  @media (min-width: 540px) {
+  .container {
+    width: 80%;
+    margin: 1.5rem auto;
+    }
 }
-.icon {
-  display: block;
-  cursor: pointer;
-  width: 2.5rem;
-  margin-bottom: 0.5rem;
-  background-size: contain;
-  margin: 0 auto 0.5rem;
-  height: 2.5rem;
-  background-position: center;
-  background-repeat: no-repeat;
+@media (max-width: 540px) {
+  .container {
+    width: 100%;
+    margin: 0 auto;
+    }
 }
 </style>

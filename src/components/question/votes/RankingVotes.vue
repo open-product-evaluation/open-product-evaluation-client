@@ -1,7 +1,7 @@
 <template>
 <div class="chartDiagramm">
-<h5 v-if="votes.length === 0"> No votes submitted. </h5>
-<span v-if="votes.length > 0">
+<h5 v-if="votes.length === 0 && answers.length === 0"> No votes submitted. </h5>
+<span v-if="votes.length > 0 || answers.length > 0">
     <h5> Number of abstentions: {{neutral}}</h5>
     <apexchart type="heatmap" :options="chartOptions" :series="series"></apexchart>
 </span>

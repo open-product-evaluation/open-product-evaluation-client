@@ -84,7 +84,7 @@
           <div class="votes" v-if="survey.questions
                                         && survey.questions.length
                                         && survey.questions.length > 0 ">
-            <h3>Previous votes</h3>
+            <h5>Previous votes</h5>
             <!-- display  Votes -->
             <choiceVotes :id="survey.questions[index].id"
                       v-if="survey.questions[index].type === 'CHOICE'">
@@ -110,13 +110,12 @@
     </b-tabs>
 
       <b-card-footer>
-          <b-btn variant="primaryBtn" @click="next"
-                  v-if="answered && index !== survey.questions.length - 1"> Next
+          <b-btn class="float-right" variant="primaryBtn" @click="next"
+                  v-if="index !== survey.questions.length - 1"> Next
           </b-btn>
           <b-btn variant="primaryBtn" @click="next"
-                  v-if="answered && index == survey.questions.length -1"> Start
+                  v-if="index == survey.questions.length -1"> Finish
           </b-btn>
-          <b-btn variant="primaryBtn" v-if="!answered" @click="answer">Answer</b-btn>
       </b-card-footer>
     </b-card>
   </div>
@@ -163,7 +162,6 @@ export default {
     return {
       index: 0,
       counter: 0,
-      answered: false,
       counting: 0,
     };
   },
@@ -192,19 +190,15 @@ export default {
       return !(type === 'RANKING' || type === 'FAVORITE');
     },
     next(this: any) {
-        (this.index < this.survey.questions.length - 1) ? (this.index++) : this.$router.push({name: 'surveyList'});
-        this.$root.$emit('next', this.survey.questions[this.index - 1].type);
-        this.counter = Math.floor(this.index / this.survey.questions.length * 100);
-        this.answered = false;
+        if (this.index < this.survey.questions.length - 1) {
+          this.$eventBus.$emit('answer');
+          this.$root.$emit('next', this.survey.questions[this.index].type);
+          this.counter = Math.floor(this.index / this.survey.questions.length * 100);
+          this.index++;
+        } else {
+          this.$router.push({name: 'surveyList'});
+        }
     },
-    answer(this: any) {
-      this.$eventBus.$emit('answer');
-    },
-  },
-  mounted(this: any) {
-    this.$root.$on('answered', () => {
-        this.answered = true;
-    });
   },
 };
 </script>
@@ -227,41 +221,12 @@ export default {
 .question {
   object-fit: contain; 
 }
-.step-indicators.step-indicator{
-  color: $primaryColor;
-  border-color: $primaryColor;
-}
-.step-indicators-line{
-  background: $secondaryBackgroundColor;
-}
-.progress {
-  font-size: 1rem;
-  height: max-content;
-  border-radius: 0;
-}
-.progress-bar {
-  height: 1.5rem;
-  background: $secondaryBackgroundColor;
-  opacity: 0.5;
-  color: $primaryColor
-}
 .card-header h4 {
   margin-top: 0.5rem;
 }
 .votes {
   padding-top: 1rem;
   margin-top: 1rem;
-}
-.icon {
-  display: block;
-  cursor: pointer;
-  width: 2.5rem;
-  margin-bottom: 0.5rem;
-  background-size: contain;
-  margin: 0 auto 0.5rem;
-  height: 2.5rem;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 .collapsed > .when-opened,
 :not(.collapsed) > .when-closed {

@@ -1,7 +1,7 @@
 <template>
 <div class ="chart">
-    <h5 v-if="votes.length === 0"> No votes submitted. </h5>
-    <span v-if="votes.length > 0">
+    <h5 v-if="votes.length === 0 && answers.length === 0"> No votes submitted. </h5>
+    <span v-if="votes.length > 0 || answers.length > 0">
         <h5> Average: {{ avg }} </h5>
         <h5> Number of abstentions: {{neutral}}</h5>
         <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
@@ -87,7 +87,7 @@ export default {
         },
         getVotesDiagramm(this: any) {
             let votes = this.valuesOfVotes();
-            if (votes.length > 0) {
+            if (votes.length > 0 || this.votes.length > 0) {
                 if (this.answers) {
                     votes = votes.concat(this.answers.map((answer: any) => answer.rating));
                 }

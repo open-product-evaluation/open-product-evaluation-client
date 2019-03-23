@@ -37,8 +37,7 @@
           </b-card-group>
         </transition>
          </b-row>
-        
-        
+  
       <div class="card-pagination" v-if="pages > 1">
       <div
         class="page-index"

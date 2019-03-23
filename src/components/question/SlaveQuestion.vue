@@ -3,20 +3,13 @@
       <b-card no-body>
 
         <b-card-body>
-        <b-row>
-          <b-col md="1"/>
-          <b-col md="10">
-          <!-- TODO Choose progressBar oder ProgressSteps --> 
-          <div class="stepper">
-              <step-indicator :current="activeQuestion" :total="survey.questions.length"></step-indicator>
-          </div>
-
           <div class="question" v-if="answered && activeQuestion!=survey.questions.length-1"> 
-            <h5>Bitte warten Sie auf die nächste Frage!</h5>
+            <h5>Please wait a moment. The question will be presented soon.</h5>
+            <b-spinner label="Spinning" />
           </div>
 
           <div class="question" v-if="activeQuestion==survey.questions.length-1"> 
-            <h5>Vielen Dank fürs teilnehmen!</h5>
+            <h5>Thank you very much for your participation!</h5>
           </div>
 
           <div class="question" v-if="survey.questions
@@ -62,11 +55,10 @@
                       v-if="survey.questions[activeQuestion].type === 'FAVORITE'">
             </favorite>
           </div>
-        </b-col>
-      </b-row>
       </b-card-body>
-      <b-card-footer >
-        <b-btn class="primaryBtn" v-if="!answered" @click="answer">Antworten</b-btn>
+      <b-card-footer v-if="survey.questions.length > 0
+                                      && !answered">
+        <b-btn variant="primaryBtn" v-if="!answered" @click="answer">Answer</b-btn>
       </b-card-footer>
     </b-card>
   </div>
@@ -82,13 +74,6 @@ import RegulatorOptions from '@/components/question/options/RegulatorOption.vue'
 import LikeOptions from '@/components/question/options/LikeOption.vue';
 import LikeDislikeOptions from '@/components/question/options/LikeDislikeOption.vue';
 import QuestionValue from '@/components/question/QuestionValue.vue';
-import ChoiceVotes from '@/components/question/votes/ChoiceVotes.vue';
-import FavoriteVotes from '@/components/question/votes/FavoriteVotes.vue';
-import LikeVotes from '@/components/question/votes/LikeVotes.vue';
-import LikeDislikeVotes from '@/components/question/votes/LikeDislikeVotes.vue';
-import RegulatorVotes from '@/components/question/votes/RegulatorVotes.vue';
-import RankingVotes from '@/components/question/votes/RankingVotes.vue';
-import StepIndicator from 'vue-step-indicator';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -102,13 +87,6 @@ export default {
     like: LikeOptions,
     likeDislike: LikeDislikeOptions,
     questionMeta: QuestionValue,
-    StepIndicator,
-    choiceVotes: ChoiceVotes,
-    favoriteVotes: FavoriteVotes,
-    likeVotes: LikeVotes,
-    likeDislikeVotes: LikeDislikeVotes,
-    regulatorVotes: RegulatorVotes,
-    rankingVotes: RankingVotes,
   },
   data() {
     return {
@@ -170,48 +148,4 @@ export default {
   },
 };
 </script>
-<style src="vue-step-indicator/dist/vue-step-indicator.css"></style>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-h3 {
-  margin: 40px 0 0;
-}
-.description {
-  font-size: 1.25rem;
-}
-.progress {
-  font-size: 1rem;
-  height: max-content;
-}
-.progress-bar {
-  height: 1.5rem;
-}
-.stepper {
-  margin-bottom: 1rem;
-}
-.btn_col {
-  margin-top: auto;
-}
-.votes {
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
-  padding-top: 2rem;
-}
-.row {
-  margin-bottom: 1rem;
-}
-.next_btn input[type="button"]{
-    display: none;
-}
-.icon {
-  display: block;
-  cursor: pointer;
-  width: 2.5rem;
-  margin-bottom: 0.5rem;
-  background-size: contain;
-  margin: 0 auto 0.5rem;
-  height: 2.5rem;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-</style>
+<style scoped></style>

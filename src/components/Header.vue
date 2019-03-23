@@ -15,7 +15,7 @@
     @ok="changeRouteHome()">
       <div class="d-block text-center">
         <h4>The survey is stopped.</h4>
-        <h4>Your votes will not be saved!</h4>
+        <h4>{{message}}</h4>
       </div>
     </b-modal>
   </div>
@@ -24,11 +24,20 @@
 <script lang="ts">
 export default {
   name: 'Header',
+  data() {
+      return {
+          message: '',
+      }
+  },
   methods: {
       goHome(this: any) {
           // Open Modal if User answers a survey
-          if (this.$route.name=='question') {
-              this.$refs.warningModal.show();
+          if (this.$route.name == 'question' || this.$route.name == 'join') {
+            this.message = 'Your votes will not be saved!';
+            this.$refs.warningModal.show();
+          } else if (this.$route.name == 'master') {
+            this.message = 'Are you sure you want to quit?';
+            this.$refs.warningModal.show();
           }
       },
       hideModal(this: any) {

@@ -1,8 +1,8 @@
 <template>
     <div class="chartDiagramm" >
-    <h5 v-if="votes.length === 0"> No votes submitted. </h5>
-    <span v-if="votes.length > 0">
-        <h5> Number of abstentions: {{neutral}}</h5>
+    <h5 v-if="votes.length === 0 && answers.length === 0"> No votes submitted. </h5>
+    <span v-if="votes.length > 0 || answers.length > 0">
+        <p> Number of abstentions: {{neutral}}</p>
         <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
     </span>
     </div>
@@ -73,7 +73,7 @@ export default {
         },
         getVotesDiagramm(this: any) {
             const result: any[] = [];
-            if (this.votes.length > 0) {
+            if (this.votes.length > 0 || this.answers.length > 0) {
                 this.question.choices.forEach( (element) => {
                     result.push({
                         x: element.label,

@@ -44,4 +44,22 @@ export default {
 .neutral {
   margin-top: .5rem;
 }
+.step-indicators.step-indicator{
+  color: $primaryColor;
+  border-color: $primaryColor;
+}
+.step-indicators-line{
+  background: $secondaryBackgroundColor;
+}
+.progress {
+  font-size: 1rem;
+  height: max-content;
+  border-radius: 0;
+}
+.progress-bar {
+  height: 1.5rem;
+  background: $secondaryBackgroundColor;
+  opacity: 0.5;
+  color: $primaryColor
+}
 </style>

@@ -1,5 +1,8 @@
 <template>
 <div>
+    <div style="text-align: right">
+    <b-btn class="resetBtn" @click="preset">Reset</b-btn>
+    </div>
   <div class="drag">
     <b-row class="dragzone d-flex mb-3 mx-2">
         <b-col draggable="true" 
@@ -51,13 +54,6 @@
             :checked="selected==null" 
             @click="deselectAll()"/>
             <label> abstain from voting</label>
-      </b-row>
-      <b-row>
-        <b-col cols="6">
-          <b-btn variant="primaryBtn" 
-          style="min-width: auto" 
-          @click="preset">Reset</b-btn>
-        </b-col>
       </b-row>
     <b-modal centered 
     ref="warningModal" 
@@ -233,5 +229,17 @@ export default {
   .mobileBtn {
     display: block;
   }
+}
+.resetBtn {
+  border-color: $primaryColor;
+  background-color: transparent;
+  color: $primaryColor;
+  padding: 0.25rem 0.75rem;
+}
+
+.resetBtn:hover {
+  background-color: $primaryColor;
+  border-color: $primaryColor;
+  color: white;
 }
 </style>
