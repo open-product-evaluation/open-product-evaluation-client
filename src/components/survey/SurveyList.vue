@@ -31,6 +31,7 @@
                   <b-card-footer>
                       <b-button variant="primaryBtn" @click="startSurvey(survey.id)">Start</b-button>
                       <b-button variant="primaryBtn" @click="startLive(survey.id)">Live mode</b-button>
+                      <b-button variant="primaryBtn" @click="showQR(survey.id)">Show QR-Code</b-button>
                     </b-card-footer>
                   </b-card>
                 </b-col>
@@ -56,14 +57,27 @@
             </label>
       </b-col>
     </b-row>
+    <b-modal 
+    centered
+    hide-footer 
+    ref="qrModal"
+    title="Join"
+    @ok="hide()">
+      <qrcode :value="joinLink" :options="{ width: 400 }"></qrcode>
+      <b-button id="modalButton" variant="primaryBtn" block @click="$refs.qrModal.hide()">Ok</b-button>
+    </b-modal>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import VueQrcode from '@chenfengyuan/vue-qrcode';
 
 export default {
   name: 'SurveyEdit',
+  components: {
+    qrcode: VueQrcode,
+  },
   data() {
     return {
       splittedSurveys: [],
@@ -72,6 +86,7 @@ export default {
       pageIndex: 0,
       animation: null,
       subscription: null,
+      joinLink: null,
     };
   },
   created(this: any) {
@@ -122,6 +137,10 @@ export default {
       });
       this.$router.push({name: 'master', params: {cID: domainID}});
     },
+    showQR(this:any, domainID) {
+      this.joinLink = window.location.protocol + '//' + window.location.host + '/#/join/' + domainID;
+      this.$refs.qrModal.show();
+    },
     createPages(this: any) {
       // Check WindowWidth for maxCards/page
       switch (true) {
@@ -162,6 +181,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import "../../scss/variables"; 
+
+#modalButton{
+  margin: 0px;
+}
+
 .header {
   padding: 1.5rem 0;
 }
