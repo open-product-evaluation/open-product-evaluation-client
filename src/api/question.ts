@@ -93,7 +93,7 @@ const favoriteAnswer = (question: string, favoriteID: boolean) => apiClient.muta
 const regulatorAnswer = (question: string, ratingID: number) => apiClient.mutate(
     {
         mutation : gql`
-        mutation($questionID: HashID!, $rating: Float){
+        mutation($questionID: HashID!, $rating: Int){
             setAnswer(data: {
                 questionID: $questionID
                 rating: $rating
