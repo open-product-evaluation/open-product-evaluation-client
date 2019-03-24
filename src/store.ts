@@ -203,6 +203,7 @@ const actions = {
         if (!data.errors) {
           // completely retarded implementation, but ... https://github.com/apollographql/apollo-client/issues/1909
           // ... also, once in store it is frozen again.
+          Vue.prototype.$eventBus.$emit('answer');
           const activeQuestion = data.data.domainUpdate.domain.activeQuestion;
           if (activeQuestion){
             const index = store.getters.getQuestionIndex(activeQuestion.id);

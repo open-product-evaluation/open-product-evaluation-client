@@ -31,6 +31,7 @@ export default {
   background-color: $secondaryBackgroundColor !important;
   min-width: 8rem !important;
   color: white !important;
+  margin: 2px;
 }
 .btn-primaryBtn:hover {
   background-color: $primaryColor !important;
@@ -61,5 +62,8 @@ export default {
   background: $secondaryBackgroundColor;
   opacity: 0.5;
   color: $primaryColor
+}
+.modal-dialog {
+    max-width: 600px;
 }
 </style>
