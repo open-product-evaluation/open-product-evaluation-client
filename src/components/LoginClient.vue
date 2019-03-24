@@ -28,7 +28,7 @@
                       label-for="input_code">
           <b-form-input id="input_code"
                         v-model.trim="$v.code.$model"
-                        type="text"
+                        type="password"
                         :state="state($v.code.$dirty, $v.code.$error)" />
 
           <b-form-invalid-feedback v-if="!$v.code.required">
@@ -47,7 +47,7 @@
         <!-- Card Footer -->
         <div slot="footer"
              class="login__footer">
-          Client dosen't already exist?
+          Client doesn't exist yet?
           <router-link :to="{ path: 'create' }">
             Create Client!
           </router-link>
