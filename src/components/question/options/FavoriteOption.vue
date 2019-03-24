@@ -11,18 +11,14 @@
           class="h-100 shadow bg-white">
         <img v-if="item.image && item.image.url" slot="header" class="w-100 h-100 images" v-img :src="`${item.image.url}`">
         <b-card-body class="p-2">
-        <b-button class="primaryBtn" @click="select($event, item.id)"> {{ item.label }}</b-button>
+        <b-button variant="primaryBtn" @click="select($event, item.id)"> {{ item.label }}</b-button>
         </b-card-body>
       </b-card>
     </b-col>
     </b-row>
-  <b-row>
-      <b-col cols="6">
-        <div class ="text-center">
+  <b-row class="mx-2 neutral" align-h="end">
           <input type="checkbox" :checked="selected==null" @click="deselectAll()"/>
           <label> abstain from voting</label>
-        </div>
-      </b-col>
     </b-row>
   </div>
 </template>
@@ -52,6 +48,7 @@ export default {
     deselectAll(this: any) {
       this.selected = null;
     },
+    // 
     sendAnswer(this: any) {
       this.$store.dispatch('createAnswerFavorite', { question: this.id, favoriteID: this.selected});
       this.answered = true;

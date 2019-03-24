@@ -27,12 +27,39 @@ export default {
   min-height: -webkit-fill-available;
   height: 100%; 
 }
-.primaryBtn {
-  background-color: $secondaryBackgroundColor;
-  min-width: 8rem;
+.btn-primaryBtn {
+  background-color: $secondaryBackgroundColor !important;
+  min-width: 8rem !important;
+  color: white !important;
 }
-.primaryBtn.btn-secondary:hover {
-  background-color: $primaryColor;
+.btn-primaryBtn:hover {
+  background-color: $primaryColor !important;
+  border-color: $primaryColor !important;
+}
+.neutral > input, .radio > input{
+  height: 1.25rem;
+  width: 1.25rem;
+  margin-right: 5px;
+}
+.neutral {
+  margin-top: .5rem;
+}
+.step-indicators.step-indicator{
+  color: $primaryColor;
   border-color: $primaryColor;
+}
+.step-indicators-line{
+  background: $secondaryBackgroundColor;
+}
+.progress {
+  font-size: 1rem;
+  height: max-content;
+  border-radius: 0;
+}
+.progress-bar {
+  height: 1.5rem;
+  background: $secondaryBackgroundColor;
+  opacity: 0.5;
+  color: $primaryColor
 }
 </style>

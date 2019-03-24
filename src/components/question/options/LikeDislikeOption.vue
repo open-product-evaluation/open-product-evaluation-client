@@ -31,7 +31,7 @@
       </div>
     </li>
     <li class="dislike">
-      <div v-if="question.dislikeIcon && question.dislikeIcon.url">>
+      <div v-if="question.dislikeIcon && question.dislikeIcon.url">
         <input type="radio"
               :id="`dislike-${question.id}`"
               :name="`likedislike-${question.id}`" 
@@ -61,14 +61,10 @@
       
     </li>
   </ol>
-  <b-row>
-    <b-col cols="6">
-      <div class ="text-center">
-        <input type="checkbox" @click="deselectAll()" :checked="liked==null"/>
-        <label> Abstain from voting</label>
-      </div>
-    </b-col>
-  </b-row>
+  <b-row class="mx-2 neutral" align-h="end">
+          <input type="checkbox" :checked="liked==null" @click="deselectAll()"/>
+          <label> abstain from voting</label>
+    </b-row>
 </div>
 </template>
 

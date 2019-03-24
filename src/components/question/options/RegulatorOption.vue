@@ -19,13 +19,9 @@
         {{ question.max }}
       </div>
     </div>
-    <b-row>
-      <b-col cols="6">
-        <div class ="text-center">
-          <input type="checkbox" @click="deselectAll()"/>
-          <label>  Abstain from voting</label>
-        </div>
-      </b-col>
+    <b-row class="mx-2 neutral" align-h="end">
+          <input type="checkbox" :checked="value==null" @click="deselectAll()"/>
+          <label> abstain from voting</label>
     </b-row>
   </div>
 </template>

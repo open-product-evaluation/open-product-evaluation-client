@@ -1,51 +1,49 @@
 <template>
 <div>
   <b-row>
-    <b-col class="choice" v-for="choice in question.choices"
+    <b-col class="choice radio" align-self="end" v-for="choice in question.choices"
         :class="{'no-image': !choice.image }"
         :key="choice.id">
+
+        <!-- Choices with custom images-->
+        <div v-if="choice.image && choice.image.url">
         <input type="radio"
               :id="`choice-${choice.id}`"
               :name="`choice-${question.id}`"
-              v-if="choice.image && choice.image.url"
               :value="choice.label"
               :checked="choice.id == selected"
               @click="updateValue(choice.id)"
              />
-      <label :for="`choice-${choice.id}`"
-             v-if="!choice.image">
-       <input type="radio"
-              :id="`choice-${choice.id}`"
-              :name="`choice-${question.id}`"
-              :value="choice.id"
-              :checked="choice.id == selected"
-              v-if="!choice.image"
-              @click="updateValue(choice.id)"
-              />
-        {{ choice.label}}
-      </label>
-      <label class="icon"
+          <label class="icon d-flex "
              :for="`choice-${choice.id}`"
-             v-if="choice.image && choice.image.url"
              :checked="choice.id == selected"
              :style="{backgroundImage: `url(${choice.image.url})`}"
              @click="updateValue(choice.id)">
-      </label>
-      <span class="label"
-            v-if="choice.image && choice.image.url">
-        {{ choice.label }}
-      </span>
+          </label>
+          <span class="label">
+            {{ choice.label }}
+           </span>
+        </div>
+
+        <div v-if="!choice.image" class="radio">
+          <input type="radio"
+                    :id="`choice-${choice.id}`"
+                    :name="`choice-${question.id}`"
+                    :value="choice.id"
+                    :checked="choice.id == selected"
+                    @click="updateValue(choice.id)"
+                    />
+            <label :for="`choice-${choice.id}`">
+              {{ choice.label}}
+            </label>
+            </div>
     </b-col>
   </b-row>
 
-  <b-row class="ml-2">
-    <b-check
-    type="info"
-      id="neutral"
-      @click="deselectAll()"
-      :checked="!selected">
-      Abstain from voting</b-check>
-  </b-row>
+  <b-row class="mx-2 neutral" align-h="end">
+          <input type="checkbox" :checked="selected==null" @click="deselectAll()"/>
+          <label> abstain from voting</label>
+    </b-row>
 </div>
 </template>
 
@@ -74,6 +72,7 @@ export default {
     deselectAll(this: any) {
       this.selected = null;
     },
+    // send event to root, next question can be presented
     sendAnswer(this: any) {
       this.$store.dispatch('createAnswerChoice', { question: this.id, choiceID: this.selected});
       this.answered = true;
@@ -93,6 +92,24 @@ export default {
 
 <style scoped="true" lang="scss">
 @import "../../../scss/variables"; 
+@media (min-width: 720px) {
+  .choice {
+    text-align: center;
+  }
+}
+@media (min-width:577px) and (max-width: 720px) {
+ .col { flex: 1 0 50%; }
+ .choice {
+    text-align: left;
+  }
+}
+
+@media (max-width: 576px) {
+ .col { flex: 1 0 100%; }
+ .choice {
+    text-align: left;
+  }
+}
   .choices {
     padding: 0;
     display: flex;
@@ -100,20 +117,19 @@ export default {
     list-style: none;
     margin-bottom: 2rem;
   }
-  input[type="radio"]:hover + label + span { color: $primaryColor; }
+  input[type="radio"]:hover + label, 
+  input[type="radio"]:checked + label,
+  input[type="radio"]:hover + label + span,
   input[type="radio"]:checked + label + span { color: $primaryColor; }
   .choice {
     font-size: 1rem;
-    text-align: center;
     flex-grow: 1;
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
     &.no-image {
-      flex-direction: row;
       label { margin-bottom: 0;}
-      input { display: inline; margin-right: 5px; }
+      input { display: inline; margin:auto; }
     }
     input { display: none;}
     .icon {
@@ -125,8 +141,5 @@ export default {
       background-position: center;
       background-repeat: no-repeat;
     }
-  }
-  #neutral:active{
-    width:100px;
   }
 </style>

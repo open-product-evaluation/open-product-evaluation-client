@@ -11,7 +11,7 @@ import Icon from 'vue-awesome';
 
 
 Vue.config.productionTip = false;
-Vue.use(Vuelidate)
+Vue.use(Vuelidate);
 Vue.use(BootstrapVue);
 Vue.use(VueImg);
 Vue.component('v-icon', Icon);

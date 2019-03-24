@@ -28,6 +28,7 @@ export default {
         },
     },
     created(this: any) {
+        // Change Votes Structure for Diagram
         this.getVotesDiagramm();
     },
 };

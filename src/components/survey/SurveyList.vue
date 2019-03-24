@@ -29,18 +29,15 @@
                     <b-card-text> {{survey.activeSurvey.description}} </b-card-text>
                   </b-card-body>
                   <b-card-footer>
-                    <b-button-group class="d-flex">
-                      <b-button class="primaryBtn w-100" @click="startSurvey(survey.id)">Start</b-button>
-                      <b-button class="primaryBtn borderBtn w-100" @click="startLive(survey.id)">Live mode</b-button>
-                    </b-button-group>
+                      <b-button variant="primaryBtn" @click="startSurvey(survey.id)">Start</b-button>
+                      <b-button variant="primaryBtn" @click="startLive(survey.id)">Live mode</b-button>
                     </b-card-footer>
                   </b-card>
                 </b-col>
           </b-card-group>
         </transition>
          </b-row>
-        
-        
+  
       <div class="card-pagination" v-if="pages > 1">
       <div
         class="page-index"
@@ -86,8 +83,8 @@ export default {
         // Authorization failed
         this.$router.push('login');
       });
-      const clientID = localStorage.getItem('client')
-      this.$store.dispatch('subscribeClient', { clientID }).then( (data) => this.subscription = data)
+      const clientID = localStorage.getItem('client');
+      this.$store.dispatch('subscribeClient', { clientID }).then( (data) => this.subscription = data);
   },
   beforeDestroy(this: any) {
     this.$store.dispatch('unsubscribe', this.subscription);
@@ -224,9 +221,6 @@ input[type="button"] {
 }
 .col-1, .col-10, .card-header {
   padding: 0;
-}
-.borderBtn {
-  border-left-color: $borderColor;
 }
 .next-leave-to {
   transform: translateX(-20px);

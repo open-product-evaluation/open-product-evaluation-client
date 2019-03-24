@@ -1,6 +1,9 @@
 <template>
 <div class="chartDiagramm">
-    <apexchart type="donut" :options="chartOptions" :series="series"></apexchart>
+    <h5 v-if="votes.length === 0 && answers.length === 0"> No votes submitted. </h5>
+    <span v-if="votes.length > 0 || answers.length > 0">
+         <apexchart type="donut" :options="chartOptions" :series="series"></apexchart>
+    </span>
 </div>
 </template>
 
@@ -61,7 +64,9 @@ export default {
        return [ (counterLike / max) * 100, (counterDislike / max) * 100, (neutral / max) * 100 ];
    },
    getVotesDiagramm(this: any) {
-        this.$data.series = this.countInArray(this.votes);
+       if (this.votes.length > 0 || this.answers.length > 0) {
+            this.$data.series = this.countInArray(this.votes);
+        }
     },
   },
 };

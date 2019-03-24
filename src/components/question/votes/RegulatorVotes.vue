@@ -1,10 +1,11 @@
 <template>
 <div class ="chart">
-    <h5> Average: {{ avg }} </h5>
-    <h5> Number of abstentions: {{neutral}}</h5>
-    <div class="chartDiagramm" >
-    <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
-    </div>
+    <h5 v-if="votes.length === 0 && answers.length === 0"> No votes submitted. </h5>
+    <span v-if="votes.length > 0 || answers.length > 0">
+        <h5> Average: {{ avg }} </h5>
+        <h5> Number of abstentions: {{neutral}}</h5>
+        <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
+    </span>
 </div>
 </template>
 
@@ -86,7 +87,7 @@ export default {
         },
         getVotesDiagramm(this: any) {
             let votes = this.valuesOfVotes();
-            if (votes.length > 0) {
+            if (votes.length > 0 || this.answers.length > 0) {
                 if (this.answers) {
                     votes = votes.concat(this.answers.map((answer: any) => answer.rating));
                 }
@@ -116,11 +117,11 @@ export default {
 <style scoped="true" lang="scss">
 .chartDiagramm {
     margin: 0 auto; 
-    width: 60%;
+    width: 80%;
 }
 @media (max-width: 576px) {
 .chartDiagramm {
-    width: 80%;
+    width: 100%;
 }
 }
 </style>
