@@ -91,10 +91,16 @@ const wsLink: any = new SubscriptionClient(process.env.WEBSOCKET_ENDPOINT || 'ws
     },
 });
 
+// To fix "Property 'operation' does not exist on type 'ExecutableDefinitionNode'." in next statement
+interface Definintion {
+    kind: string;
+    operation?: string;
+}
+
 const link = split(
     // split based on operation type
     ({ query }) => {
-      const { kind, operation } = getMainDefinition(query);
+      const { kind, operation }: Definintion = getMainDefinition(query);
       return kind === 'OperationDefinition' && operation === 'subscription';
     },
     wsLink,
