@@ -13,12 +13,12 @@ const state = {
   surveys: [],
   currentSurvey: {
     questions: [],
-    votes: []
   },
+  votes: [],
   answers: [],
   domain: {
     activeQuestion: -1,
-  }
+  },
 };
 
 const getters = {
@@ -26,10 +26,10 @@ const getters = {
   getSurveys: () => state.surveys || [],
   getSurvey: () => state.currentSurvey,
   getQuestion: () => (questionID) => state.currentSurvey.questions.find( (question: any) => question.id === questionID),
-  getQuestionIndex: () => (questionID) => state.currentSurvey.questions.findIndex( 
+  getQuestionIndex: () => (questionID) => state.currentSurvey.questions.findIndex(
       (question: any) => question.id === questionID),
   getActiveQuestion: () => state.domain.activeQuestion,
-  getVotes: () => state.currentSurvey.votes,
+  getVotes: () => state.votes,
   getVote: () => (questionID) => {
     return filterVotes(questionID);
   },
@@ -62,7 +62,7 @@ const mutations = {
     states.currentSurvey.questions = payload;
   },
   currentVotes(states, payload) {
-    states.currentSurvey.votes = payload;
+    states.votes = payload;
   },
   setActiveQuestion(states, index) {
     states.domain.activeQuestion = index;
@@ -159,40 +159,22 @@ const actions = {
       });
   },
   createAnswerChoice(context, payload) {
-    Question.choiseAnswer( payload.question, payload.choiceID)
-    .then((data) => {
-      // TODO:  Do something with response?
-    });
+    Question.choiseAnswer( payload.question, payload.choiceID);
   },
   createAnswerLike(context, payload) {
-    Question.likeAnswer( payload.question, payload.likeID)
-    .then((data) => {
-      // TODO:  Do something with response?
-    });
+    Question.likeAnswer( payload.question, payload.likeID);
   },
   createAnswerLikeDislike(context, payload) {
-    Question.likeAnswer( payload.question, payload.likeID)
-    .then((data) => {
-      // TODO:  Do something with response?
-    });
+    Question.likeAnswer( payload.question, payload.likeID);
   },
   createAnswerFavorite(context, payload) {
-    Question.favoriteAnswer( payload.question, payload.favoriteID)
-    .then((data) => {
-      // TODO:  Do something with response?
-    });
+    Question.favoriteAnswer( payload.question, payload.favoriteID);
   },
   createAnswerRegulator(context, payload) {
-    Question.regulatorAnswer( payload.question, payload.ratingID)
-    .then((data) => {
-      // TODO:  Do something with response?
-    });
+    Question.regulatorAnswer( payload.question, payload.ratingID);
   },
   createAnswerRanking(context, payload) {
-    Question.rankingAnswer( payload.question, payload.rankingID)
-    .then((data) => {
-      // TODO:  Do something with response?
-    });
+    Question.rankingAnswer( payload.question, payload.rankingID);
   },
   subscribeDomain(store, {domainID}) {
     // subscription is not saved in store because of mutation problems
@@ -205,7 +187,7 @@ const actions = {
           // ... also, once in store it is frozen again.
           Vue.prototype.$eventBus.$emit('answer');
           const activeQuestion = data.data.domainUpdate.domain.activeQuestion;
-          if (activeQuestion){
+          if (activeQuestion) {
             const index = store.getters.getQuestionIndex(activeQuestion.id);
             store.commit('setActiveQuestion', index);
           }
@@ -242,12 +224,12 @@ const actions = {
         if (!data.errors) {
           // completely retarded implementation, but ... https://github.com/apollographql/apollo-client/issues/1909
           // ... also, once in store it is frozen again.
-          if(data.data.clientUpdate.event === 'DELETE') {
+          if (data.data.clientUpdate.event === 'DELETE') {
             localStorage.removeItem('currentToken');
             localStorage.removeItem('client');
             localStorage.removeItem('clientCode');
             location.reload();
-            console.log('delete')
+            console.log('delete');
           } else if (data.data.clientUpdate.changedAttributes
               && data.data.clientUpdate.changedAttributes.includes('domain')
               && data.data.clientUpdate.client.domain === null) {
@@ -266,10 +248,8 @@ const actions = {
     payload.unsubscribe();
   },
   updateActiveQuestion(store, {domainID, questionID}) {
-    return Domain.updateActiveQuestion( domainID, questionID)
-    .then((data) => {
-    });
-  }
+    return Domain.updateActiveQuestion( domainID, questionID);
+  },
 };
 
 export default new Vuex.Store({
@@ -281,8 +261,8 @@ export default new Vuex.Store({
 
 function filterVotes(questionID) {
   const result: string[] = [];
-  if (state.currentSurvey.votes !== undefined && state.currentSurvey.votes !== null) {
-    state.currentSurvey.votes.map( (vote) => {
+  if (state.votes !== undefined && state.votes !== null) {
+    state.votes.map( (vote) => {
       result.push(filterCurrentQuestionsVotes(vote, (questionID)));
     });
   }

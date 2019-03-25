@@ -49,14 +49,11 @@ router.beforeEach((to, from, next) => {
   if (to.name === 'create' || to.name === 'login' ) { next();  return; }
   if ((localStorage.getItem('currentToken') === '' || localStorage.getItem('currentToken') === null) &&
           (localStorage.getItem('client') === '' || localStorage.getItem('client') === null) ) {
-    if (to.name === 'join' ||to.name === 'question') {
+    if (to.name === 'join' || to.name === 'question') {
       store.dispatch('createTemporaryClient', ({ domainID: to.params.cID})).then((result) => {
         next();
       });
     } else {
-      /* store.dispatch('createPermanentClient', ({ name: 'mobilePhone', clientOwner: 'jane@doe.com'})).then((result) => {
-        next();
-      }); */
       next('create');
     }
   } else {

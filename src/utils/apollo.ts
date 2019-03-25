@@ -108,7 +108,7 @@ export default new ApolloClient({
         errorLink,
         link,
         createUploadLink({
-            uri: process.env.GRAPHQL_ENDPOINT ||'http://localhost:3000/graphql',
+            uri: process.env.GRAPHQL_ENDPOINT || 'http://localhost:3000/graphql',
         }),
     ]),
     defaultOptions: {

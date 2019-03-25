@@ -137,7 +137,7 @@ export default {
       });
       this.$router.push({name: 'master', params: {cID: domainID}});
     },
-    showQR(this:any, domainID) {
+    showQR(this: any, domainID) {
       this.joinLink = window.location.protocol + '//' + window.location.host + '/#/join/' + domainID;
       this.$refs.qrModal.show();
     },

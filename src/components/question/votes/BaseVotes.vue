@@ -26,6 +26,9 @@ export default {
         answers(this: any, val: any) {
             this.getVotesDiagramm();
         },
+        votes(this: any) {
+            this.getVotesDiagramm();
+        },
     },
     created(this: any) {
         // Change Votes Structure for Diagram

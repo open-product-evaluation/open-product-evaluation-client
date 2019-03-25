@@ -48,7 +48,6 @@ export default {
     deselectAll(this: any) {
       this.selected = null;
     },
-    // 
     sendAnswer(this: any) {
       this.$store.dispatch('createAnswerFavorite', { question: this.id, favoriteID: this.selected});
       this.answered = true;
