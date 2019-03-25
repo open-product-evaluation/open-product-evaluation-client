@@ -85,7 +85,7 @@ export default {
                 this.series = [{
                     data: result,
                 }];
-            }  
+            }
         },
     },
 };

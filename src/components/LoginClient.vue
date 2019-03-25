@@ -90,7 +90,7 @@ export default {
       if (!this.$v.$invalid) {
         this.$store.dispatch('loginClient', {code: this.code, email: this.email})
         .then(() => {
-          this.$router.push('/')
+          this.$router.push('/');
         }).catch((error) => {
           this.error = error;
         });
