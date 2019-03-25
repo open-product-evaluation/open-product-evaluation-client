@@ -232,4 +232,7 @@ export default {
 :not(.collapsed) > .when-closed {
   display: none;
 }
+.tab-content > .active {
+  outline: none;
+}
 </style>
