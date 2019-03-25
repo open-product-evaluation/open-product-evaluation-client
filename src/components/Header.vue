@@ -32,12 +32,27 @@ export default {
   methods: {
       goHome(this: any) {
           // Open Modal if User answers a survey
-          if (this.$route.name === 'question' || this.$route.name === 'join') {
-            this.message = 'Your votes will not be saved!';
-            this.$refs.warningModal.show();
-          } else if (this.$route.name === 'master') {
-            this.message = 'Are you sure you want to quit?';
-            this.$refs.warningModal.show();
+          switch (this.$route.name) {
+              case ('question'): {
+                  this.message = 'Your votes will not be saved!';
+                  this.$refs.warningModal.show();
+                  break;
+              }
+            case ('join'): {
+                // TODO if last question and answered, do not open modal
+                if (this.$store.getters.getActiveQuestion < this.$store.getters.getSurvey.questions.length) {
+                    this.message = 'Your votes will not be saved!';
+                    this.$refs.warningModal.show();
+                } else {
+                    this.$router.replace('/');
+                }
+                break;
+            }
+            case ('master'): {
+                this.message = 'Are you sure you want to quit?';
+                this.$refs.warningModal.show();
+                break;
+            }
           }
       },
       hideModal(this: any) {

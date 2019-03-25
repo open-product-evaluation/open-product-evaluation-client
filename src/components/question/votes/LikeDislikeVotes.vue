@@ -75,7 +75,7 @@ export default {
 <style scoped="true" lang="scss">
 .chartDiagramm {
     margin: 0 auto; 
-    width: 30%;
+    width: 50%;
 }
 @media (max-width: 576px) {
 .chartDiagramm {

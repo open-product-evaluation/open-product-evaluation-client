@@ -229,7 +229,6 @@ h3 {
 @media (max-width: 540px) {
   .container {
     width: 100%;
-    margin: 0 auto;
     }
 }
 </style>
