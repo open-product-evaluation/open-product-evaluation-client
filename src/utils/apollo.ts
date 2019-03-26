@@ -83,7 +83,7 @@ const errorLink = onError(({ graphQLErrors }) => {
     if (graphQLErrors) { graphQLErrors.map(({ message }) => console.log(message)); }
 });
 
-const wsLink: any = new SubscriptionClient(process.env.WEBSOCKET_ENDPOINT || 'ws://localhost:3000', {
+const wsLink: any = new SubscriptionClient(process.env.VUE_APP_WEBSOCKET_ENDPOINT || 'ws://localhost:3000', {
     reconnect: true,
     lazy: true,
     connectionParams: () => {
@@ -114,7 +114,7 @@ export default new ApolloClient({
         errorLink,
         link,
         createUploadLink({
-            uri: process.env.GRAPHQL_ENDPOINT ||'http://localhost:3000/graphql',
+            uri: process.env.VUE_APP_GRAPHQL_ENDPOINT ||'http://localhost:3000/graphql',
         }),
     ]),
     defaultOptions: {
