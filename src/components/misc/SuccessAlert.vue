@@ -19,7 +19,7 @@ export default {
       type: String,
       required: false,
       default: 'Form submission successful',
-    }
+    },
   },
-}
+};
 </script>

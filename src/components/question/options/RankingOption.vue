@@ -151,10 +151,9 @@ export default {
         return null;
       } else {
         // Build array for rankingItems
-        // [1,...,n] -> n is best
         const favoriteArray: string[] = [];
         this.position.forEach( (element) => {
-          favoriteArray.unshift(element.id);
+          favoriteArray.push(element.id);
         });
         return favoriteArray;
       }

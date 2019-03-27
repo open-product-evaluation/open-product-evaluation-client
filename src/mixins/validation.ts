@@ -1,10 +1,10 @@
 const validationState = {
     methods: {
-      state(dirty, _state) {
-        if (dirty && _state === true) {
-          return false
+      state(dirty, state) {
+        if (dirty && state === true) {
+          return false;
         }
-        return null
+        return null;
       },
     },
 };
