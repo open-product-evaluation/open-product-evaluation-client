@@ -77,7 +77,7 @@ const loginClient = (code: string, ownerEmail: string) => apiClient.mutate(
 const deleteClient = (clientId: string) => apiClient.mutate(
     {
         mutation : gql`
-        mutation deleteClientMutation ($id: ID!){
+        mutation deleteClientMutation ($id: HashID!){
         deleteClient(clientID: $id){
             status
         }

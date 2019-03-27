@@ -100,10 +100,6 @@ export default {
     const domainID = this.$route.params.cID;
     const client =  localStorage.getItem('client');
     try {
-        await this.$store.dispatch('updateClient', {
-        id: client,
-        domainId: domainID,
-        });
         await this.$store.dispatch('getSurvey', {
             domain: domainID,
         });

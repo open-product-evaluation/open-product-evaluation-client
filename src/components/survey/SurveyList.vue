@@ -134,8 +134,9 @@ export default {
       this.$store.dispatch('updateClient', {
         id: client,
         domainId: domainID,
-      });
-      this.$router.push({name: 'master', params: {cID: domainID}});
+      }).then(
+        () => this.$router.push({name: 'master', params: {cID: domainID}}),
+      );
     },
     showQR(this: any, domainID) {
       this.joinLink = window.location.protocol + '//' + window.location.host + '/#/join/' + domainID;
