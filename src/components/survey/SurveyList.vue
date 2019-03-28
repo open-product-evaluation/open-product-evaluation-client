@@ -139,7 +139,7 @@ export default {
       );
     },
     showQR(this: any, domainID) {
-      this.joinLink = window.location.protocol + '//' + window.location.host + '/#/join/' + domainID;
+      this.joinLink = window.location.protocol + '//' + window.location.host + '/#/survey/' + domainID;
       this.$refs.qrModal.show();
     },
     createPages(this: any) {
