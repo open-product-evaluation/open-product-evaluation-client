@@ -13,7 +13,7 @@ import Icon from 'vue-awesome';
 Vue.config.productionTip = false;
 Vue.use(Vuelidate);
 Vue.use(BootstrapVue);
-Vue.use(VueImg);
+Vue.use(VueImg, {openOn: 'dblclick'});
 Vue.component('v-icon', Icon);
 Vue.prototype.$eventBus = new Vue();
 

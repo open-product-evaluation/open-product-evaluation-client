@@ -233,8 +233,9 @@ input[type="button"] {
   font-size:1.1rem;
 }
 .previewImage {
-  max-height: 10rem;
-  width: auto;
+  max-height: 20rem;
+  width: 100%;
+  object-fit: cover;
 }
 .card-deck .card, .card-deck {
   height: 65vh;
