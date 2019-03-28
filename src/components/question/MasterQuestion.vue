@@ -185,18 +185,18 @@ export default {
   methods: {
     next(this: any) {
       // Last Question to Home
-        if (this.index < this.survey.questions.length - 1) {
-          this.index++;
-        }else{
-          this.$router.push({name: 'surveyList'});
-          return;
-        }
+      if (this.index < this.survey.questions.length - 1) {
+        this.index++;
+      } else {
+        this.$router.push({name: 'surveyList'});
+        return;
+      }
       // show next question
-        this.counter = Math.floor(this.index / this.survey.questions.length * 100);
-        this.$store.dispatch('updateActiveQuestion', {
-          domainID: this.$route.params.cID,
-          questionID: this.survey.questions[this.index].id,
-        });
+      this.counter = Math.floor(this.index / this.survey.questions.length * 100);
+      this.$store.dispatch('updateActiveQuestion', {
+        domainID: this.$route.params.cID,
+        questionID: this.survey.questions[this.index].id,
+      });
     },
   },
 };

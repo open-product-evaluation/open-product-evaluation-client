@@ -59,8 +59,14 @@ export default {
           this.$refs.warningModal.hide();
       },
       changeRouteHome(this: any) {
-          this.$refs.warningModal.hide();
-          this.$router.replace('/');
+            this.$refs.warningModal.hide();
+            if (this.$route.name === 'master') {
+                this.$store.dispatch('updateActiveQuestion', {
+                    domainID: this.$route.params.cID,
+                    questionID: null,
+                });
+            }
+            this.$router.replace('/');
       },
   },
 };
