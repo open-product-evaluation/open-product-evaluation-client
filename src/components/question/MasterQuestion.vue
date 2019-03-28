@@ -12,6 +12,7 @@
         <b-card-body v-if="index == -1">
                     <div class="question" > 
             <h5>You can join the survey now!</h5>
+            <h5>https://bit.ly/2HZ0MuE</h5>
             <qrcode :value="joinLink" :options="{ width: 500 }"></qrcode>
           </div>
         </b-card-body>
