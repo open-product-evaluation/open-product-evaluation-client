@@ -5,7 +5,7 @@
           <h4>{{ survey.title }}</h4>
         </b-card-header>
       <b-tabs card>
-      <b-tab no-body title="Question" active >
+      <b-tab no-body title="Question" active>
         <b-card-body class="py-0">
             <div class="progress w-100" v-if="survey.questions && survey.questions.length > 8">
               <b-progress :max="100">
