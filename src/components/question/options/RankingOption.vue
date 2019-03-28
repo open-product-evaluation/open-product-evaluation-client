@@ -256,7 +256,6 @@ export default {
 }
 
 .card-img-top {
-  height: 70%;
   object-fit: cover;
 }
 .card-body {

@@ -87,7 +87,6 @@ export default {
     max-height: 35vh;
   }
   .card-img-top {
-    height: 70%;
     object-fit: cover;
   }
   .card-body {
