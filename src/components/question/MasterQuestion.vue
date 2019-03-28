@@ -12,6 +12,7 @@
         <b-card-body v-if="index == -1">
                     <div class="question" > 
             <h5>You can join the survey now!</h5>
+            <h5>https://bit.ly/2HZ0MuE</h5>
             <qrcode :value="joinLink" :options="{ width: 500 }"></qrcode>
           </div>
         </b-card-body>
@@ -186,26 +187,26 @@ export default {
   methods: {
     next(this: any) {
       // Last Question to Home
-        if (this.index < this.survey.questions.length - 1) {
-          this.index++;
-        }else{
-          this.$router.push({name: 'surveyList'});
-          return;
-        }
+      if (this.index < this.survey.questions.length - 1) {
+        this.index++;
+      } else {
+        this.$router.push({name: 'surveyList'});
+        return;
+      }
       // show next question
-        this.counter = Math.floor(this.index / this.survey.questions.length * 100);
-        this.$store.dispatch('updateActiveQuestion', {
-          domainID: this.$route.params.cID,
-          questionID: this.survey.questions[this.index].id,
-        });
-        this.tabIndex = 0;
-    },
-    voting(this: any) {
-        // Update Votes
-        this.$store.dispatch('updateVotingTab', true);
-    },
-    questionVisible(this: any) {
-      this.$store.dispatch('updateVotingTab', false);
+      this.counter = Math.floor(this.index / this.survey.questions.length * 100);
+      this.$store.dispatch('updateActiveQuestion', {
+        domainID: this.$route.params.cID,
+        questionID: this.survey.questions[this.index].id,
+      });
+      this.tabIndex = 0;
+      },
+      voting(this: any) {
+          // Update Votes
+          this.$store.dispatch('updateVotingTab', true);
+      },
+      questionVisible(this: any) {
+        this.$store.dispatch('updateVotingTab', false);
     },
   },
 };
@@ -244,5 +245,8 @@ h3 {
   .container {
     width: 100%;
     }
+}
+.tab-content > .active {
+  outline: none;
 }
 </style>

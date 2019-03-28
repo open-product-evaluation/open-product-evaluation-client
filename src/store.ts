@@ -192,12 +192,15 @@ const actions = {
         if (!data.errors) {
           // completely retarded implementation, but ... https://github.com/apollographql/apollo-client/issues/1909
           // ... also, once in store it is frozen again.
-          Vue.prototype.$eventBus.$emit('answer');
-          const activeQuestion = data.data.domainUpdate.domain.activeQuestion;
+          if(data.data.domainUpdate.changedAttributes && data.data.domainUpdate.changedAttributes.includes('activeQuestion')){
+            console.log('question changed');
+            Vue.prototype.$eventBus.$emit('answer');
+            const activeQuestion = data.data.domainUpdate.domain.activeQuestion;
           //if (activeQuestion) {
             const index = store.getters.getQuestionIndex(activeQuestion.id);
             store.commit('setActiveQuestion', index);
           //}
+          }
         } else {
           console.log(data.errors);
         }
@@ -255,6 +258,7 @@ const actions = {
     payload.unsubscribe();
   },
   updateActiveQuestion(store, {domainID, questionID}) {
+    console.log('update');
     return Domain.updateActiveQuestion( domainID, questionID);
   },
   updateVotingTab(context, isActive) {
