@@ -8,10 +8,12 @@
   class="p-2">
       <b-card no-body :class="{ selected: selected === item.id}"
           header-tag="header"
-          class="h-100 shadow bg-white">
-        <img v-if="item.image && item.image.url" slot="header" class="w-100 h-100 images" v-img :src="`${item.image.url}`">
+          class="h-100 shadow bg-white"
+          @click="select($event, item.id)">
+        <img v-if="item.image && item.image.url" class="card-img-top" v-img :src="`${item.image.url}`">
         <b-card-body class="p-2">
-        <b-button variant="primaryBtn" @click="select($event, item.id)"> {{ item.label }}</b-button>
+        <h5 class="card-title">{{ item.label }}</h5>
+        <!--<b-button variant="primaryBtn" class="btn-block" @click="select($event, item.id)"> {{ item.label }}</b-button>-->
         </b-card-body>
       </b-card>
     </b-col>
@@ -82,11 +84,19 @@ export default {
   }
   .card-header {
     padding: 0;
-    height: 35vh;
+    max-height: 35vh;
   }
-  @media (min-width: 960px) {
-.images {
-    object-fit: contain;
+  .card-img-top {
+    height: 70%;
+    object-fit: cover;
+  }
+  .card-body {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    h5{
+      margin: 0px;
+      width: 100%;
     }
-}
+  }
 </style>

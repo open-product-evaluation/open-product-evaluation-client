@@ -1,6 +1,7 @@
 <template>
 <div>
     <div style="text-align: right">
+    <h6 class="chooseInstruction" v-if="choosePosition<5">Click or drag to choose position #{{choosePosition+1}}</h6>
     <b-btn class="resetBtn" @click="preset">Reset</b-btn>
     </div>
   <div class="drag">
@@ -9,24 +10,24 @@
         v-for="(item, index) in allItems" :key="index"
         @dragstart="onDragStart($event, item, index)" 
         @dragend="onDragEnd($event)"
-        :class="((question.items.length%2)===0) ? 'col-md-6' : 'col-md-4'"
-        class="p-2"
+        cols="6"
+        class="p-2 col-md-4"
         >
-          <b-card no-body class="h-100 dragCards shadow bg-white">
-              <b-card-header v-if="item.image && item.image.url">
-                <img class="w-100 h-100 imagePrev desktop"  v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
-              </b-card-header>
+          <b-card no-body class="h-100 dragCards shadow bg-white"
+          @click="choseItem($event, item, index, choosePosition)" >
+                <img class="card-img-top" draggable="false" v-if="item.image && item.image.url" v-img :src="`${item.image.url}`">
+          <b-card-body class="p-2">
               <b-card-text>
                 {{item.label}}
                 </b-card-text>
-                <b-button @click="choseItem($event, item, index, choosePosition)" class="mobileBtn p-0"> Pos #{{choosePosition+1}}</b-button>
+          </b-card-body>
           </b-card>
         </b-col>
       </b-row>
-      <b-row class="mx-2">
+      <b-row class="mx-2 justify-content-around" cols="6">
         <b-col v-for="(item, index) in position" 
           :key="index" 
-          class="dragger p-0 mx-2" 
+          class="dragger p-0 mx-2 col col-md-6" 
           draggable="true" v-bind="item" 
           @drop.prevent="onDrop(index, $event)"
           @dragover.prevent="onOver(index)" 
@@ -182,14 +183,18 @@ export default {
 
 <style scoped="true" lang="scss">
 @import "../../../scss/variables"; 
-  .dragCards .card-header {
+
+  .chooseInstruction{
+    text-align: center;
+  }
+  /* .dragCards .card-header {
     padding: 0;
     height: 20vh;
-  }
-  .dropCards .card-header {
+  } */
+  /* .dropCards .card-header {
     padding: 0;
     height: 10vh;
-  }
+  } */
   .dragzone {
   display:flex;
   flex-direction: row;
@@ -198,8 +203,10 @@ export default {
   text-align: center;
   border: 1px dashed gray;
   height: 15vh;
-  width: 15vh;
+  width: 15vw; 
+  max-width: 250px;
   display: table;
+  margin: 8px;
 }
 .emptyCard {
   display: table-cell;
@@ -221,7 +228,7 @@ export default {
 }
 @media (max-width: 720px) {
   .imagePrev {
-    object-fit: fill;
+    object-fit: cover;
   }
   .mobileBtn {
     display: block;
@@ -241,5 +248,24 @@ export default {
   background-color: $primaryColor;
   border-color: $primaryColor;
   color: white;
+}
+
+.card-header {
+    padding: 0;
+    max-height: 35vh;
+}
+
+.card-img-top {
+  height: 70%;
+  object-fit: cover;
+}
+.card-body {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  p{
+    margin: 0px;
+    width: 100%;
+  }
 }
 </style>
