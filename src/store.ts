@@ -80,9 +80,10 @@ const mutations = {
 
 const actions = {
   updateClient(context, payload) {
-    Client.updateClient(payload.id, payload.domainId)
+    return Client.updateClient(payload.id, payload.domainId)
     .then((data: any) => {
       context.commit('updateClient', data.data !== undefined ? data.data.updateClient : null);
+      return data;
     });
   },
   createPermanentClient(context, payload) {
@@ -193,10 +194,10 @@ const actions = {
           // ... also, once in store it is frozen again.
           Vue.prototype.$eventBus.$emit('answer');
           const activeQuestion = data.data.domainUpdate.domain.activeQuestion;
-          if (activeQuestion) {
+          //if (activeQuestion) {
             const index = store.getters.getQuestionIndex(activeQuestion.id);
             store.commit('setActiveQuestion', index);
-          }
+          //}
         } else {
           console.log(data.errors);
         }

@@ -186,7 +186,12 @@ export default {
   methods: {
     next(this: any) {
       // Last Question to Home
-        (this.index < this.survey.questions.length - 1) ? (this.index++) : this.$router.push({name: 'surveyList'});
+        if (this.index < this.survey.questions.length - 1) {
+          this.index++;
+        }else{
+          this.$router.push({name: 'surveyList'});
+          return;
+        }
       // show next question
         this.counter = Math.floor(this.index / this.survey.questions.length * 100);
         this.$store.dispatch('updateActiveQuestion', {
