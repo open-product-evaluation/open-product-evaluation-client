@@ -237,4 +237,7 @@ h3 {
     width: 100%;
     }
 }
+.tab-content > .active {
+  outline: none;
+}
 </style>
