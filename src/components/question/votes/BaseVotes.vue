@@ -21,6 +21,9 @@ export default {
         question(this: any) {
             return this.$store.getters.getQuestion(this.id);
         },
+        activeTab(this: any) {
+            return this.$store.getters.getActiveVoteTabe;
+        },
     },
     watch: {
         answers(this: any, val: any) {
@@ -28,6 +31,11 @@ export default {
         },
         votes(this: any) {
             this.getVotesDiagramm();
+        },
+        activeTab(this: any) {
+            if (this.activeTab) {
+                this.getVotesDiagramm();
+            }
         },
     },
     created(this: any) {

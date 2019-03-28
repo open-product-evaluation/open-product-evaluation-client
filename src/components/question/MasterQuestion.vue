@@ -16,9 +16,9 @@
           </div>
         </b-card-body>
 
-      <b-tabs card v-if="index > -1">
+      <b-tabs card v-if="index > -1" v-model="tabIndex">
       <!-- Question -->
-      <b-tab no-body title="Question" active>
+      <b-tab no-body title="Question" active @click.prevent="questionVisible">
         <b-card-body class="py-0">
             <div class="progress w-100" v-if="index > -1 && survey.questions && survey.questions.length > 8">
               <b-progress :max="100">
@@ -46,7 +46,7 @@
       </b-tab>
 
       <!-- Votes -->
-      <b-tab no-body title="Votes">
+      <b-tab no-body title="Votes" @click.prevent="voting">
         <b-card-body class="py-0">
           <div class="progress w-100" v-if="survey.questions && survey.questions.length > 8">
               <b-progress :max="100">
@@ -151,6 +151,7 @@ export default {
       index: -1,
       counter: 0,
       subscribtion: null,
+      tabIndex: 0,
     };
   },
   created(this: any) {
@@ -197,6 +198,14 @@ export default {
           domainID: this.$route.params.cID,
           questionID: this.survey.questions[this.index].id,
         });
+        this.tabIndex = 0;
+    },
+    voting(this: any) {
+        // Update Votes
+        this.$store.dispatch('updateVotingTab', true);
+    },
+    questionVisible(this: any) {
+      this.$store.dispatch('updateVotingTab', false);
     },
   },
 };
