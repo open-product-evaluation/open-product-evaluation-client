@@ -19,6 +19,7 @@ const state = {
   domain: {
     activeQuestion: -1,
   },
+  votesIsActive: false,
 };
 
 const getters = {
@@ -34,6 +35,7 @@ const getters = {
     return filterVotes(questionID);
   },
   getAnswers: () => (questionID) => state.answers.filter( (answer: any) => answer.question === questionID),
+  getActiveVoteTabe: () => state.votesIsActive,
 };
 
 const mutations = {
@@ -70,6 +72,10 @@ const mutations = {
   addAnswer(states, payload) {
     states.answers.push(payload.answer);
   },
+  updateVoteTab(states, payload) {
+    states.votesIsActive = payload;
+  },
+
 };
 
 const actions = {
@@ -254,6 +260,9 @@ const actions = {
   updateActiveQuestion(store, {domainID, questionID}) {
     console.log('update');
     return Domain.updateActiveQuestion( domainID, questionID);
+  },
+  updateVotingTab(context, isActive) {
+    context.commit('updateVoteTab', isActive);
   },
 };
 
