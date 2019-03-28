@@ -267,4 +267,18 @@ export default {
     width: 100%;
   }
 }
+
+@media (max-width: 1200px) {
+.card-img-top {
+    object-fit: cover;
+    height: 15vh;
+  }
+}
+
+@media (max-width: 540px) {
+.card-img-top {
+    object-fit: cover;
+    height: 10vh;
+  }
+}
 </style>
