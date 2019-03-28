@@ -4,7 +4,7 @@ import apiClient from '@/utils/apollo';
 const updateActiveQuestion = (domain: string, question: string) => apiClient.mutate(
     {
         mutation: gql`
-        mutation updateActiveQuestion($domainID: HashID!, $questionID: HashID!) {
+        mutation updateActiveQuestion($domainID: HashID!, $questionID: HashID) {
             updateDomain(domainID: $domainID, data: { activeQuestion: $questionID }) {
                 domain {
                     activeQuestion {
@@ -49,6 +49,7 @@ const onDomainUpdate = (domain: string) => apiClient.subscribe(
       query: gql`
       subscription onDomainUpdate($domainID: HashID!) {
         domainUpdate(domainID: $domainID) {
+          changedAttributes
           event
           domain{
             activeQuestion{
