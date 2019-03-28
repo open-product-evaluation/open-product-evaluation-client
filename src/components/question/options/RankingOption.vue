@@ -1,7 +1,7 @@
 <template>
 <div>
     <div style="text-align: right">
-    <h6 class="chooseInstruction" v-if="choosePosition<5">Click or drag to choose position #{{choosePosition+1}}</h6>
+    <h6 class="chooseInstruction" v-if="allItems.length>0">Click or drag to choose position #{{choosePosition+1}}</h6>
     <b-btn class="resetBtn" @click="preset">Reset</b-btn>
     </div>
   <div class="drag">
