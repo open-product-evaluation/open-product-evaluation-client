@@ -23,9 +23,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color: $backgroundColor;
   min-height: -webkit-fill-available;
   height: 100%; 
+}
+body {
+  background-color: $backgroundColor;
 }
 .btn-primaryBtn {
   background-color: $secondaryBackgroundColor !important;

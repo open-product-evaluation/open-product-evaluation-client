@@ -6,7 +6,7 @@
         :key="choice.id">
 
         <!-- Choices with custom images-->
-        <div v-if="choice.image && choice.image.url">
+        <div class="choice-wrapper"  v-if="choice.image && choice.image.url" >
         <input type="radio"
               :id="`choice-${choice.id}`"
               :name="`choice-${question.id}`"
@@ -20,7 +20,7 @@
              :style="{backgroundImage: `url(${choice.image.url})`}"
              @click="updateValue(choice.id)">
           </label>
-          <span class="label">
+          <span class="label" @click="updateValue(choice.id)">
             {{ choice.label }}
            </span>
         </div>
@@ -140,6 +140,17 @@ export default {
       height: 4rem;
       background-position: center;
       background-repeat: no-repeat;
+    }
+  }
+  .choice-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    .icon, input {
+      margin: auto;
+    }
+    span{
+      cursor: pointer;
     }
   }
 </style>

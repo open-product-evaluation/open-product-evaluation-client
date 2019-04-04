@@ -13,10 +13,10 @@ export default {
     },
     computed: {
         votes(this: any) {
-            return this.$store.getters.getVote(this.id);
+            return this.$store.getters.getVote(this.id) || [];
         },
         answers(this: any) {
-            return this.$store.getters.getAnswers(this.id);
+            return this.$store.getters.getAnswers(this.id) || [];
         },
         question(this: any) {
             return this.$store.getters.getQuestion(this.id);

@@ -219,7 +219,8 @@ export default {
     }
 }
 .question {
-  object-fit: contain; 
+  object-fit: cover; 
+  max-width: 1200px;
 }
 .card-header h4 {
   margin-top: 0.5rem;

@@ -117,7 +117,7 @@ export default {
     display: flex;
     flex-direction: row;
     list-style: none;
-    margin-bottom: 2rem;
+    margin: 2rem 0rem;
   }
   input[type="radio"]:checked+label+span {
     color: $primaryColor;

@@ -8,7 +8,7 @@
             <b-spinner label="Spinning" />
           </div>
 
-          <div class="question" v-if="activeQuestion==survey.questions.length-1"> 
+          <div class="question" v-if="activeQuestion==survey.questions.length-1 && answered"> 
             <h5>Thank you very much for your participation!</h5>
           </div>
 

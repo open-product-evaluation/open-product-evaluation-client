@@ -157,6 +157,10 @@ export default {
   },
   created(this: any) {
     const domainID = this.$route.params.cID;
+    this.$store.dispatch('updateActiveQuestion', {
+      domainID: this.$route.params.cID,
+      questionID: null,
+    });
     this.$store.dispatch('subscribeAnswers', {
           domainID,
     }).then((data) => this.subscription = data);
@@ -213,38 +217,34 @@ export default {
 </script>
 <style src="vue-step-indicator/dist/vue-step-indicator.css"></style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-h3 {
-  margin: 40px 0 0;
-}
-.description {
-  font-size: 1.25rem;
-}
-.progress {
-  font-size: 1rem;
-  height: max-content;
-}
-.progress-bar {
-  height: 1.5rem;
-}
-.votes {
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
-  padding-top: 2rem;
-}
-.row {
-  margin-bottom: 1rem;
-}
+<style scoped lang="scss">
+@import "../../scss/variables.scss"; 
   @media (min-width: 540px) {
-  .container {
+  .question {
     width: 80%;
-    margin: 1.5rem auto;
+    margin: 3rem auto;
     }
 }
 @media (max-width: 540px) {
-  .container {
+  .question {
     width: 100%;
+    margin: 0 auto;
     }
+}
+.question {
+  object-fit: contain; 
+  max-width: 1200px;
+}
+.card-header h4 {
+  margin-top: 0.5rem;
+}
+.votes {
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+.collapsed > .when-opened,
+:not(.collapsed) > .when-closed {
+  display: none;
 }
 .tab-content > .active {
   outline: none;

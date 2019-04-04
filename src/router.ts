@@ -59,9 +59,6 @@ router.beforeEach((to, from, next) => {
           next();
         });
       } else {
-        /* store.dispatch('createPermanentClient', ({ name: 'mobilePhone', clientOwner: 'jane@doe.com'})).then((result) => {
-          next();
-        }); */
         next('create');
       }
     } else {
